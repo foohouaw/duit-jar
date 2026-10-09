@@ -38,8 +38,8 @@ img{max-width:100%}
   --fur:#FFFFFF; --fur-ear:#F6EDE1; --fur-line:#DCD3C6;
   --shadow:0 6px 22px color-mix(in srgb,var(--ink) 9%,transparent);
   --scrim:rgba(24,24,40,.36);
-  --display:"Bricolage Grotesque","Manrope",system-ui,sans-serif;
-  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Bricolage Grotesque","Manrope","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --body:"Manrope","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 :root[data-palette="matcha"]{--bg-l:#EDF0E4;--bg-d:#131610;--exp:#C88A60;--inc:#6F9A52;--lid:#EBC77E}
 :root[data-palette="peach"]{--bg-l:#FBEEE8;--bg-d:#1B1513;--exp:#E2786A;--inc:#3FA197;--lid:#F5C86A}
@@ -613,6 +613,130 @@ button:active{transform:scale(.97)}
 <script>
 (function(){
 "use strict";
+/* ---------- language ---------- */
+let LANG="en"; try{ const l=localStorage.getItem("duitjar.lang"); if(l==="zh") LANG="zh" }catch(e){}
+function LOC(){ return LANG==="zh"?"zh-CN":"en-GB" }
+const ZH={"Stats": "统计", "Plan": "计划", "Settings": "设置", "Goals": "目标", "Subscriptions": "订阅", "Daily": "每日", "Categories": "类别", "Year": "年度", "Search entries": "搜索记录", "Hide amounts": "隐藏金额", "Show amounts": "显示金额", "Choose month": "选择月份", "Previous": "上一个", "Next": "下一个", "Pages": "页面", "Wallets": "钱包", "Settings and import": "设置与导入", "Close": "关闭", "Back": "返回", "Period": "时间范围", "Wallet": "钱包", "Spent this month": "本月支出", "Opening your jar": "正在打开储蓄罐", "Set a monthly budget": "设定每月预算", "to fill the jar": "来填满储蓄罐", "Over budget by": "超出预算", "Income": "收入", "No income recorded": "尚无收入记录", "Saved": "已存", "Overspent": "超支", "left": "剩余", "Spent": "支出", "more than earned": "超过收入", "/day": "/天", "All wallets": "全部钱包", "+ Wallet": "+ 钱包", "Edit": "编辑", "Show all": "显示全部", "Today": "今天", "Yesterday": "昨天", "Transfer": "转账", "Balance adjustment": "余额调整", "Food": "餐饮", "Drinks": "饮料", "Groceries": "杂货", "Transport": "交通", "Shopping": "购物", "Bills": "账单", "Health": "医疗", "Fun": "娱乐", "Home": "居家", "Gifts": "礼物", "Travel": "旅行", "Other": "其他", "Salary": "薪水", "Bonus": "奖金", "Side income": "副业收入", "Gift": "礼金", "Refund": "退款", "Others": "其他", "Your jar is empty": "储蓄罐还是空的", "Add today's first expense, or bring over your history from Money Manager.": "记下今天的第一笔支出，或从 Money Manager 导入历史记录。", "Add entry": "记一笔", "Import from Money Manager": "从 Money Manager 导入", "No entries for this wallet this month.": "这个钱包本月没有记录。", "No spending or income recorded this month yet.": "本月还没有支出或收入记录。", "Where it went": "钱花去哪了", "Where it came from": "钱从哪来", "Monthly limits": "每月限额", "Spending by day": "每日支出", "Only transfers this month, so there's nothing to break down.": "本月只有转账，没有可分析的内容。", "Earned": "收入", "Avg spend a month": "月均支出", "Month by month": "每月对比", "Biggest spending month:": "支出最高的月份：", "Months": "月份", "Spent · earned · net. Tap a month to open it.": "支出 · 收入 · 净额。点击月份查看详情。", "Entries": "笔数", "Average": "平均", "Biggest": "最大一笔", "Share of spending": "占支出比例", "Share of income": "占收入比例", "Last 12 months": "最近 12 个月", "Each month": "每月", "No entries in this period.": "这段时间没有记录。", "Edit name, icon or monthly limit": "编辑名称、图标或每月限额", "New entry": "记一笔", "Edit entry": "编辑记录", "Expense": "支出", "Paid from": "付款钱包", "Into wallet": "存入钱包", "From": "从", "To": "到", "New wallet": "新钱包", "Note (optional)": "备注（可选）", "Date": "日期", "Repeat every month": "每月重复", "For rent, bills, subscriptions or salary": "适合房租、账单、订阅或薪水", "Repeats every month": "每月重复中", "Stop": "停止", "Save expense": "保存支出", "Save income": "保存收入", "Save transfer": "保存转账", "Save adjustment": "保存调整", "Save changes": "保存修改", "Delete entry": "删除记录", "Delete this entry?": "删除这笔记录？", "Keep": "保留", "Delete": "删除", "Add a second wallet to move money between them.": "添加第二个钱包才能转账。", "Balance adjustment imported from Money Manager. It changes the wallet balance but isn't counted as spending or income.": "从 Money Manager 导入的余额调整。会改变钱包余额，但不计入支出或收入。", "New": "新增", "Recent entries": "最近记录", "Delete digit": "删除", "Plus": "加", "Minus": "减", "Equals": "等于", "New category": "新类别", "Edit category": "编辑类别", "Category name": "类别名称", "Monthly limit (optional)": "每月限额（可选）", "No limit": "无限额", "Pick an icon": "选择图标", "Food & drink": "饮食", "Getting around": "出行", "Home & bills": "居家与账单", "Shopping & care": "购物与护理", "Health & growth": "健康与成长", "People & pets": "人与宠物", "Money": "金钱", "You can also type any emoji at the start of the name, like \"🐱 Cat food\".": "也可以在名称开头输入任意表情符号，例如“🐱 猫粮”。", "Add category": "添加类别", "Save category": "保存类别", "Remove category": "移除类别", "Remove from the list? Past entries keep their category.": "从列表中移除？过去的记录会保留类别。", "Remove": "移除", "+ Add category": "+ 添加类别", "Restore the default categories": "恢复默认类别", "No categories yet. Add your first one.": "还没有类别。添加第一个吧。", "Default categories restored": "已恢复默认类别", "Edit wallet": "编辑钱包", "Icon": "图标", "Colour": "颜色", "Starting balance": "初始余额", "What was already in this wallet before your first entry here.": "在第一笔记录之前，这个钱包里已有的金额。", "Add wallet": "添加钱包", "Save wallet": "保存钱包", "Delete wallet": "删除钱包", "Bank": "银行", "E-wallet": "电子钱包", "Cash": "现金", "Card": "信用卡", "Savings": "储蓄", "Invest": "投资", "Coins": "零钱", "Cancel": "取消", "Move & delete": "移动并删除", "This is your only wallet. Add another one before deleting it.": "这是你唯一的钱包。请先添加另一个再删除。", "Unknown wallet": "未知钱包", "Other account": "其他账户", "Saved privately to your Claude account. Only you can see your entries.": "已私密保存到你的 Claude 账户，只有你能看到记录。", "Saved on this phone only. Export a CSV backup now and then.": "只保存在这台设备上，请定期导出 CSV 备份。", "Saved on this phone only. Export a CSV backup now and then.": "只保存在这部手机上，请定期导出 CSV 备份。", "Colours": "配色", "Blueberry milk": "蓝莓牛奶", "Matcha latte": "抹茶拿铁", "Peach soda": "蜜桃苏打", "Lavender": "薰衣草", "Your buddy": "你的小伙伴", "Pick a pet and give them a name. Tap them on any page for pats.": "选一只宠物并取个名字。在任何页面点它都能摸摸它。", "Maltese": "马尔济斯", "Shiba": "柴犬", "Kitty": "小猫", "Bunny": "小兔", "Pet name": "宠物名字", "+ Add wallet": "+ 添加钱包", "Repeating entries": "重复记录", "Turn on \"Repeat every month\" when adding rent, bills, subscriptions or salary, and they're added for you each month.": "添加房租、账单、订阅或薪水时打开“每月重复”，之后每月会自动记录。", "Add, delete, rename and drag to reorder your expense and income categories, including the defaults.": "添加、删除、重命名和拖动排序你的支出和收入类别（包括默认类别）。", "Manage categories": "管理类别", "In Money Manager, open": "在 Money Manager 中打开", "Choose": "选择", "and save the file to Files.": "，并把文件保存到“文件”App。", "Pick that file here. CSV files work too.": "在这里选择该文件，也支持 CSV 文件。", "Expenses, income, transfers, balance changes, notes and accounts all come across. Each account becomes a wallet. Importing the same file twice won't double anything.": "支出、收入、转账、余额变动、备注和账户都会导入。每个账户会变成一个钱包。重复导入同一个文件不会产生重复记录。", "Choose file": "选择文件", "Reading file…": "正在读取文件…", "Expenses": "支出", "Transfers": "转账", "Balance adjustments": "余额调整", "Dates": "日期", "Rows without a date or amount": "缺少日期或金额的行", "Date order": "日期格式", "Monthly budget": "每月预算", "The jar shows how much of it is left. Leave at 0 to use your income instead.": "储蓄罐会显示预算还剩多少。填 0 则改用收入计算。", "Currency symbol": "货币符号", "Backup": "备份", "Save every entry as a CSV file you can open in Excel or Numbers.": "把所有记录保存为 CSV 文件，可用 Excel 或 Numbers 打开。", "Export CSV": "导出 CSV", "Start over": "重新开始", "Delete all entries": "删除所有记录", "Delete every entry?": "删除所有记录？", "Delete all": "全部删除", "Search": "搜索", "Shop, note, category, wallet or amount": "商家、备注、类别、钱包或金额", "All": "全部", "Searches every entry in every month. Try \"grab\", \"Maybank\", \"birthday\" or \"12.50\".": "搜索所有月份的每一笔记录。试试“grab”、“Maybank”、“生日”或“12.50”。", "found": "条结果", "Showing the latest 200. Add another word to narrow it down.": "只显示最新 200 条，多输入一个词来缩小范围。", "Pick a month": "选择月份", "Pick a year": "选择年份", "Previous year": "上一年", "Next year": "下一年", "The small number is what you spent that month.": "小数字是当月的支出。", "Back to this month": "回到本月", "Back to this year": "回到今年", "This month": "本月", "3 months": "3 个月", "6 months": "6 个月", "12 months": "12 个月", "This year": "今年", "All time": "全部", "Highlights": "重点", "Avg spend a day": "日均支出", "Total balance": "总余额", "Earned vs spent": "收入与支出", "Spending by category": "支出类别分布", "Tap a category for its details.": "点击类别查看详情。", "Spending by weekday": "按星期的支出", "Spending by wallet": "按钱包的支出", "Biggest expenses": "最大的几笔支出", "Nothing to show yet": "暂时没有内容", "No entries in this period. Try a longer period or add some entries.": "这段时间没有记录。试试更长的时间范围，或添加一些记录。", "Balance over time": "余额变化", "Spending split by category": "支出类别分布", "Spending by day of the week": "按星期的支出", "Earned and spent per period": "每期收入与支出", "Daily spending bar chart": "每日支出柱状图", "Save up for the big things, one step at a time.": "一步一步，为人生大事存钱。", "No goals yet": "还没有目标", "Pick one to start, or make your own.": "选一个开始，或自己创建。", "Wedding": "婚礼", "House deposit": "房子首付", "Holiday": "旅行度假", "Emergency fund": "应急基金", "Create a goal": "创建目标", "Goal reached! 🎉": "目标达成！🎉", "New goal": "新目标", "Edit goal": "编辑目标", "e.g. Our wedding": "例如：我们的婚礼", "Target amount": "目标金额", "Target month (optional)": "目标月份（可选）", "How to track it": "追踪方式", "Add money myself": "自己存入", "Use a wallet": "使用钱包", "The goal follows this wallet's balance. Handy for a separate savings account.": "目标会跟随这个钱包的余额，适合独立的储蓄账户。", "Tap \"Add money\" on the goal whenever you put some aside.": "每次存钱时，在目标里点“存入”。", "Create goal": "创建目标", "Save goal": "保存目标", "Still to go": "还差", "Months left": "剩余月数", "No date": "未设日期", "Passed": "已过", "Needed a month": "每月需存", "Target month": "目标月份", "Anytime": "不限", "Add or take out money": "存入或取出", "Amount": "金额", "Note": "备注", "Take out": "取出", "Add money": "存入", "History": "记录", "Added": "存入", "Taken out": "取出", "This goal follows the balance of": "这个目标跟随以下钱包的余额：", ". Move money into that wallet to grow it.": "。把钱转入这个钱包就能增加进度。", "Delete goal": "删除目标", "Delete this goal and its history?": "删除这个目标及其记录？", "Remove this entry": "移除这笔", "Goal created": "目标已创建", "Goal saved": "目标已保存", "Goal deleted": "目标已删除", "Give the goal a name": "给目标取个名字", "Set a target amount": "请设置目标金额", "Pick the wallet to follow": "请选择要跟随的钱包", "Enter an amount": "请输入金额", "Keep track of everything that renews.": "记录所有会自动续费的项目。", "Per month": "每月", "Per year": "每年", "Monthly": "每月", "Yearly": "每年", "Weekly": "每周", "Paused": "已暂停", "Renews today": "今天续费", "Renews tomorrow": "明天续费", "/mo": "/月", "/yr": "/年", "/wk": "/周", "No subscriptions yet": "还没有订阅", "Gym": "健身房", "Phone plan": "手机配套", "Internet": "网络", "Insurance": "保险", "Add a subscription": "添加订阅", "+ Add subscription": "+ 添加订阅", "today": "今天", "tomorrow": "明天", "overdue": "已逾期", "New subscription": "新订阅", "Edit subscription": "编辑订阅", "e.g. Netflix": "例如：Netflix", "Price": "价格", "Next payment": "下次扣款", "Add to expenses automatically": "自动记入支出", "Recorded on each payment date": "在每个扣款日自动记录", "You'll tap \"Mark as paid\" yourself": "你需要自己点“标记为已付”", "Paused ones aren't counted or added": "暂停的订阅不会计算或记录", "Mark this payment as paid": "标记这次为已付", "Add subscription": "添加订阅", "Save subscription": "保存订阅", "Delete subscription": "删除订阅", "Delete this subscription? Past expenses stay.": "删除这个订阅？过去的支出会保留。", "Subscription added": "订阅已添加", "Subscription saved": "订阅已保存", "Subscription deleted": "订阅已删除", "Give it a name": "请输入名称", "Enter the price": "请输入价格", "Expense saved": "支出已保存", "Income saved": "收入已保存", "Transfer saved": "转账已保存", "Changes saved": "修改已保存", "Entry deleted": "记录已删除", "Entry restored": "记录已恢复", "Undo": "撤销", "Category saved": "类别已保存", "Category removed": "类别已移除", "Give the category a name": "给类别取个名字", "Wallet saved": "钱包已保存", "Give the wallet a name": "给钱包取个名字", "Stopped repeating. Past entries stay.": "已停止重复，过去的记录会保留。", "Backup saved": "备份已保存", "Backup ready": "备份已准备好", "All entries deleted": "所有记录已删除", "Couldn't save just now. Check your connection and try again.": "暂时无法保存，请检查网络后重试。", "Storage is full. Delete some old entries in Settings.": "存储空间已满，请在设置中删除一些旧记录。", "Your account can't save on this page, so entries are saved on this device instead.": "你的账户无法在此页面保存，记录会改为保存在这台设备上。", "Export didn't work. Try again.": "导出失败，请重试。", "The CSV was copied instead": "已改为复制 CSV 内容", "Couldn't save a file here, so the CSV was copied instead": "无法在这里保存文件，已改为复制 CSV 内容。", "Export isn't available in this view": "此视图不支持导出", "Sync stopped. Changes are saved on this device for now.": "同步已停止，修改暂时保存在这台设备上。", "I couldn't find Date and Amount columns in this file. Use the Excel export from Money Manager, or a CSV with those columns.": "在这个文件里找不到日期和金额栏。请使用 Money Manager 导出的 Excel，或包含这些栏位的 CSV。", "I couldn't find an Amount column in this file.": "在这个文件里找不到金额栏。", "That file couldn't be read. Try the Excel export from Money Manager, or a CSV.": "无法读取这个文件。请试试 Money Manager 导出的 Excel 或 CSV。", "Sniffing out your jar…": "正在嗅嗅你的储蓄罐…", "Every ringgit counts. I'm cheering for you!": "每一令吉都算数，我为你加油！", "What are we saving for? A wedding? A house? Treats?": "我们要存钱做什么呢？婚礼？房子？零食？", "We're over budget this month 🥺 Home-cooked dinner tonight?": "这个月超出预算了 🥺 今晚在家煮饭吧？", "Hehe, that tickles!": "嘻嘻，好痒！", "More pats please 🥰": "再摸摸我嘛 🥰", "*happy tail wags*": "*开心地摇尾巴*", "*happy binky*": "*开心地蹦跳*", "*purrrrr*": "*呼噜呼噜*", "You're my favourite human": "你是我最喜欢的人类", "Is it treat time?": "是零食时间吗？", "*slow blink of love*": "*慢慢眨眼表示爱你*", "*wiggles nose at you*": "*对你动动鼻子*", "*rolls over for belly rubs*": "*翻身让你摸肚肚*", "Yay, money in! Treat time? 🦴": "耶，进账了！可以吃零食吗？🦴", "Moved it! All paws tidy 🐾": "转好了！整整齐齐 🐾", "Uh oh, that tipped us over budget 🥺": "糟糕，这笔让我们超出预算了 🥺", "Smells yummy! Did you save me a bite? 🍖": "好香！有给我留一口吗？🍖", "Ooh, a drink! Can I lick the cup?": "哇，饮料！我可以舔舔杯子吗？", "Anything for me in the bag? 🥕": "袋子里有我的份吗？🥕", "Vroom! Can I stick my head out the window?": "嘟嘟！我可以把头伸出窗外吗？", "Shopping again? I only need one squeaky toy 🧸": "又去购物啦？我只要一个会叫的玩具 🧸", "Got it, I'll guard the receipt.": "收到，我会守好收据的。", "Noted. Good human!": "记下了，真乖！", "Into the jar it goes!": "放进储蓄罐啦！", "Shh… amounts are hidden 🤫": "嘘…金额已隐藏 🤫", "Amounts are back!": "金额回来了！", "A new goal! Let's fill it up together 💪": "新目标！一起把它存满吧 💪", "Into the goal jar! 🐾": "存进目标罐啦！🐾", "Closer every day!": "每天都更近一步！", "Here's where your money has been going 📊": "来看看你的钱都花去哪了 📊", "Add your Netflix, Spotify, gym… I'll remind you before they renew 🔔": "添加你的 Netflix、Spotify、健身房… 续费前我会提醒你 🔔"};
+const ZH_NAV={"Home":"首页"}; Object.assign(ZH,{"Month":"月份","Goal":"目标","Add":"记一笔"});
+const SNDZ={"Woof":"汪","Meow":"喵","*thump thump*":"*咚咚*"};
+const WDZ={Mondays:"周一",Tuesdays:"周二",Wednesdays:"周三",Thursdays:"周四",Fridays:"周五",Saturdays:"周六",Sundays:"周日"};
+const GREETZ={"Good morning":"早安","Good afternoon":"午安","Good evening":"晚上好"};
+const RANGEZ={"This month":"本月","3 months":"3 个月","6 months":"6 个月","12 months":"12 个月","This year":"今年","All time":"全部"};
+function zt(s){ const r=trPart(s); return r==null?s:r }
+function streakZ(s){ if(!s) return ""; let m; if((m=s.match(/^That's a (\d+)-day streak!$/))) return "已经连续 "+m[1]+" 天了！"; if((m=s.match(/^Keep our (\d+)-day streak going!$/))) return "继续保持连续 "+m[1]+" 天！"; return " "+s }
+const RX=[
+ [/^Spent in (.+)$/, (_,a)=>a+" 支出"],
+ [/^left of ([\d,.]+)( ·)?$/, (_,a,b)=>"可用，预算 "+a+(b||"")],
+ [/^Showing (.+)$/, (_,a)=>"正在显示："+a],
+ [/^Nothing here in (.+)$/, (_,a)=>a+" 还没有记录"],
+ [/^([\d,.]+) over$/, (_,a)=>"超出 "+a],
+ [/^([\d,.]+) left$/, (_,a)=>"剩余 "+a],
+ [/^Peak (.+) on day (\d+)$/, (_,a,b)=>"最高 "+a+"（"+b+" 号）"],
+ [/^(-?\d+)% of income$/, (_,a)=>"占收入 "+a+"%"],
+ [/^(\d+) active months?$/, (_,a)=>a+" 个活跃月份"],
+ [/^Where it went in (\d{4})$/, (_,a)=>a+" 年钱花去哪了"],
+ [/^Nothing in (\d{4}) yet$/, (_,a)=>a+" 年还没有记录"],
+ [/^Entries you add or import for (\d{4}) are summed up here\.$/, (_,a)=>"你在 "+a+" 年添加或导入的记录会汇总在这里。"],
+ [/^No entries for this wallet in (\d{4})\.$/, (_,a)=>"这个钱包在 "+a+" 年没有记录。"],
+ [/^Each month of (\d{4})$/, (_,a)=>a+" 年每月"],
+ [/^Added for you on day (\d+) of each month$/, (_,a)=>"每月 "+a+" 号自动记录"],
+ [/^Day (\d+)\. Changes here only affect this entry\.$/, (_,a)=>"每月 "+a+" 号。这里的修改只影响这一笔。"],
+ [/^Day (\d+) of each month$/, (_,a)=>"每月 "+a+" 号"],
+ [/^Hold the ≡ handle and drag to reorder\. Tap a category to rename it, change its icon( or set a limit)?\.$/, (_,a)=>"按住 ≡ 拖动可调整顺序。点击类别可重命名、更换图标"+(a?"或设置限额":"")+"。"],
+ [/^Limit (.+)$/, (_,a)=>"限额 "+a],
+ [/^Delete (.+)\?$/, (_,a)=>"删除 "+zt(a)+"？"],
+ [/^It has (\d+) entr(?:y|ies)\. Move them to another wallet, or delete them too\.$/, (_,a)=>"里面有 "+a+" 笔记录。可以移到其他钱包，或一起删除。"],
+ [/^Delete the wallet and its (\d+) entr(?:y|ies)$/, (_,a)=>"删除钱包及其 "+a+" 笔记录"],
+ [/^(\d+) skipped$/, (_,a)=>"已跳过 "+a+" 行"],
+ [/^(Day\/Month|Month\/Day) \(tap to switch\)$/, (_,a)=>(a==="Day/Month"?"日/月":"月/日")+"（点击切换）"],
+ [/^Import (\d+) entries$/, (_,a)=>"导入 "+a+" 笔记录"],
+ [/^No entries match "(.*)"\.$/, (_,a)=>"没有符合“"+a+"”的记录。"],
+ [/^(This month|3 months|6 months|12 months|This year|All time) · all wallets$/, (_,a)=>RANGEZ[a]+" · 全部钱包"],
+ [/^(This month|3 months|6 months|12 months|This year|All time) · (.+)$/, (_,a,b)=>RANGEZ[a]+" · "+b],
+ [/^This month you've spent (.+), (\d+)% (less|more) than at this point last month\.$/, (_,a,b,c)=>"本月已支出 "+a+"，比上月同期"+(c==="less"?"少":"多")+" "+b+"%。"],
+ [/^(.+) is your biggest spend: (.+) \((\d+)% of spending\)\.$/, (_,a,b,c)=>zt(a)+" 是你最大的支出："+b+"（占支出 "+c+"%）。"],
+ [/^You kept (\d+)% of what you earned\.$/, (_,a)=>"你存下了收入的 "+a+"%。"],
+ [/^You spent (.+) more than you earned\.$/, (_,a)=>"你的支出比收入多 "+a+"。"],
+ [/^You spend the most on (\w+)\.$/, (_,a)=>"你在"+(WDZ[a]||a)+"花得最多。"],
+ [/^(\d+) days · (\d+) expenses$/, (_,a,b)=>a+" 天 · "+b+" 笔支出"],
+ [/^Now (.+)$/, (_,a)=>"当前 "+a],
+ [/^(.+) balance$/, (_,a)=>zt(a)+" 余额"],
+ [/^(.+) saved of ([\d,.]+)$/, (_,a,b)=>"已存 "+a+" / 目标 "+b],
+ [/^saved of (.+)$/, (_,a)=>"已存，目标 "+a],
+ [/^Target date has passed · (.+) to go$/, (_,a)=>"目标日期已过 · 还差 "+a],
+ [/^(.+) a month to reach it by (.+)$/, (_,a,b)=>"每月需存 "+a+"，才能在 "+b+" 达成"],
+ [/^(.+) to go$/, (_,a)=>"还差 "+a],
+ [/^Transfer into (.+)$/, (_,a)=>"转入 "+zt(a)],
+ [/^Added to (.+)$/, (_,a)=>"已存入 "+a],
+ [/^Taken out of (.+)$/, (_,a)=>"已从 "+a+" 取出"],
+ [/^(\d+) active · tap one to edit$/, (_,a)=>a+" 个使用中 · 点击编辑"],
+ [/^In (\d+) days · (.+)$/, (_,a,b)=>a+" 天后 · "+b],
+ [/^Overdue (\d+) days?$/, (_,a)=>"已逾期 "+a+" 天"],
+ [/^Add the things that renew, and (.+) will remind you before each payment\.$/, (_,a)=>"添加会续费的项目，"+a+" 会在每次扣款前提醒你。"],
+ [/^Next: (.+) in (\d+) days$/, (_,a,b)=>"下一个："+a+"，"+b+" 天后"],
+ [/^Next: (.+)$/, (_,a)=>"下一个："+a],
+ [/^Added, with (\d+) past payments? recorded$/, (_,a)=>"已添加，并记录了 "+a+" 笔过去的扣款"],
+ [/^Marked (.+) as paid for (.+)$/, (_,a,b)=>"已将 "+a+" 标记为 "+b+" 已付"],
+ [/^Added (\d+) repeating entr(?:y|ies)$/, (_,a)=>"已添加 "+a+" 笔重复记录"],
+ [/^Importing (\d+) entries…$/, (_,a)=>"正在导入 "+a+" 笔记录…"],
+ [/^Imported (\d+) entries(?: \((\d+) were already here\))?$/, (_,a,b)=>"已导入 "+a+" 笔记录"+(b?"（"+b+" 笔已存在）":"")],
+ [/^(.+) removed$/, (_,a)=>"已移除 "+zt(a)],
+ [/^(.+) is back$/, (_,a)=>zt(a)+" 已恢复"],
+ [/^(.+) deleted$/, (_,a)=>"已删除 "+zt(a)],
+ [/^Hi, I'm (.+)! Tap Add to log your first spend 🐾$/, (_,a)=>"嗨，我是 "+a+"！点 + 记下你的第一笔支出 🐾"],
+ [/^(\d+) entr(?:y|ies) today\. Good human! 🦴(?: (.+))?$/, (_,a,b)=>"今天记了 "+a+" 笔，真棒！🦴"+streakZ(b)],
+ [/^(Good morning|Good afternoon|Good evening)! Nothing logged today yet\.(?: (.+))?$/, (_,a,b)=>GREETZ[a]+"！今天还没记账哦。"+streakZ(b)],
+ [/^(Woof|Meow|\*thump thump\*)! 🐾$/, (_,a)=>SNDZ[a]+"！🐾"],
+ [/^Uh oh, (.+) just went over its limit 🥺$/, (_,a)=>"糟糕，"+zt(a)+" 刚刚超出限额了 🥺"],
+ [/^Heads up! (.+) is at (\d+)% of its monthly limit\.$/, (_,a,b)=>"注意！"+zt(a)+" 已用了每月限额的 "+b+"%。"],
+ [/^Is that for ME\?! (.+)$/, (_,a)=>"那是给我的吗？！"+a],
+ [/^Logged! (Woof|Meow|\*thump thump\*) 🐾$/, (_,a)=>"记好了！"+SNDZ[a]+" 🐾"],
+ [/^Hi! I'm (.+) now 🐾$/, (_,a)=>"嗨！我现在叫 "+a+" 🐾"],
+ [/^Hi! I'm (.+)$/, (_,a)=>"嗨！我是 "+a],
+ [/^Wow, (\d+) entries! That's a lot of sniffing 🐾$/, (_,a)=>"哇，"+a+" 笔记录！要嗅好久呢 🐾"],
+ [/^We did it! (.+) is fully funded! 🎉$/, (_,a)=>"我们做到了！"+a+" 已经存满了！🎉"],
+ [/^(Woof|Meow|\*thump thump\*)! (\d+)% there!$/, (_,a,b)=>SNDZ[a]+"！已经完成 "+b+"%！"],
+ [/^We're spending (\d+)% less than last month\. Proud of you! 🐾$/, (_,a)=>"我们比上个月少花了 "+a+"%，为你骄傲！🐾"],
+ [/^We're (\d+)% ahead of last month's spending\. Let's slow down a little 🙈$/, (_,a)=>"我们比上个月多花了 "+a+"%，稍微放慢一点吧 🙈"],
+ [/^(.+) renews (today|tomorrow) \((.+)\) 🔔$/, (_,a,b,c)=>a+" "+(b==="today"?"今天":"明天")+"续费（"+c+"）🔔"],
+ [/^(.+) payment is overdue \((.+)\)$/, (_,a,b)=>a+" 的付款已逾期（"+b+"）"],
+ [/^Subscriptions cost us (.+) a month\. That's (.+) a year!$/, (_,a,b)=>"订阅每月花费 "+a+"，一年就是 "+b+"！"],
+ [/^I'll remind you before (.+) renews 🔔$/, (_,a)=>a+" 续费前我会提醒你 🔔"],
+ [/^Pet (.+)$/, (_,a)=>"摸摸 "+a],
+ [/^Drag to reorder (.+)$/, (_,a)=>"拖动调整 "+zt(a)+" 的顺序"],
+ [/^Coin jar (\d+)% full$/, (_,a)=>"储蓄罐已满 "+a+"%"],
+ [/^Monthly totals for (.+)$/, (_,a)=>zt(a)+" 每月总额"],
+ [/^Spending and income each month of (\d{4})$/, (_,a)=>a+" 年每月支出与收入"],
+ [/^(.+) ·$/, (_,a)=>zt(a)+" ·"],
+ [/^(.+) of ([\d,]+\.\d\d)( · (.+))?$/, (_,a,b,c,d)=>a+" / "+b+(d?" · "+zt(d):"")],
+ [/^(.+) (spent|earned) ([\d,.]+)$/, (_,a,b,c)=>a+" "+(b==="spent"?"支出":"收入")+" "+c],
+ [/^In (\d+) days$/, (_,a)=>a+" 天后"],
+ [/^(\p{Extended_Pictographic}\S*) (.+)$/u, (_,a,b)=>{ const r=trPart(b); return r==null?null:a+" "+r }]
+];
+function norm(t){ return t.replace(/[’‘]/g,"'").replace(/[“”]/g,'"') }
+function trPart(t){ t=norm(t); if(ZH[t]!==undefined) return ZH[t]; for(const [re,fn] of RX){ const m=t.match(re); if(m){ const r=fn(...m); if(r!=null) return r } } return null }
+function trStr(t){ const r=trPart(t); if(r!=null) return r; if(t.includes(" · ")){ let any=false; const out=t.split(" · ").map(p=>{ const q=trPart(p); if(q!=null){any=true;return q} return p }); if(any) return out.join(" · ") } return null }
+function trNode(n){ const raw=n.nodeValue; if(!raw||!/[A-Za-z]/.test(raw)) return; const p=n.parentNode; if(!p||!p.closest||p.closest("[data-notr],script,style,textarea")) return;
+  const core=raw.trim(); if(!core) return; const lead=raw.slice(0,raw.indexOf(core.charAt(0))), trail=raw.slice(lead.length+core.length);
+  const r=(p.closest(".nav")&&ZH_NAV[core])?ZH_NAV[core]:trStr(core);
+  if(r!=null&&r!==core){ if(n.__en===undefined) n.__en=raw; n.nodeValue=lead+r+trail } }
+function trAttrs(el){ if(!el.getAttribute||el.closest("[data-notr]")) return; for(const a of ["placeholder","aria-label"]){ const v=el.getAttribute(a); if(v&&/[A-Za-z]/.test(v)){ const r=trStr(v.trim()); if(r!=null&&r!==v){ el.__en=el.__en||{}; if(el.__en[a]===undefined) el.__en[a]=v; el.setAttribute(a,r) } } } }
+function trTree(root){ if(LANG!=="zh"||!root) return; if(root.nodeType===3){ trNode(root); return } if(root.nodeType!==1) return;
+  trAttrs(root); root.querySelectorAll("[placeholder],[aria-label]").forEach(trAttrs);
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); let n; while((n=w.nextNode())) trNode(n) }
+let TRMO=null;
+function startTr(){ if(TRMO){ TRMO.disconnect(); TRMO=null } if(LANG!=="zh") return; trTree(document.body);
+  TRMO=new MutationObserver(ms=>{ for(const m of ms){ if(m.type==="characterData") trNode(m.target); else if(m.type==="attributes") trAttrs(m.target); else m.addedNodes.forEach(trTree) } });
+  TRMO.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["placeholder","aria-label"]}) }
+function restoreEn(){ const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let n; while((n=w.nextNode())){ if(n.__en!==undefined){ n.nodeValue=n.__en; delete n.__en } }
+  document.querySelectorAll("[placeholder],[aria-label]").forEach(el=>{ if(el.__en){ for(const a in el.__en) el.setAttribute(a,el.__en[a]); delete el.__en } }) }
+const MON_EN=["J","F","M","A","M","J","J","A","S","O","N","D"], WD_EN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+function applyLang(l){ LANG=l==="zh"?"zh":"en"; try{localStorage.setItem("duitjar.lang",LANG)}catch(e){}
+  document.documentElement.lang=LANG==="zh"?"zh-CN":"en";
+  MON=LANG==="zh"?["1","2","3","4","5","6","7","8","9","10","11","12"]:MON_EN.slice(); WD=LANG==="zh"?["一","二","三","四","五","六","日"]:WD_EN.slice();
+  if(TRMO){ TRMO.disconnect(); TRMO=null } if(LANG!=="zh") restoreEn(); startTr() }
+
+
 /* ---------- constants ---------- */
 const DEF = {
   e:[["Food","🍜"],["Drinks","🧋"],["Groceries","🥬"],["Transport","🚗"],["Shopping","🛍️"],["Bills","💡"],["Health","💊"],["Fun","🎮"],["Home","🏠"],["Gifts","🎁"],["Travel","✈️"],["Subscriptions","🔁"],["Other","✨"]],
@@ -657,9 +781,9 @@ function cur(){return S.settings.cur||"RM"}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 function $(id){return document.getElementById(id)}
-function monthName(ym){const [y,m]=ym.split("-").map(Number);return new Date(y,m-1,1).toLocaleDateString("en-GB",{month:"long",year:"numeric"})}
+function monthName(ym){const [y,m]=ym.split("-").map(Number);return new Date(y,m-1,1).toLocaleDateString(LOC(),{month:"long",year:"numeric"})}
 function shiftMonth(ym,k){const [y,m]=ym.split("-").map(Number);return ymOf(new Date(y,m-1+k,1))}
-function fmtD(d){const [Y,M,D]=d.split("-").map(Number);return new Date(Y,M-1,D).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}
+function fmtD(d){const [Y,M,D]=d.split("-").map(Number);return new Date(Y,M-1,D).toLocaleDateString(LOC(),{day:"numeric",month:"short",year:"numeric"})}
 let UNDO=null;
 function toast(msg,undo){const r=$("toastRoot"); UNDO=undo||null; r.innerHTML='<div class="toast" role="status"><span>'+esc(msg)+'</span>'+(undo?'<button data-undo="1">Undo</button>':'')+'</div>';clearTimeout(toast.t);toast.t=setTimeout(()=>{r.innerHTML="";UNDO=null},undo?5500:2800)}
 const EMO=/^((?:\p{Extended_Pictographic}|\p{Regional_Indicator})(?:[️‍]|\p{Extended_Pictographic}|\p{Emoji_Modifier})*)\s*/u;
@@ -753,7 +877,7 @@ function persistSettings(){
 async function getClaude(){ return null }
 
 async function init(){
-  applyPriv(); renderBuddyShell(); render(); buddyIdle();
+  applyLang(LANG); applyPriv(); renderBuddyShell(); render(); buddyIdle();
   let c=null, db=null, id=null;
   try{
     c=await getClaude();
@@ -836,7 +960,7 @@ function renderWallets(){
 function dayLabel(d){
   const t=today(); const y=new Date(); y.setDate(y.getDate()-1);
   if(d===t) return "Today"; if(d===ymd(y)) return "Yesterday";
-  const [Y,M,D]=d.split("-").map(Number); return new Date(Y,M-1,D).toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+  const [Y,M,D]=d.split("-").map(Number); return new Date(Y,M-1,D).toLocaleDateString(LOC(),{weekday:"short",day:"numeric",month:"short"});
 }
 function txRow(x,sd){
   const w=wallet(wOf(x)); const multi=wallets().length>1;
@@ -879,6 +1003,7 @@ function dailyChart(list){
     '<text class="axis" x="'+L+'" y="'+(H-4)+'">1</text><text class="axis" x="'+(W/2)+'" y="'+(H-4)+'" text-anchor="middle">'+Math.ceil(n/2)+'</text><text class="axis" x="'+(W-L)+'" y="'+(H-4)+'" text-anchor="end">'+n+'</text></svg></section>';
 }
 function render(){
+  if((S.settings.lang||"en")!==LANG&&S.settings.lang) applyLang(S.settings.lang);
   const pg=S.page;
   $("homePage").hidden=pg!=="home"; $("goalsPage").hidden=pg!=="goals"; $("statsPage").hidden=pg!=="stats";
   $("navHome").setAttribute("aria-current",pg==="home"?"page":"false"); $("navStats").setAttribute("aria-current",pg==="stats"?"page":"false"); $("navGoals").setAttribute("aria-current",pg==="goals"?"page":"false");
@@ -1073,6 +1198,7 @@ function drawSettings(){
   const b=balances();
   const pal=S.settings.palette||"blueberry";
   const body='<div class="status"><span class="dot'+(S.mode==="cloud"?"":" local")+'"></span>'+(S.mode==="cloud"?"Saved privately to your Claude account. Only you can see your entries.":"Saved on this phone only. Export a CSV backup now and then.")+'</div>'+
+  '<section class="set-block" data-notr><h3>Language · 语言</h3><div class="seg"><button data-lang="en" aria-pressed="'+(LANG!=="zh")+'">English</button><button data-lang="zh" aria-pressed="'+(LANG==="zh")+'">中文</button></div></section>'+
   '<section class="set-block"><h3>Colours</h3><div class="palettes">'+Object.keys(PALETTES).map(k=>{const v=PALETTES[k];return '<button class="pal" data-pal="'+k+'" aria-pressed="'+(pal===k)+'"><span class="dots" aria-hidden="true"><i style="background:'+v[1]+'"></i><i style="background:'+v[2]+'"></i><i style="background:'+v[3]+'"></i></span>'+esc(v[0])+'</button>'}).join("")+'</div></section>'+
   '<section class="set-block"><h3>Your buddy</h3><p>Pick a pet and give them a name. Tap them on any page for pats.</p><div class="petgrid">'+Object.keys(PETS_T).map(k=>'<button class="petopt" data-pet="'+k+'" aria-pressed="'+(petType()===k)+'">'+petSVG(k)+esc(PETS_T[k].label)+'</button>').join("")+'</div><input class="field" id="dogName" maxlength="16" placeholder="'+esc(petT().def)+'" value="'+esc(S.settings.dog||"")+'" aria-label="Pet name"></section>'+
   '<section class="set-block"><h3>Wallets</h3><div class="wlist">'+wallets().map(w=>'<button class="wline" data-editwallet="'+esc(w.id)+'">'+wIcon(w,true)+'<span>'+esc(w.name)+'</span><span class="num">'+money(b[w.id]||0)+'</span></button>').join("")+'</div><button class="btn soft" data-addwallet="1">+ Add wallet</button></section>'+
@@ -1283,7 +1409,7 @@ function confetti(){
 }
 
 /* ---------- year view ---------- */
-const MON=["J","F","M","A","M","J","J","A","S","O","N","D"];
+let MON=["J","F","M","A","M","J","J","A","S","O","N","D"];
 function yearOf(ym){return ym.slice(0,4)}
 function yearTx(y){const out=[];for(let m=1;m<=12;m++)(S.months[y+"-"+pad(m)]||[]).forEach(x=>{if(inFilter(x))out.push(x)});return out}
 function yearMonths(y){const r=[];for(let m=1;m<=12;m++){const k=y+"-"+pad(m);let e=0,i=0;(S.months[k]||[]).forEach(x=>{if(!inFilter(x))return;if(x.t==="e")e+=x.a;else if(x.t==="i")i+=x.a});r.push({k,e,i})}return r}
@@ -1525,7 +1651,7 @@ function drawMonthPicker(){
   } else {
     body='<div class="ynav"><button data-mpy="-1" aria-label="Previous year">‹</button><b class="num">'+MP.y+'</b><button data-mpy="1" aria-label="Next year">›</button></div>'+
       (years.length>1?'<div class="ychips">'+years.map(y=>'<button class="ychip" data-mpyset="'+y+'" aria-pressed="'+(+y===MP.y)+'">'+y+'</button>').join("")+'</div>':'')+
-      '<div class="mgrid">'+Array.from({length:12},(_,i)=>{const k=MP.y+"-"+pad(i+1); const sp=(S.months[k]||[]).reduce((s,x)=>s+(x.t==="e"?x.a:0),0); const nm=new Date(MP.y,i,1).toLocaleDateString("en-GB",{month:"short"});
+      '<div class="mgrid">'+Array.from({length:12},(_,i)=>{const k=MP.y+"-"+pad(i+1); const sp=(S.months[k]||[]).reduce((s,x)=>s+(x.t==="e"?x.a:0),0); const nm=new Date(MP.y,i,1).toLocaleDateString(LOC(),{month:"short"});
         return '<button class="mcell'+(sp?' has':'')+(k===nowYm?' now':'')+(k>nowYm?' future':'')+'" data-pickm="'+k+'" aria-pressed="'+(k===S.view)+'">'+nm+'<small class="num">'+(sp?money(sp):'—')+'</small></button>'}).join("")+'</div>'+
       '<p class="hint">The small number is what you spent that month.</p>';
   }
@@ -1536,7 +1662,7 @@ function drawMonthPicker(){
 /* ---------- analytics ---------- */
 const RANGES=[["1m","This month"],["3m","3 months"],["6m","6 months"],["12m","12 months"],["year","This year"],["all","All time"]];
 const CATCOL=["var(--exp)","var(--inc)","#E9B44C","#7FA7E8","#B497E0","#EE9BC0","#8CC7B5","var(--muted)"];
-const WD=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+let WD=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 function rangeMonths(){
   const now=ymOf(new Date()), r=S.af.r, out=[];
   if(r==="1m") return [now];
@@ -1570,7 +1696,7 @@ function lineChart(ks,vals){
   const pts=vals.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1));
   const line=n===1?'M'+L+','+Y(vals[0]).toFixed(1)+' L'+(W-R)+','+Y(vals[0]).toFixed(1):'M'+pts.join(' L');
   const area=line+' L'+(n===1?W-R:X(n-1)).toFixed(1)+','+(H-B)+' L'+(n===1?L:X(0)).toFixed(1)+','+(H-B)+' Z';
-  const lab=i=>new Date(+ks[i].slice(0,4),+ks[i].slice(5)-1,1).toLocaleDateString("en-GB",{month:"short"})+(ks.length>12?" "+ks[i].slice(2,4):"");
+  const lab=i=>new Date(+ks[i].slice(0,4),+ks[i].slice(5)-1,1).toLocaleDateString(LOC(),{month:"short"})+(ks.length>12?" "+ks[i].slice(2,4):"");
   const idx=n===1?[0]:n<=4?vals.map((_,i)=>i):[0,Math.round((n-1)/2),n-1];
   const ex=n===1?W/2:X(n-1), ey=Y(vals[n-1]);
   return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Balance over time"><line class="grid" x1="'+L+'" x2="'+(W-R)+'" y1="'+(H-B)+'" y2="'+(H-B)+'"/><path class="area" d="'+area+'"/><path class="line" d="'+line+'"/>'+
@@ -1608,7 +1734,7 @@ function renderStats(){
   h+='<section class="panel chart"><div class="ph"><h3>'+(S.af.w?esc(wallet(S.af.w).name)+' balance':'Total balance')+'</h3><span class="pill num">Now '+esc(cur())+' '+money(bal[bal.length-1])+'</span></div>'+lineChart(ks,bal)+'</section>';
   // income vs spending
   if(ks.length>1){
-    let groups=ks.map(k=>({k,lab:new Date(+k.slice(0,4),+k.slice(5)-1,1).toLocaleDateString("en-GB",{month:"short"}).slice(0,ks.length>6?1:3),e:0,i:0}));
+    let groups=ks.map(k=>({k,lab:new Date(+k.slice(0,4),+k.slice(5)-1,1).toLocaleDateString(LOC(),{month:"short"}).slice(0,ks.length>6?1:3),e:0,i:0}));
     if(ks.length>18){ const yy={}; ks.forEach(k=>{const y=k.slice(0,4); yy[y]=yy[y]||{k:y,lab:y,e:0,i:0}}); groups=Object.values(yy) }
     const gi={}; groups.forEach(g=>gi[g.k]=g);
     tx.forEach(x=>{const g=gi[x.d.slice(0,7)]||gi[x.d.slice(0,4)]; if(!g) return; if(x.t==="e")g.e+=x.a; else if(x.t==="i")g.i+=x.a});
@@ -1936,6 +2062,7 @@ document.addEventListener("click",e=>{
     return;
   }
   if(ST){
+    if(ds.lang){ S.settings.lang=ds.lang; persistSettings(); applyLang(ds.lang); render(); drawSettings(); renderBuddyShell(); buddyIdle(); return }
     if(ds.pet){ const n=$("dogName"); const nm=n?n.value.trim():""; const isDef=!nm||Object.values(PETS_T).some(p=>p.def===nm); S.settings.pet=ds.pet; if(isDef) delete S.settings.dog; else S.settings.dog=nm; persistSettings(); renderBuddyShell(); say("Hi! I'm "+dogName()+" "+petT().emo,"happy",4000); drawSettings(); return }
     if(ds.pal){S.settings.palette=ds.pal;applyPalette();persistSettings();drawSettings();return}
     if(ds.ct){ST.ct=ds.ct;drawSettings();return}
