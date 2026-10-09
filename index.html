@@ -719,6 +719,8 @@ button:active{transform:scale(.97)}
 .splitprev{font-size:13px;color:var(--muted);font-weight:700;text-align:center}
 .splitprev b{color:var(--ink);font-weight:800}
 .splitprev .warn{color:var(--exp);margin-top:4px}
+.cmlist .cmrow{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.cmlist.sorting .cmrow:not(.dragging){transition:transform .12s}
 </style>
 
 </head>
@@ -801,7 +803,7 @@ const RX=[
  [/^Added for you on day (\d+) of each month$/, (_,a)=>"每月 "+a+" 号自动记录"],
  [/^Day (\d+)\. Changes here only affect this entry\.$/, (_,a)=>"每月 "+a+" 号。这里的修改只影响这一笔。"],
  [/^Day (\d+) of each month$/, (_,a)=>"每月 "+a+" 号"],
- [/^Hold the ≡ handle and drag to reorder\. Tap a category to rename it, change its icon( or set a limit)?\.$/, (_,a)=>"按住 ≡ 拖动可调整顺序。点击类别可重命名、更换图标"+(a?"或设置限额":"")+"。"],
+ [/^Press and hold a category, then slide it up or down to reorder\. Tap a category to rename it, change its icon( or set a limit)?\.$/, (_,a)=>"长按类别，然后上下滑动即可调整顺序。点击类别可重命名、更换图标"+(a?"或设置限额":"")+"。"],
  [/^Limit (.+)$/, (_,a)=>"限额 "+a],
  [/^Delete (.+)\?$/, (_,a)=>"删除 "+zt(a)+"？"],
  [/^It has (\d+) entr(?:y|ies)\. Move them to another wallet, or delete them too\.$/, (_,a)=>"里面有 "+a+" 笔记录。可以移到其他钱包，或一起删除。"],
@@ -2066,21 +2068,35 @@ function openCatManager(t){ CM={t:t==="i"?"i":"e"}; draw() }
 function drawCatManager(){ const t=CM.t; initCats(t); const list=S.settings.cats[t]; catList(t).forEach(([n,ic])=>{ if(!list.some(x=>x.n===n)) list.push({n,ic}) });
   const cb=S.settings.cb||{};
   const body='<div class="seg"><button class="e" data-cmt="e" aria-pressed="'+(t==="e")+'">Expense</button><button class="i" data-cmt="i" aria-pressed="'+(t==="i")+'">Income</button></div>'+
-   '<p class="hint">Hold the ≡ handle and drag to reorder. Tap a category to rename it, change its icon'+(t==="e"?' or set a limit':'')+'.</p>'+
+   '<p class="hint">Press and hold a category, then slide it up or down to reorder. Tap a category to rename it, change its icon'+(t==="e"?' or set a limit':'')+'.</p>'+
    '<div class="cmlist" id="cmList">'+list.map(c=>'<div class="cmrow" data-name="'+esc(c.n)+'"><button class="cmh" aria-label="Drag to reorder '+esc(c.n)+'"><svg class="i" viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h14"/></svg></button><button class="cmname" data-cmedit="'+esc(c.n)+'"><span class="bubble'+(t==="i"?" inc":"")+'" aria-hidden="true">'+esc(c.ic)+'</span><span>'+esc(c.n)+(t==="e"&&cb[c.n]?'<small>Limit '+esc(cur())+' '+money(cb[c.n])+'</small>':'')+'</span></button><button class="mini" data-cmdel="'+esc(c.n)+'" aria-label="Delete '+esc(c.n)+'">✕</button></div>').join("")+'</div>'+
    (list.length?'':'<p class="hint">No categories yet. Add your first one.</p>')+
    '<button class="btn primary" data-cmnew="1">+ Add category</button><button class="link" data-cmreset="1" style="align-self:center">Restore the default categories</button>';
   keepScroll(()=>{ $("sheetRoot").innerHTML=shell("Categories",body,(ED||ST)?"Back":null) }); attachDrag() }
-function attachDrag(){ const list=$("cmList"); if(!list) return;
-  list.querySelectorAll(".cmh").forEach(h=>{ h.addEventListener("pointerdown",e=>{ e.preventDefault(); const row=h.closest(".cmrow"); row.classList.add("dragging"); try{h.setPointerCapture(e.pointerId)}catch(_){}
-    const sh=list.closest(".sheet");
-    const move=ev=>{ const y=ev.clientY; let g=0;
-      while(g++<50){ const prev=row.previousElementSibling; if(!prev) break; const r=prev.getBoundingClientRect(); if(y<r.top+r.height/2) list.insertBefore(prev,row.nextElementSibling); else break }
-      while(g++<100){ const next=row.nextElementSibling; if(!next) break; const r=next.getBoundingClientRect(); if(y>r.top+r.height/2) list.insertBefore(next,row); else break }
-      if(sh){ const sr=sh.getBoundingClientRect(); if(y<sr.top+70) sh.scrollTop-=10; else if(y>sr.bottom-70) sh.scrollTop+=10 } };
-    const up=()=>{ row.classList.remove("dragging"); window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",up); window.removeEventListener("pointercancel",up);
-      const order=[...list.querySelectorAll(".cmrow")].map(r=>r.dataset.name); const curL=S.settings.cats[CM.t]; S.settings.cats[CM.t]=order.map(n=>curL.find(c=>c.n===n)).filter(Boolean); persistSettings() };
-    window.addEventListener("pointermove",move); window.addEventListener("pointerup",up); window.addEventListener("pointercancel",up) }) }) }
+function attachDrag(){ const list=$("cmList"); if(!list) return; const sh=list.closest(".sheet");
+  let row=null, timer=null, sx=0, sy=0, lastY=0, auto=null, grab=0;
+  const follow=y=>{ lastY=y; row.style.transform="none"; reorder(y); const top=row.getBoundingClientRect().top; row.style.transform="translateY("+(y-grab-top)+"px) scale(1.02)" };
+  const reorder=y=>{ let g=0;
+    while(g++<50){ const prev=row.previousElementSibling; if(!prev) break; const r=prev.getBoundingClientRect(); if(y<r.top+r.height/2) list.insertBefore(prev,row.nextElementSibling); else break }
+    while(g++<100){ const next=row.nextElementSibling; if(!next) break; const r=next.getBoundingClientRect(); if(y>r.top+r.height/2) list.insertBefore(next,row); else break } };
+  const tick=()=>{ if(!row||!sh) return; const sr=sh.getBoundingClientRect(); let d=0; if(lastY<sr.top+80) d=-8; else if(lastY>sr.bottom-80) d=8; if(d){ sh.scrollTop+=d; follow(lastY) } auto=requestAnimationFrame(tick) };
+  const start=(r,y)=>{ row=r; lastY=y; grab=y-r.getBoundingClientRect().top; row.classList.add("dragging"); list.classList.add("sorting"); try{ if(navigator.vibrate) navigator.vibrate(12) }catch(_){} auto=requestAnimationFrame(tick) };
+  const finish=()=>{ clearTimeout(timer); timer=null; if(!row) return; cancelAnimationFrame(auto); row.style.transform=""; row.classList.remove("dragging"); list.classList.remove("sorting"); row=null;
+    CM_BLOCK=Date.now();
+    const order=[...list.querySelectorAll(".cmrow")].map(r=>r.dataset.name); const curL=S.settings.cats[CM.t]; S.settings.cats[CM.t]=order.map(n=>curL.find(c=>c.n===n)).filter(Boolean); persistSettings() };
+  list.addEventListener("touchstart",e=>{ if(e.touches.length!==1) return; const r=e.target.closest(".cmrow"); if(!r||e.target.closest("[data-cmdel]")) return; const t=e.touches[0]; sx=t.clientX; sy=t.clientY;
+    if(e.target.closest(".cmh")){ e.preventDefault(); start(r,sy); return }
+    clearTimeout(timer); timer=setTimeout(()=>{ timer=null; start(r,sy) },320) },{passive:false});
+  list.addEventListener("touchmove",e=>{ const t=e.touches[0]; if(row){ e.preventDefault(); follow(t.clientY); return }
+    if(timer&&(Math.abs(t.clientX-sx)>8||Math.abs(t.clientY-sy)>8)){ clearTimeout(timer); timer=null } },{passive:false});
+  list.addEventListener("touchend",finish); list.addEventListener("touchcancel",finish);
+  list.addEventListener("contextmenu",e=>e.preventDefault());
+  list.querySelectorAll(".cmh").forEach(h=>h.addEventListener("pointerdown",e=>{ if(e.pointerType==="touch") return; e.preventDefault(); start(h.closest(".cmrow"),e.clientY);
+    const mv=ev=>follow(ev.clientY); const up=()=>{ window.removeEventListener("pointermove",mv); window.removeEventListener("pointerup",up); finish() };
+    window.addEventListener("pointermove",mv); window.addEventListener("pointerup",up) }));
+}
+let CM_BLOCK=0;
+document.addEventListener("click",e=>{ if(Date.now()-CM_BLOCK<400&&e.target.closest&&e.target.closest("#cmList")){ e.stopImmediatePropagation(); e.preventDefault() } },true);
 function cmDelete(n){ const t=CM.t; initCats(t); const list=S.settings.cats[t]; const ix=list.findIndex(c=>c.n===n); if(ix<0) return; const item=list[ix]; list.splice(ix,1);
   S.settings.hidden=S.settings.hidden||{}; S.settings.hidden[t]=(S.settings.hidden[t]||[]).filter(x=>x!==n).concat([n]);
   if(ED&&ED.t===t&&ED.c===n){ const f=catList(t)[0]; ED.c=f[0]; ED.ic=f[1] }
@@ -2669,8 +2685,6 @@ function renderXCards(){ const el=$("xcard"); if(!el) return; if(S.mode==="loadi
   if(S.view===cm&&S.tab==="daily"){ const st=budStatus(); if(st.length){ const warn=st.filter(s=>s.p>=.8&&s.p<=1).length, over=st.filter(s=>s.p>1).length;
     h+='<button class="budcard" data-bgopen="1"><div class="bchead"><span class="tx-cat">🎯 <span>Budgets</span></span><span class="tx-note">'+(over||warn?[over?over+' over limit':'',warn?warn+' near limit':''].filter(Boolean).join(' · '):'All on track')+'</span></div>'+
       st.slice(0,3).map(s=>'<div class="bcrow"><span class="bce" aria-hidden="true">'+esc(iconFor("e",s.k))+'</span><div class="bar '+budCls(s.p)+'"><i style="width:'+Math.min(100,s.p*100).toFixed(1)+'%"></i></div><span class="num">'+money(Math.abs(s.lim-s.sp))+' <span>'+(s.p>1?'over':'left')+'</span></span></div>').join("")+'</button>' } }
-  if(S.tab==="daily"&&!S.settings.nwHintOff){ const b=balances(); const neg=wallets().filter(w=>w.kind!=="card"&&(b[w.id]||0)<-0.004);
-    if(neg.length) h+='<div class="bkcard nwcard"><span class="bubble neu" aria-hidden="true">⚖️</span><span class="tx-main"><div class="tx-cat">Fix your balances</div><div class="tx-note">Some wallets are below zero. Set what’s really in them.</div></span><span class="row-btns" style="flex-wrap:nowrap"><button class="mini" data-nwhide="1">Later</button><button class="btn primary" data-nwopen="1" style="padding:9px 14px">Fix</button></span></div>' }
   el.innerHTML=h;
 }
 
