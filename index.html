@@ -861,7 +861,7 @@ function catList(t){
 function initCats(t){ S.settings.cats=S.settings.cats||{}; if(!S.settings.cats[t]) S.settings.cats[t]=catList(t).map(([n,ic])=>({n,ic})) }
 
 /* ---------- storage ---------- */
-function saveLocal(){ try{localStorage.setItem("duitjar.v1",JSON.stringify({months:S.months,settings:S.settings,goals:S.goals}))}catch(e){} }
+function saveLocal(){ try{localStorage.setItem("duitjar.v1",JSON.stringify({months:S.months,settings:S.settings,goals:S.goals}))}catch(e){} if(typeof gdSchedule==="function") gdSchedule() }
 function loadLocal(){ try{const j=JSON.parse(localStorage.getItem("duitjar.v1")||"null"); if(j){S.months=j.months||{}; S.settings=Object.assign(S.settings,j.settings||{}); S.goals=j.goals||[]}}catch(e){} applyPalette() }
 function errMsg(e){
   const c=e&&e.code;
@@ -924,7 +924,7 @@ async function init(){
       if(firstLoad){ firstLoad=false; renderBuddyShell(); afterLoadRecurring(); buddyIdle() }
     },e=>{ goLocal() });
   }else{
-    S.mode="local"; loadLocal(); render(); renderBuddyShell(); afterLoadRecurring(); buddyIdle();
+    S.mode="local"; loadLocal(); render(); renderBuddyShell(); afterLoadRecurring(); buddyIdle(); gdSchedule();
   }
 }
 
@@ -1233,7 +1233,7 @@ function drawSettings(){
   '<section class="set-block"><h3>Monthly budget</h3><p>The jar shows how much of it is left. Leave at 0 to use your income instead.</p>'+
    '<div class="inline"><b>'+esc(cur())+'</b><input class="field num" id="budgetIn" inputmode="decimal" value="'+(S.settings.budget||"")+'" placeholder="0.00"></div></section>'+
   '<section class="set-block"><h3>Currency symbol</h3><input class="field" id="curIn" maxlength="4" value="'+esc(cur())+'"></section>'+
-  '<section class="set-block"><h3>Backup</h3><p>Saves everything (entries, wallets, goals, subscriptions, categories and settings) as one file. Choose Mail to email it to yourself, or Save to Files for iCloud Drive.</p><p class="hint">Last backup: '+lastBkLabel()+'</p>'+
+  gdSection()+'<section class="set-block"><h3>Backup</h3><p>Saves everything (entries, wallets, goals, subscriptions, categories and settings) as one file. Choose Mail to email it to yourself, or Save to Files for iCloud Drive.</p><p class="hint">Last backup: '+lastBkLabel()+'</p>'+
    '<button class="btn primary" data-backup="1">Back up now</button>'+
    (ST.restore?'<div class="confirmbox"><b>Backup from '+esc(ST.restore.at)+' · '+ST.restore.n+' entries</b><p class="hint">Replace everything on this phone with this backup? Anything added since then will be removed.</p><div class="row-btns"><button class="btn soft" data-rsno="1">Cancel</button><button class="btn danger" data-rsyes="1">Replace</button></div></div>':'<label class="btn soft file-btn">Restore from backup<input type="file" id="restoreIn" accept=".json,application/json"></label>')+
    '<div class="label">Remind me</div><div class="seg">'+[["daily","Daily"],["weekly","Weekly"],["off","Off"]].map(([k,l])=>'<button data-bkr="'+k+'" aria-pressed="'+((S.settings.bkRemind||"daily")===k)+'">'+l+'</button>').join("")+'</div>'+
@@ -1967,7 +1967,7 @@ function lastBkLabel(){ const lb=S.settings.lastBackup; if(!lb) return "never"; 
 function backupDue(){ const r=S.settings.bkRemind||"daily"; if(r==="off") return false; if(!Object.keys(S.months).some(k=>S.months[k].length)) return false; const lb=S.settings.lastBackup; if(!lb) return true; return -daysUntil(lb)>=(r==="weekly"?7:1) }
 let BK_SNOOZE=false;
 function renderBkCard(){ const el=$("bkcard"); if(!el) return; if(S.mode==="loading"||BK_SNOOZE||!backupDue()){ el.innerHTML=""; return }
-  el.innerHTML='<div class="bkcard"><span class="bubble neu" aria-hidden="true">💾</span><span class="tx-main"><div class="tx-cat">Time to back up</div><div class="tx-note">'+(S.settings.lastBackup?'Last backup: '+lastBkLabel():'Not backed up yet')+'</div></span><span class="row-btns" style="flex-wrap:nowrap"><button class="mini" data-bklater="1">Later</button><button class="btn primary" data-backup="1" style="padding:9px 14px">Back up</button></span></div>' }
+  el.innerHTML='<div class="bkcard"><span class="bubble neu" aria-hidden="true">💾</span><span class="tx-main"><div class="tx-cat">'+(gdOn()?'Sync to Google Drive':'Time to back up')+'</div><div class="tx-note">'+(S.settings.lastBackup?'Last backup: '+lastBkLabel():'Not backed up yet')+'</div></span><span class="row-btns" style="flex-wrap:nowrap"><button class="mini" data-bklater="1">Later</button>'+(gdOn()?'<button class="btn primary" data-gsync="1" style="padding:9px 14px">Sync</button>':'<button class="btn primary" data-backup="1" style="padding:9px 14px">Back up</button>')+'</span></div>' }
 function backupObj(){ return {app:"duitjar",v:1,at:new Date().toISOString(),months:S.months,settings:S.settings,goals:S.goals||[]} }
 async function doBackup(){
   const name="duit-jar-backup-"+today()+".json"; const json=JSON.stringify(backupObj());
@@ -2027,6 +2027,65 @@ function drawView(){
   document.addEventListener("contextmenu",e=>{ if(e.target.closest("[data-edit]")) e.preventDefault() });
 })();
 
+/* ---------- Google Drive sync (standalone app only) ---------- */
+const IS_APP=true, GCID="258509241309-ctietjdb91vf0idb927gud8qbcr9vjbj.apps.googleusercontent.com";
+Object.assign(ZH,{"Google Drive sync":"Google 云端硬盘同步","Connect Google Drive":"连接 Google 云端硬盘","Sync now":"立即同步","Restore from Drive":"从云端硬盘恢复","Disconnect":"断开连接","Sync":"同步","Sync to Google Drive":"同步到 Google 云端硬盘",
+ "Connected. Backs up automatically while you use the app.":"已连接。使用 App 时会自动备份。","Save an automatic backup to your own Google Drive while you use the app. Only you can see it.":"使用 App 时自动备份到你自己的 Google 云端硬盘，只有你能看到。",
+ "Keep this phone":"保留这部手机的","Use Drive backup":"使用云端备份","Use it on this phone, or replace it with what's on this phone now?":"要在这部手机上使用它，还是用这部手机现在的数据替换它？",
+ "Synced to Google Drive":"已同步到 Google 云端硬盘","Connected. Backed up to Google Drive":"已连接并备份到 Google 云端硬盘","Google Drive disconnected":"已断开 Google 云端硬盘",
+ "Google sign-in was closed or blocked. Try again.":"Google 登录已关闭或被阻止，请重试。","Couldn't reach Google Drive. Check your connection.":"无法连接 Google 云端硬盘，请检查网络。","No backup found on Google Drive yet.":"Google 云端硬盘上还没有备份。",
+ "just now":"刚刚","Tap to sign in and sync":"点一下登录并同步"});
+RX.push([/^Last synced: (.+)$/, (_,a)=>"上次同步："+gdZ(a)],[/^Found a Google Drive backup from (.+) · (\d+) entries$/, (_,a,b)=>"找到 "+a+" 的云端备份 · "+b+" 笔记录"],[/^(\d+) min ago$/, (_,a)=>a+" 分钟前"],[/^(\d+) h ago$/, (_,a)=>a+" 小时前"]);
+function gdZ(a){ const r=trPart(a); return r==null?a:r }
+const GDR={tok:null,exp:0,fileId:null,timer:null,busy:false,suppress:false,status:""};
+try{ const g=JSON.parse(localStorage.getItem("duitjar.gtok")||"null"); if(g&&g.exp>Date.now()+60000){ GDR.tok=g.t; GDR.exp=g.exp } }catch(e){}
+function gdReady(){ return IS_APP&&!!GCID }
+function gdOn(){ return gdReady()&&!!(S.settings.gdrive&&S.settings.gdrive.on) }
+function gdTokOk(){ return !!GDR.tok&&GDR.exp>Date.now()+30000 }
+function gdLastLabel(){ const l=S.settings.gdrive&&S.settings.gdrive.last; if(!l) return "never"; const m=Math.round((Date.now()-Date.parse(l))/60000); if(m<1) return "just now"; if(m<60) return m+" min ago"; if(m<24*60) return Math.round(m/60)+" h ago"; return fmtD(l.slice(0,10)) }
+function loadGIS(){ if(window.google&&google.accounts&&google.accounts.oauth2) return Promise.resolve(); return new Promise((res,rej)=>{ const s=document.createElement("script"); s.src="https://accounts.google.com/gsi/client"; s.async=true; s.onload=()=>res(); s.onerror=()=>rej(new Error("net")); document.head.appendChild(s) }) }
+function gdAuth(prompt){ return loadGIS().then(()=>new Promise((res,rej)=>{ const c=google.accounts.oauth2.initTokenClient({client_id:GCID,scope:"https://www.googleapis.com/auth/drive.appdata",
+  callback:r=>{ if(r&&r.access_token){ GDR.tok=r.access_token; GDR.exp=Date.now()+((+r.expires_in||3600)*1000); try{localStorage.setItem("duitjar.gtok",JSON.stringify({t:GDR.tok,exp:GDR.exp}))}catch(e){} res() } else rej(new Error("popup")) },
+  error_callback:()=>rej(new Error("popup")) }); c.requestAccessToken({prompt}) })) }
+async function gfetch(url,opt){ opt=opt||{}; opt.headers=Object.assign({Authorization:"Bearer "+GDR.tok},opt.headers||{}); let r;
+  try{ r=await fetch(url,opt) }catch(e){ throw new Error("net") }
+  if(r.status===401){ GDR.tok=null; GDR.exp=0; try{localStorage.removeItem("duitjar.gtok")}catch(e){} throw new Error("401") }
+  if(!r.ok) throw new Error("net"); return r }
+async function gdFind(){ if(GDR.fileId) return GDR.fileId; const r=await gfetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id,modifiedTime)&q="+encodeURIComponent("name='duitjar-backup.json'")); const j=await r.json(); const f=(j.files||[])[0]; if(f) GDR.fileId=f.id; return GDR.fileId }
+async function gdDownload(){ const id=await gdFind(); if(!id) return null; const r=await gfetch("https://www.googleapis.com/drive/v3/files/"+id+"?alt=media"); return await r.json() }
+async function gdUpload(){ const body=JSON.stringify(backupObj()); const id=await gdFind();
+  if(id) await gfetch("https://www.googleapis.com/upload/drive/v3/files/"+id+"?uploadType=media",{method:"PATCH",headers:{"Content-Type":"application/json"},body});
+  else { const b="duitjar"+Date.now(); const meta=JSON.stringify({name:"duitjar-backup.json",parents:["appDataFolder"],mimeType:"application/json"});
+    const mp="--"+b+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+meta+"\r\n--"+b+"\r\nContent-Type: application/json\r\n\r\n"+body+"\r\n--"+b+"--";
+    const r=await gfetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+b},body:mp}); const j=await r.json(); GDR.fileId=j.id }
+  S.settings.gdrive=Object.assign({},S.settings.gdrive||{},{on:true,last:new Date().toISOString()}); S.settings.lastBackup=today(); GDR.status="";
+  GDR.suppress=true; saveLocal(); GDR.suppress=false }
+function gdErr(e){ const m=e&&e.message; return m==="popup"?"Google sign-in was closed or blocked. Try again.":m==="401"?"Tap to sign in and sync":"Couldn't reach Google Drive. Check your connection." }
+function gdSchedule(){ if(!gdOn()||GDR.suppress) return; clearTimeout(GDR.timer); GDR.timer=setTimeout(gdAuto,3500) }
+async function gdAuto(){ if(!gdOn()||GDR.busy) return; if(!gdTokOk()){ renderBkCard(); return } GDR.busy=true;
+  try{ await gdUpload() }catch(e){ GDR.status=gdErr(e) } GDR.busy=false; renderBkCard(); if(ST&&!ED&&!CE&&!WE&&!CM) drawSettings() }
+async function gdSyncNow(){ if(GDR.busy) return; GDR.busy=true;
+  try{ if(!gdTokOk()) await gdAuth(""); await gdUpload(); BK_SNOOZE=false; render(); if(ST) drawSettings(); toast("Synced to Google Drive"); say("Backed up! Your data is safe with me 💾","happy",3000) }
+  catch(e){ GDR.status=gdErr(e); if(ST) drawSettings(); toast(gdErr(e)) } GDR.busy=false }
+async function gdConnect(){ if(GDR.busy) return; GDR.busy=true;
+  try{ await gdAuth("consent"); GDR.fileId=null; const d=await gdDownload();
+    if(d&&d.app==="duitjar"&&d.months){ const n=Object.values(d.months).reduce((s,a)=>s+(Array.isArray(a)?a.length:0),0); ST.gdChoice={d,n,at:d.at?fmtD(String(d.at).slice(0,10)):"?"}; drawSettings() }
+    else { S.settings.gdrive={on:true}; await gdUpload(); drawSettings(); render(); toast("Connected. Backed up to Google Drive") } }
+  catch(e){ GDR.status=gdErr(e); drawSettings(); toast(gdErr(e)) } GDR.busy=false }
+async function gdKeepPhone(){ ST.gdChoice=null; S.settings.gdrive={on:true}; try{ await gdUpload(); toast("Connected. Backed up to Google Drive") }catch(e){ toast(gdErr(e)) } drawSettings(); render() }
+function gdUseDrive(){ const c=ST.gdChoice; ST.gdChoice=null; c.d.settings=Object.assign({},c.d.settings||{},{gdrive:{on:true,last:new Date().toISOString()}}); ST.restore={d:c.d,n:c.n,at:c.at}; applyRestore() }
+async function gdRestore(){ if(GDR.busy) return; GDR.busy=true;
+  try{ if(!gdTokOk()) await gdAuth(""); const d=await gdDownload(); if(!d||d.app!=="duitjar"){ toast("No backup found on Google Drive yet.") } else { const n=Object.values(d.months||{}).reduce((s,a)=>s+(Array.isArray(a)?a.length:0),0); d.settings=Object.assign({},d.settings||{},{gdrive:{on:true,last:new Date().toISOString()}}); ST.restore={d,n,at:d.at?fmtD(String(d.at).slice(0,10)):"?"}; drawSettings() } }
+  catch(e){ toast(gdErr(e)) } GDR.busy=false }
+function gdDisconnect(){ try{ if(GDR.tok&&window.google&&google.accounts&&google.accounts.oauth2) google.accounts.oauth2.revoke(GDR.tok,()=>{}) }catch(e){} GDR.tok=null; GDR.exp=0; GDR.fileId=null; try{localStorage.removeItem("duitjar.gtok")}catch(e){} S.settings.gdrive={on:false}; saveLocal(); drawSettings(); render(); toast("Google Drive disconnected") }
+function gdSection(){ if(!gdReady()) return "";
+  let h='<section class="set-block"><h3>Google Drive sync</h3>';
+  if(gdOn()) h+='<p>Connected. Backs up automatically while you use the app.</p><p class="hint">Last synced: '+gdLastLabel()+'</p><div class="row-btns" style="justify-content:flex-start"><button class="btn primary" data-gsync="1">Sync now</button><button class="btn soft" data-grestore="1">Restore from Drive</button></div><button class="link danger-link" data-gdisc="1" style="align-self:flex-start">Disconnect</button>';
+  else h+='<p>Save an automatic backup to your own Google Drive while you use the app. Only you can see it.</p><button class="btn primary" data-gconnect="1">Connect Google Drive</button>';
+  if(ST&&ST.gdChoice) h+='<div class="confirmbox"><b>Found a Google Drive backup from '+esc(ST.gdChoice.at)+' · '+ST.gdChoice.n+' entries</b><p class="hint">Use it on this phone, or replace it with what’s on this phone now?</p><div class="row-btns"><button class="btn soft" data-gkeep="1">Keep this phone</button><button class="btn primary" data-guse="1">Use Drive backup</button></div></div>';
+  if(GDR.status) h+='<p class="warn">'+esc(GDR.status)+'</p>';
+  return h+'</section>' }
+
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
@@ -2057,6 +2116,7 @@ document.addEventListener("click",e=>{
   if("catd" in ds){openCatDetail(ds.catt,ds.catd,ds.scope);return}
   if(ds.goal){openGoalDetail(ds.goal);return}
   if(ds.backup){doBackup();return}
+  if(ds.gsync){gdSyncNow();return}
   if(ds.bklater){BK_SNOOZE=true;renderBkCard();return}
   if(ds.gosubs){S.page="goals";S.plan="subs";window.scrollTo(0,0);render();buddyIdle();return}
   if(ds.plan&&!t.closest(".sheet")){S.plan=ds.plan;render();buddyIdle();return}
@@ -2170,6 +2230,11 @@ document.addEventListener("click",e=>{
     return;
   }
   if(ST){
+    if(ds.gconnect){gdConnect();return}
+    if(ds.grestore){gdRestore();return}
+    if(ds.gdisc){gdDisconnect();return}
+    if(ds.gkeep){gdKeepPhone();return}
+    if(ds.guse){gdUseDrive();return}
     if(ds.bkr){S.settings.bkRemind=ds.bkr;persistSettings();drawSettings();render();return}
     if(ds.rsno){ST.restore=null;drawSettings();return}
     if(ds.rsyes){applyRestore();return}
@@ -2210,7 +2275,7 @@ document.addEventListener("keydown",e=>{
 });
 
 document.addEventListener("gesturestart",e=>e.preventDefault());
-document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&S.mode!=="loading") afterLoadRecurring() });
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&S.mode!=="loading"){ afterLoadRecurring(); gdSchedule() } });
 (function(){ let sx=null,sy=0,t0=0; const hp=$("homePage");
   hp.addEventListener("touchstart",e=>{ if(e.touches.length!==1||e.target.closest(".wstrip,.chips,.tabs,.chart")){sx=null;return} sx=e.touches[0].clientX; sy=e.touches[0].clientY; t0=Date.now() },{passive:true});
   hp.addEventListener("touchend",e=>{ if(sx==null) return; const tc=e.changedTouches[0]; const dx=tc.clientX-sx, dy=tc.clientY-sy; sx=null;
