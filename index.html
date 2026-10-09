@@ -2034,7 +2034,8 @@ Object.assign(ZH,{"Google Drive sync":"Google 云端硬盘同步","Connect Googl
  "Keep this phone":"保留这部手机的","Use Drive backup":"使用云端备份","Use it on this phone, or replace it with what's on this phone now?":"要在这部手机上使用它，还是用这部手机现在的数据替换它？",
  "Synced to Google Drive":"已同步到 Google 云端硬盘","Connected. Backed up to Google Drive":"已连接并备份到 Google 云端硬盘","Google Drive disconnected":"已断开 Google 云端硬盘",
  "Google sign-in was closed or blocked. Try again.":"Google 登录已关闭或被阻止，请重试。","Couldn't reach Google Drive. Check your connection.":"无法连接 Google 云端硬盘，请检查网络。","No backup found on Google Drive yet.":"Google 云端硬盘上还没有备份。",
- "just now":"刚刚","Tap to sign in and sync":"点一下登录并同步"});
+ "just now":"刚刚","Tap to sign in and sync":"点一下登录并同步","Choose a backup to restore":"选择要恢复的备份"});
+RX.push([/^Your entries dropped from (\d+) to (\d+), so auto-sync is paused to protect your backup\. Tap Sync now if this is on purpose\.$/, (_,a,b)=>"记录从 "+a+" 笔减少到 "+b+" 笔，为了保护备份已暂停自动同步。如果是你有意删除的，请点“立即同步”。"],[/^(Latest|Daily copy) · (.+)$/, (_,a,b)=>(a==="Latest"?"最新":"每日副本")+" · "+b]);
 RX.push([/^Last synced: (.+)$/, (_,a)=>"上次同步："+gdZ(a)],[/^Found a Google Drive backup from (.+) · (\d+) entries$/, (_,a,b)=>"找到 "+a+" 的云端备份 · "+b+" 笔记录"],[/^(\d+) min ago$/, (_,a)=>a+" 分钟前"],[/^(\d+) h ago$/, (_,a)=>a+" 小时前"]);
 function gdZ(a){ const r=trPart(a); return r==null?a:r }
 const GDR={tok:null,exp:0,fileId:null,timer:null,busy:false,suppress:false,status:""};
@@ -2053,16 +2054,29 @@ async function gfetch(url,opt){ opt=opt||{}; opt.headers=Object.assign({Authoriz
   if(!r.ok) throw new Error("net"); return r }
 async function gdFind(){ if(GDR.fileId) return GDR.fileId; const r=await gfetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id,modifiedTime)&q="+encodeURIComponent("name='duitjar-backup.json'")); const j=await r.json(); const f=(j.files||[])[0]; if(f) GDR.fileId=f.id; return GDR.fileId }
 async function gdDownload(){ const id=await gdFind(); if(!id) return null; const r=await gfetch("https://www.googleapis.com/drive/v3/files/"+id+"?alt=media"); return await r.json() }
+function entryCount(){ return Object.values(S.months).reduce((s,a)=>s+a.length,0) }
+async function gdFindName(name){ GDR.ids=GDR.ids||{}; if(GDR.ids[name]) return GDR.ids[name]; const r=await gfetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id)&q="+encodeURIComponent("name='"+name+"'")); const j=await r.json(); const f=(j.files||[])[0]; if(f) GDR.ids[name]=f.id; return f?f.id:null }
+async function gdPut(name,body){ const id=await gdFindName(name);
+  if(id){ await gfetch("https://www.googleapis.com/upload/drive/v3/files/"+id+"?uploadType=media",{method:"PATCH",headers:{"Content-Type":"application/json"},body}); return }
+  const b="duitjar"+Date.now(); const meta=JSON.stringify({name,parents:["appDataFolder"],mimeType:"application/json"});
+  const mp="--"+b+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+meta+"\r\n--"+b+"\r\nContent-Type: application/json\r\n\r\n"+body+"\r\n--"+b+"--";
+  const r=await gfetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+b},body:mp}); const j=await r.json(); GDR.ids[name]=j.id }
+async function gdList(){ const r=await gfetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&pageSize=50&fields=files(id,name,modifiedTime)"); const j=await r.json(); return (j.files||[]).filter(f=>/^duitjar-(backup|day-\d)\.json$/.test(f.name)).sort((a,b)=>a.modifiedTime<b.modifiedTime?1:-1) }
 async function gdUpload(){ const body=JSON.stringify(backupObj()); const id=await gdFind();
   if(id) await gfetch("https://www.googleapis.com/upload/drive/v3/files/"+id+"?uploadType=media",{method:"PATCH",headers:{"Content-Type":"application/json"},body});
   else { const b="duitjar"+Date.now(); const meta=JSON.stringify({name:"duitjar-backup.json",parents:["appDataFolder"],mimeType:"application/json"});
     const mp="--"+b+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+meta+"\r\n--"+b+"\r\nContent-Type: application/json\r\n\r\n"+body+"\r\n--"+b+"--";
     const r=await gfetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+b},body:mp}); const j=await r.json(); GDR.fileId=j.id }
-  S.settings.gdrive=Object.assign({},S.settings.gdrive||{},{on:true,last:new Date().toISOString()}); S.settings.lastBackup=today(); GDR.status="";
+  const gd0=S.settings.gdrive||{};
+  if(gd0.daily!==today()){ try{ await gdPut("duitjar-day-"+new Date().getDay()+".json",body) }catch(e){} }
+  S.settings.gdrive=Object.assign({},gd0,{on:true,last:new Date().toISOString(),daily:today(),n:entryCount()}); S.settings.lastBackup=today(); GDR.status=""; GDR.held=false;
   GDR.suppress=true; saveLocal(); GDR.suppress=false }
 function gdErr(e){ const m=e&&e.message; return m==="popup"?"Google sign-in was closed or blocked. Try again.":m==="401"?"Tap to sign in and sync":"Couldn't reach Google Drive. Check your connection." }
 function gdSchedule(){ if(!gdOn()||GDR.suppress) return; clearTimeout(GDR.timer); GDR.timer=setTimeout(gdAuto,3500) }
-async function gdAuto(){ if(!gdOn()||GDR.busy) return; if(!gdTokOk()){ renderBkCard(); return } GDR.busy=true;
+async function gdAuto(){ if(!gdOn()||GDR.busy) return; if(!gdTokOk()){ renderBkCard(); return }
+  const last=(S.settings.gdrive||{}).n||0, now=entryCount();
+  if(last>=5&&now<last*0.5){ GDR.held=true; GDR.status="Your entries dropped from "+last+" to "+now+", so auto-sync is paused to protect your backup. Tap Sync now if this is on purpose."; if(ST&&!ED&&!CE&&!WE&&!CM) drawSettings(); return }
+  GDR.busy=true;
   try{ await gdUpload() }catch(e){ GDR.status=gdErr(e) } GDR.busy=false; renderBkCard(); if(ST&&!ED&&!CE&&!WE&&!CM) drawSettings() }
 async function gdSyncNow(){ if(GDR.busy) return; GDR.busy=true;
   try{ if(!gdTokOk()) await gdAuth(""); await gdUpload(); BK_SNOOZE=false; render(); if(ST) drawSettings(); toast("Synced to Google Drive"); say("Backed up! Your data is safe with me 💾","happy",3000) }
@@ -2075,7 +2089,10 @@ async function gdConnect(){ if(GDR.busy) return; GDR.busy=true;
 async function gdKeepPhone(){ ST.gdChoice=null; S.settings.gdrive={on:true}; try{ await gdUpload(); toast("Connected. Backed up to Google Drive") }catch(e){ toast(gdErr(e)) } drawSettings(); render() }
 function gdUseDrive(){ const c=ST.gdChoice; ST.gdChoice=null; c.d.settings=Object.assign({},c.d.settings||{},{gdrive:{on:true,last:new Date().toISOString()}}); ST.restore={d:c.d,n:c.n,at:c.at}; applyRestore() }
 async function gdRestore(){ if(GDR.busy) return; GDR.busy=true;
-  try{ if(!gdTokOk()) await gdAuth(""); const d=await gdDownload(); if(!d||d.app!=="duitjar"){ toast("No backup found on Google Drive yet.") } else { const n=Object.values(d.months||{}).reduce((s,a)=>s+(Array.isArray(a)?a.length:0),0); d.settings=Object.assign({},d.settings||{},{gdrive:{on:true,last:new Date().toISOString()}}); ST.restore={d,n,at:d.at?fmtD(String(d.at).slice(0,10)):"?"}; drawSettings() } }
+  try{ if(!gdTokOk()) await gdAuth(""); const list=await gdList(); if(!list.length){ toast("No backup found on Google Drive yet.") } else { ST.gdList=list; drawSettings() } }
+  catch(e){ toast(gdErr(e)) } GDR.busy=false }
+async function gdRestoreId(id){ if(GDR.busy) return; GDR.busy=true;
+  try{ if(!gdTokOk()) await gdAuth(""); const r=await gfetch("https://www.googleapis.com/drive/v3/files/"+id+"?alt=media"); const d=await r.json(); ST.gdList=null; if(!d||d.app!=="duitjar"){ toast("No backup found on Google Drive yet.") } else { const n=Object.values(d.months||{}).reduce((s,a)=>s+(Array.isArray(a)?a.length:0),0); d.settings=Object.assign({},d.settings||{},{gdrive:{on:true,last:new Date().toISOString()}}); ST.restore={d,n,at:d.at?fmtD(String(d.at).slice(0,10)):"?"}; drawSettings() } }
   catch(e){ toast(gdErr(e)) } GDR.busy=false }
 function gdDisconnect(){ try{ if(GDR.tok&&window.google&&google.accounts&&google.accounts.oauth2) google.accounts.oauth2.revoke(GDR.tok,()=>{}) }catch(e){} GDR.tok=null; GDR.exp=0; GDR.fileId=null; try{localStorage.removeItem("duitjar.gtok")}catch(e){} S.settings.gdrive={on:false}; saveLocal(); drawSettings(); render(); toast("Google Drive disconnected") }
 function gdSection(){ if(!gdReady()) return "";
@@ -2083,6 +2100,7 @@ function gdSection(){ if(!gdReady()) return "";
   if(gdOn()) h+='<p>Connected. Backs up automatically while you use the app.</p><p class="hint">Last synced: '+gdLastLabel()+'</p><div class="row-btns" style="justify-content:flex-start"><button class="btn primary" data-gsync="1">Sync now</button><button class="btn soft" data-grestore="1">Restore from Drive</button></div><button class="link danger-link" data-gdisc="1" style="align-self:flex-start">Disconnect</button>';
   else h+='<p>Save an automatic backup to your own Google Drive while you use the app. Only you can see it.</p><button class="btn primary" data-gconnect="1">Connect Google Drive</button>';
   if(ST&&ST.gdChoice) h+='<div class="confirmbox"><b>Found a Google Drive backup from '+esc(ST.gdChoice.at)+' · '+ST.gdChoice.n+' entries</b><p class="hint">Use it on this phone, or replace it with what’s on this phone now?</p><div class="row-btns"><button class="btn soft" data-gkeep="1">Keep this phone</button><button class="btn primary" data-guse="1">Use Drive backup</button></div></div>';
+  if(ST&&ST.gdList) h+='<div class="confirmbox"><b>Choose a backup to restore</b><div class="wlist">'+ST.gdList.map(f=>{ const dt=new Date(f.modifiedTime); const lbl=(f.name==="duitjar-backup.json"?"Latest":"Daily copy")+" · "+dt.toLocaleDateString(LOC(),{weekday:"short",day:"numeric",month:"short"})+" "+dt.toLocaleTimeString(LOC(),{hour:"2-digit",minute:"2-digit"}); return '<button class="wline" data-grid="'+esc(f.id)+'"><span class="wicon sm" style="--wc:var(--inc)" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg></span><span>'+esc(lbl)+'</span><span></span></button>' }).join("")+'</div><button class="btn soft" data-glistno="1">Cancel</button></div>';
   if(GDR.status) h+='<p class="warn">'+esc(GDR.status)+'</p>';
   return h+'</section>' }
 
@@ -2232,6 +2250,8 @@ document.addEventListener("click",e=>{
   if(ST){
     if(ds.gconnect){gdConnect();return}
     if(ds.grestore){gdRestore();return}
+    if(ds.grid){gdRestoreId(ds.grid);return}
+    if(ds.glistno){ST.gdList=null;drawSettings();return}
     if(ds.gdisc){gdDisconnect();return}
     if(ds.gkeep){gdKeepPhone();return}
     if(ds.guse){gdUseDrive();return}
