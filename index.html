@@ -563,6 +563,25 @@ button:active{transform:scale(.97)}
 .cmname small{display:block;color:var(--muted);font-size:11.5px;font-weight:600}
 #subcard:empty,#bkcard:empty,#filterbar:empty{display:none}
 .bkcard{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:20px;padding:12px 12px 12px 14px}
+.tx[data-edit]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .15s ease,background-color .15s}
+.tx.pressing{transform:scale(.97);background:var(--chip);border-radius:14px}
+.ev-head{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding-top:4px}
+.ev-head .bubble{width:64px;height:64px;font-size:30px;border-radius:20px}
+.ev-head.sm .bubble{width:52px;height:52px;font-size:26px;border-radius:17px}
+.ev-amt{font-family:var(--body);font-weight:800;font-size:36px;letter-spacing:-.03em;line-height:1.1}
+.ev-head.sm .ev-amt{font-size:28px}
+.ev-amt small{font-size:.48em;color:var(--muted);font-weight:700}
+.ev-amt.inc{color:var(--inc)}
+.ev-title{font-weight:700;color:var(--muted);font-size:14px}
+.kvlist{display:flex;flex-direction:column;background:var(--chip);border-radius:16px;padding:2px 14px}
+.kvrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 0;font-weight:700;font-size:14.5px}
+.kvrow+.kvrow{border-top:1px solid var(--line)}
+.kvrow span:first-child{color:var(--muted);font-weight:600;flex:none}
+.kvrow span:last-child{text-align:right;overflow-wrap:anywhere;min-width:0}
+.ev-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ev-actions.big{grid-template-columns:1fr 1fr}
+.ev-actions.big .btn{padding:14px}
+.private .ev-amt{filter:blur(7px)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -771,7 +790,7 @@ const PALETTES = {blueberry:["Blueberry milk","#ECEEF8","#D97A8F","#5FA585"],mat
 const S = { months:{}, settings:{cur:"RM",budget:0}, goals:[], view:ymOf(new Date()), tab:"daily", page:"home", plan:"goals", mode:"loading", wf:null, af:{r:"6m",w:null} };
 let DB=null, BASE=null, DL=null, UNSUB=null;
 const pending={}, chains={};
-let ED=null, ST=null, CE=null, WE=null, SR=null, CD=null, GE=null, GD=null, MP=null, CM=null, SE=null;
+let ED=null, ST=null, CE=null, WE=null, SR=null, CD=null, GE=null, GD=null, MP=null, CM=null, SE=null, EV=null;
 
 /* ---------- utils ---------- */
 function pad(n){return String(n).padStart(2,"0")}
@@ -1031,13 +1050,13 @@ function render(){
 }
 
 /* ---------- sheets ---------- */
-function draw(){ if(CE) drawCat(); else if(WE) drawWallet(); else if(CM) drawCatManager(); else if(ED) drawEditor(); else if(SE) drawSub(); else if(GE) drawGoalEditor(); else if(GD) drawGoalDetail(); else if(SR) drawSearch(); else if(MP) drawMonthPicker(); else if(CD) drawCatDetail(); else if(ST) drawSettings(); else $("sheetRoot").innerHTML="" }
+function draw(){ if(CE) drawCat(); else if(WE) drawWallet(); else if(CM) drawCatManager(); else if(ED) drawEditor(); else if(EV) drawView(); else if(SE) drawSub(); else if(GE) drawGoalEditor(); else if(GD) drawGoalDetail(); else if(SR) drawSearch(); else if(MP) drawMonthPicker(); else if(CD) drawCatDetail(); else if(ST) drawSettings(); else $("sheetRoot").innerHTML="" }
 function shell(title,body,backLabel){
   const fresh=!$("sheetRoot").innerHTML;
   return '<div class="scrim'+(fresh?' in':'')+'" data-close="1"><div class="sheet'+(fresh?' in':'')+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="grab"></div>'+
     '<div class="sheet-head"><h2>'+esc(title)+'</h2><button class="icon-btn" data-'+(backLabel?'back':'close')+'="1" aria-label="'+(backLabel||'Close')+'"><svg class="i" viewBox="0 0 24 24">'+(backLabel?'<path d="M15 5l-7 7 7 7"/>':'<path d="M6 6l12 12M18 6L6 18"/>')+'</svg></button></div>'+body+'</div></div>';
 }
-function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=null; $("sheetRoot").innerHTML="" }
+function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=EV=null; $("sheetRoot").innerHTML="" }
 function keepScroll(fn){ const s=document.querySelector(".sheet"); const y=s?s.scrollTop:0; fn(); const n=document.querySelector(".sheet"); if(n) n.scrollTop=y }
 
 /* entry editor */
@@ -1107,7 +1126,7 @@ function saveEntry(){
   toast(wasNew?({e:"Expense saved",i:"Income saved",x:"Transfer saved",a:"Saved"}[typ]):"Changes saved");
   if(wasNew) reactSave(typ,rec);
 }
-function deleteEntry(){ const f=findTx(ED.id); let undo=null; if(f){ S.months[f.k]=S.months[f.k].filter(x=>x.id!==ED.id); persistMonth(f.k); undo=()=>{ (S.months[f.k]=S.months[f.k]||[]).push(f.x); persistMonth(f.k); render(); toast("Entry restored") } } closeAll(); render(); toast("Entry deleted",undo) }
+function deleteEntry(){ deleteTx(ED.id) }
 
 /* category editor */
 function openCat(t,orig){ const ic=orig?iconFor(t,orig):(t==="i"?"💰":"🍓"); CE={t,orig:orig||null,n:orig||"",ic,lim:(orig&&S.settings.cb&&S.settings.cb[orig])?String(S.settings.cb[orig]):"",confirm:false}; draw() }
@@ -1578,7 +1597,7 @@ function addToGoal(sign){
   if(before<g.target&&after>=g.target){ confetti(); say("We did it! "+g.name+" is fully funded! 🎉","happy",7000) }
   else if(sign>0) say(["Into the goal jar! 🐾","Closer every day!",petT().snd+"! "+Math.floor(after/g.target*100)+"% there!"][Math.floor(Math.random()*3)],"happy",3500);
 }
-function topSheet(){return CE?"CE":WE?"WE":CM?"CM":ED?"ED":SE?"SE":GE?"GE":GD?"GD":SR?"SR":MP?"MP":CD?"CD":ST?"ST":null}
+function topSheet(){return CE?"CE":WE?"WE":CM?"CM":ED?"ED":EV?"EV":SE?"SE":GE?"GE":GD?"GD":SR?"SR":MP?"MP":CD?"CD":ST?"ST":null}
 
 /* ---------- pets ---------- */
 const PETS_T={
@@ -1969,6 +1988,45 @@ function applyRestore(){ const d=ST.restore.d; const old={months:S.months,settin
     new Set(oldKeys.concat(Object.keys(S.months))).forEach(persistMonth); persistSettings(); persistGoals(); applyPalette(); if(S.settings.lang&&S.settings.lang!==LANG) applyLang(S.settings.lang); render(); renderBuddyShell(); buddyIdle() };
   swap(d); ST.restore=null; closeAll(); toast("Everything restored",()=>{ swap(old); toast("Restored to before the backup") }) }
 
+/* ---------- entry details & long-press ---------- */
+Object.assign(ZH,{"Entry details":"记录详情","Quick actions":"快捷操作","Type":"类型","Category":"类别","Duplicate":"复制一笔","View details":"查看详情","Repeats":"重复","Subscription":"订阅","Tip: press and hold an entry to edit or delete it quickly.":"小提示：长按记录可以快速编辑或删除。","Copied. Change anything and save.":"已复制，修改后保存即可。","Delete entry":"删除记录"});
+RX.push([/^Every month on day (\d+)( \(stopped\))?$/, (_,a,b)=>"每月 "+a+" 号"+(b?"（已停止）":"")]);
+function openView(id,menu){ EV={id,menu:!!menu,confirm:false}; draw() }
+function deleteTx(id){ const f=findTx(id); let undo=null; if(f){ S.months[f.k]=S.months[f.k].filter(x=>x.id!==id); persistMonth(f.k); undo=()=>{ (S.months[f.k]=S.months[f.k]||[]).push(f.x); persistMonth(f.k); render(); toast("Entry restored") } } closeAll(); render(); toast("Entry deleted",undo) }
+function dupEntry(x){ openEditor(null); ED.t=x.t; ED.amt=String(Math.abs(x.a)); ED.sign=x.a<0?-1:1; if(x.t==="e"||x.t==="i"){ ED.c=x.c; ED.ic=x.ic||iconFor(x.t,x.c) } ED.n=x.n||""; if(wallets().some(w=>w.id===wOf(x))) ED.w=wOf(x); if(x.to) ED.to=x.to; ED.d=today(); draw(); toast("Copied. Change anything and save.") }
+function drawView(){
+  const f=findTx(EV.id); if(!f){ EV=null; draw(); return } const x=f.x; const w=wallet(wOf(x));
+  const typeL={e:"Expense",i:"Income",x:"Transfer",a:"Balance adjustment"}[x.t];
+  const ic=x.t==="x"?"↔️":x.t==="a"?"⚖️":(x.ic||iconFor(x.t,x.c));
+  const title=x.t==="x"?"Transfer":x.t==="a"?"Balance adjustment":x.c;
+  const sign=x.t==="i"?"+":x.t==="e"?"−":(x.a<0?"−":"");
+  const bcls=x.t==="i"?" inc":(x.t==="x"||x.t==="a")?" neu":"";
+  let body='<div class="ev-head'+(EV.menu?' sm':'')+'"><span class="bubble'+bcls+'" aria-hidden="true">'+esc(ic)+'</span><div class="ev-amt num'+(x.t==="i"?" inc":"")+'"><small>'+esc(cur())+'</small> '+sign+money(Math.abs(x.a))+'</div><div class="ev-title">'+esc(title)+(EV.menu?' · '+esc(fmtD(x.d)):'')+'</div></div>';
+  if(!EV.menu){
+    const rows=[["Type",typeL],["Date",new Date(x.d+"T00:00").toLocaleDateString(LOC(),{weekday:"short",day:"numeric",month:"short",year:"numeric"})]];
+    if(x.t==="x"){ rows.push(["From",w.name]); rows.push(["To",wallet(x.to).name]) } else rows.push(["Wallet",w.name]);
+    if(x.t==="e"||x.t==="i") rows.push(["Category",(x.ic||iconFor(x.t,x.c))+" "+x.c]);
+    if(x.n) rows.push(["Note",x.n]);
+    if(x.rid){ const r=(S.settings.rec||[]).find(r=>r.id===x.rid); if(r) rows.push(["Repeats","Every month on day "+r.day+(r.stop?" (stopped)":"")]) }
+    if(x.sid){ const sb=(S.settings.subs||[]).find(s=>s.id===x.sid); rows.push(["Subscription",sb?sb.name:"—"]) }
+    body+='<div class="kvlist">'+rows.map(([k,v])=>'<div class="kvrow"><span>'+esc(k)+'</span><span>'+esc(v)+'</span></div>').join("")+'</div>';
+  }
+  if(EV.confirm) body+='<div class="confirm"><span>Delete this entry?</span><span class="row-btns"><button class="btn soft" data-evdelno="1">Keep</button><button class="btn danger" data-evdelyes="1">Delete</button></span></div>';
+  else body+='<div class="ev-actions'+(EV.menu?' big':'')+'"><button class="btn primary" data-evedit="1">Edit</button><button class="btn soft" data-evdup="1">Duplicate</button><button class="btn danger" data-evdel="1">Delete</button>'+(EV.menu?'<button class="btn soft" data-evmore="1">View details</button>':'')+'</div>';
+  if(!EV.menu) body+='<p class="hint" style="text-align:center">Tip: press and hold an entry to edit or delete it quickly.</p>';
+  keepScroll(()=>{ $("sheetRoot").innerHTML=shell(EV.menu?"Quick actions":"Entry details",body) });
+}
+(function(){ let t=null, sx=0, sy=0, el=null, block=false, held=false;
+  const cancel=()=>{ clearTimeout(t); t=null; if(el) el.classList.remove("pressing"); el=null };
+  document.addEventListener("pointerdown",e=>{ const r=e.target.closest("[data-edit]"); if(!r||e.button>0) return; cancel(); el=r; sx=e.clientX; sy=e.clientY; r.classList.add("pressing");
+    t=setTimeout(()=>{ const id=el&&el.dataset.edit; cancel(); if(!id) return; block=true; held=true; try{ if(navigator.vibrate) navigator.vibrate(12) }catch(_){} openView(id,true) },480) },{passive:true});
+  document.addEventListener("pointermove",e=>{ if(el&&(Math.abs(e.clientX-sx)>10||Math.abs(e.clientY-sy)>10)) cancel() },{passive:true});
+  document.addEventListener("pointerup",()=>{ if(t) cancel(); if(held){ held=false; setTimeout(()=>{ block=false },350) } },{passive:true});
+  document.addEventListener("pointercancel",cancel,{passive:true});
+  document.addEventListener("click",e=>{ if(block){ block=false; e.stopImmediatePropagation(); e.preventDefault() } },true);
+  document.addEventListener("contextmenu",e=>{ if(e.target.closest("[data-edit]")) e.preventDefault() });
+})();
+
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
@@ -2006,7 +2064,7 @@ document.addEventListener("click",e=>{
   if("newsub" in ds){openSub(null,ds.newsub,ds.sic);return}
   if(ds.cmopen){syncFields();openCatManager(ds.cmopen);return}
   if("newgoal" in ds){openGoal(null,ds.newgoal,ds.gic);return}
-  if(ds.edit){openEditor(ds.edit);return}
+  if(ds.edit){openView(ds.edit,false);return}
   if(ds.close){ closeAll(); return }
   if(ds.back){ if(CE){CE=null} else if(WE){WE=null} else if(CM){CM=null} else if(GE){GE=null} draw(); return }
   if(ds.addwallet){ syncFields(); syncGoal(); openWallet(null); return }
@@ -2030,6 +2088,15 @@ document.addEventListener("click",e=>{
     if(ds.wdelno){syncWallet();WE.confirm=false;drawWallet();return}
     if(ds.wmove){syncWallet();WE.moveTo=ds.wmove;drawWallet();return}
     if(ds.wdelyes){deleteWallet(ds.wdelyes);return}
+    return;
+  }
+  if(EV&&!ED&&!CE&&!WE&&!CM){
+    if(ds.evedit){ const id=EV.id; EV=null; openEditor(id); return }
+    if(ds.evdup){ const f=findTx(EV.id); EV=null; if(f) dupEntry(f.x); return }
+    if(ds.evdel){ EV.confirm=true; drawView(); return }
+    if(ds.evdelno){ EV.confirm=false; drawView(); return }
+    if(ds.evdelyes){ deleteTx(EV.id); return }
+    if(ds.evmore){ EV.menu=false; drawView(); return }
     return;
   }
   if(CM){
