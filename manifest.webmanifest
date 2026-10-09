@@ -1,0 +1,15 @@
+{
+  "name": "Duit Jar",
+  "short_name": "Duit Jar",
+  "description": "A cute money tracker with wallets, goals and a Maltese buddy.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ECEEF8",
+  "theme_color": "#ECEEF8",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
