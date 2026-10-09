@@ -969,7 +969,7 @@ function balances(){
   const b={}; wallets().forEach(w=>b[w.id]=+w.open||0);
   for(const k in S.months) for(const x of S.months[k]){
     const w=wOf(x); if(!(w in b)) b[w]=0;
-    if(x.t==="e") b[w]-=x.a; else if(x.t==="i") b[w]+=x.a; else if(x.t==="a") b[w]+=x.a;
+    if(x.t==="e") b[w]-=x.a+(x.lent||0); else if(x.t==="i") b[w]+=x.a; else if(x.t==="a") b[w]+=x.a;
     else if(x.t==="x"){ b[w]-=x.a; if(x.to){ if(!(x.to in b)) b[x.to]=0; b[x.to]+=x.a } }
   }
   return b;
@@ -1126,7 +1126,7 @@ function txRow(x,sd){
   let bub, title, sub, amt;
   if(x.t==="x"){ const to=wallet(x.to); bub='<span class="bubble neu" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></span>'; title=esc(w.name)+' → '+esc(to.name); sub=x.n?esc(x.n):'Transfer'; amt='<span class="amt num neu">'+money(x.a)+'</span>' }
   else if(x.t==="a"){ bub='<span class="bubble neu" aria-hidden="true">'+(x.iou?'🤝':'⚖️')+'</span>'; title=x.iou?esc(x.iou)+' · '+(x.a>0?'Paid you back':'You paid back'):'Balance adjustment'; sub=[sd===true?fmtD(x.d):"",multi?w.name:"",x.n].filter(Boolean).map(esc).join(" · "); amt='<span class="amt num neu">'+(x.a<0?"−":"+")+money(Math.abs(x.a))+'</span>' }
-  else { bub='<span class="bubble'+(x.t==="i"?" inc":"")+'" aria-hidden="true">'+esc(x.ic||iconFor(x.t,x.c))+'</span>'; title=esc(x.c); sub=[sd===true?fmtD(x.d):"",multi?w.name:"",x.n].filter(Boolean).map(esc).join(" · "); amt='<span class="amt num '+(x.t==="i"?"inc":"")+'">'+(x.t==="i"?"+":"−")+money(x.a)+'</span>' }
+  else { bub='<span class="bubble'+(x.t==="i"?" inc":"")+'" aria-hidden="true">'+esc(x.ic||iconFor(x.t,x.c))+'</span>'; title=esc(x.c); sub=[sd===true?fmtD(x.d):"",multi?w.name:"",x.lent?"Split · paid "+money(x.a+x.lent):"",x.n].filter(Boolean).map(esc).join(" · "); amt='<span class="amt num '+(x.t==="i"?"inc":"")+'">'+(x.t==="i"?"+":"−")+money(x.a)+'</span>' }
   return '<button class="tx" data-edit="'+esc(x.id)+'">'+bub+'<span class="tx-main"><div class="tx-cat">'+title+'</div>'+(sub?'<div class="tx-note">'+sub+'</div>':'')+'</span>'+amt+'</button>';
 }
 function renderDaily(list){
@@ -1850,7 +1850,7 @@ function balanceSeries(ks){
   const inSel=id=>!S.af.w||id===S.af.w;
   let open=0; wallets().forEach(w=>{if(inSel(w.id)) open+=(+w.open||0)});
   const delta={}; for(const k in S.months){ let d=0; S.months[k].forEach(x=>{const w=wOf(x);
-    if(x.t==="e"){if(inSel(w))d-=x.a} else if(x.t==="i"||x.t==="a"){if(inSel(w))d+=x.a} else if(x.t==="x"){ if(inSel(w))d-=x.a; if(x.to&&inSel(x.to))d+=x.a } }); delta[k]=d }
+    if(x.t==="e"){if(inSel(w))d-=x.a+(x.lent||0)} else if(x.t==="i"||x.t==="a"){if(inSel(w))d+=x.a} else if(x.t==="x"){ if(inSel(w))d-=x.a; if(x.to&&inSel(x.to))d+=x.a } }); delta[k]=d }
   const allK=Object.keys(delta).sort();
   return ks.map(k=>{let c=open; allK.forEach(m=>{if(m<=k)c+=delta[m]}); return c});
 }
@@ -1977,7 +1977,10 @@ function runRecurring(){
   if(changed){ touched.forEach(persistMonth); persistSettings() }
   return made;
 }
-function afterLoadRecurring(){ const n=runRecurring()+runSubs(); if(n){ render(); toast("Added "+n+" repeating "+(n===1?"entry":"entries")) } const bb=bud(); if(!bb.init){ bb.init=1; checkBadges(true) } else checkBadges(); refreshBubble() }
+function fixSplits(){ if(S.settings.splitFix) return; const by={}; let any=false; (S.settings.iou||[]).forEach(o=>{ if(o.tx&&o.dir==="in") by[o.tx]=(by[o.tx]||0)+o.a });
+  for(const k in S.months){ let ch=false; S.months[k].forEach(x=>{ const l=by[x.id]; if(l&&x.t==="e"&&!x.lent&&l<=x.a+0.004){ x.lent=Math.round(l*100)/100; x.a=Math.round((x.a-l)*100)/100; ch=true } }); if(ch){ persistMonth(k); any=true } }
+  S.settings.splitFix=1; persistSettings(); if(any) render() }
+function afterLoadRecurring(){ fixSplits(); const n=runRecurring()+runSubs(); if(n){ render(); toast("Added "+n+" repeating "+(n===1?"entry":"entries")) } const bb=bud(); if(!bb.init){ bb.init=1; checkBadges(true) } else checkBadges(); refreshBubble() }
 function stopRec(id){ const r=(S.settings.rec||[]).find(x=>x.id===id); if(!r) return; r.stop=true; persistSettings(); if(ED&&ED.rid===id) ED.rid=null; draw(); toast("Stopped repeating. Past entries stay.") }
 
 /* ---------- category limits ---------- */
@@ -2152,6 +2155,7 @@ function drawView(){
     const rows=[["Type",typeL],["Date",new Date(x.d+"T00:00").toLocaleDateString(LOC(),{weekday:"short",day:"numeric",month:"short",year:"numeric"})]];
     if(x.t==="x"){ rows.push(["From",w.name]); rows.push(["To",wallet(x.to).name]) } else rows.push(["Wallet",w.name]);
     if(x.t==="e"||x.t==="i") rows.push(["Category",(x.ic||iconFor(x.t,x.c))+" "+x.c]);
+    if(x.lent){ rows.push(["Paid in total",cur()+" "+money(x.a+x.lent)]); rows.push(["Friends owe you",cur()+" "+money(x.lent)]); rows.push(["Your share",cur()+" "+money(x.a)]) }
     if(x.n) rows.push(["Note",x.n]);
     if(x.rid){ const r=(S.settings.rec||[]).find(r=>r.id===x.rid); if(r) rows.push(["Repeats","Every month on day "+r.day+(r.stop?" (stopped)":"")]) }
     if(x.sid){ const sb=(S.settings.subs||[]).find(s=>s.id===x.sid); rows.push(["Subscription",sb?sb.name:"—"]) }
@@ -2580,12 +2584,12 @@ function splitOk(){ const sp=ED.split; if(ED.id||ED.t!=="e"||!sp||!sp.on) return
   if(!(owed>0)){ toast("Enter how much each person owes"); return false } if(owed>evalAmt(ED.amt)+0.004){ toast("Friends owe more than the total"); return false } return true }
 function makeSplit(rec){ const sh=splitShares(rec.a); const names=[]; let tot=0;
   Object.keys(sh).forEach(n=>{ const a=sh[n]; if(!(a>0)) return; ious().push({id:"o"+uid(),who:canonWho(n),a,dir:"in",n:rec.n||rec.c,d:rec.d,tx:rec.id,ts:Date.now()}); names.push(n); tot+=a });
-  if(!names.length) return; persistSettings(); const lp=names.length===1?names[0]:names.length+" friends";
+  if(!names.length) return; tot=Math.round(tot*100)/100; rec.lent=Math.round(((rec.lent||0)+tot)*100)/100; rec.a=Math.round((rec.a-tot)*100)/100; persistSettings(); const lp=names.length===1?names[0]:names.length+" friends";
   setTimeout(()=>say(lp+" owe"+(names.length===1?"s":"")+" us "+cur()+" "+money(tot)+" for this. Added to IOU 🤝","happy",5000),700) }
 document.addEventListener("keydown",e=>{ if(e.target&&e.target.id==="splitWho"&&e.key==="Enter"){ e.preventDefault(); e.stopImmediatePropagation(); if(ED&&addSplitName()){ drawEditor(); setTimeout(()=>{ const i=$("splitWho"); if(i) i.focus() },30) } } },true);
 document.addEventListener("input",e=>{ if(e.target&&e.target.dataset&&"splita" in e.target.dataset) refreshSplitPrev() });
-Object.assign(ZH,{"Split with others":"和别人分账","Who's in? Tap to pick":"有谁？点选","Add a name":"添加名字","Add":"添加","Split evenly":"平分","Custom amounts":"自定金额","Include me":"包括我","Turn off if you just paid for them":"如果只是帮他们付钱就关掉","Friends owe you":"朋友欠你","your share":"你的部分","More than the total":"超过总额","Type the amount to see each share":"输入金额查看每人份额","Each person owes":"每人欠","total owed":"共欠","Enter how much each person owes":"请输入每人欠多少","Friends owe more than the total":"朋友欠的超过总额"});
-RX.push([/^(\d+) friends owe us (\S+ [\d,.]+) for this\. Added to IOU 🤝$/,(m,a,b)=>a+" 位朋友欠我们 "+b+"，已加入借还 🤝"],[/^(.+) owes us (\S+ [\d,.]+) for this\. Added to IOU 🤝$/,(m,a,b)=>a+" 欠我们 "+b+"，已加入借还 🤝"]);
+Object.assign(ZH,{"Split":"分账","Paid in total":"总共付了","Your share":"你的部分","Split with others":"和别人分账","Who's in? Tap to pick":"有谁？点选","Add a name":"添加名字","Add":"添加","Split evenly":"平分","Custom amounts":"自定金额","Include me":"包括我","Turn off if you just paid for them":"如果只是帮他们付钱就关掉","Friends owe you":"朋友欠你","your share":"你的部分","More than the total":"超过总额","Type the amount to see each share":"输入金额查看每人份额","Each person owes":"每人欠","total owed":"共欠","Enter how much each person owes":"请输入每人欠多少","Friends owe more than the total":"朋友欠的超过总额"});
+RX.push([/^paid ([\d,.]+)$/,(m,a)=>"付了 "+a],[/^(\d+) friends owe us (\S+ [\d,.]+) for this\. Added to IOU 🤝$/,(m,a,b)=>a+" 位朋友欠我们 "+b+"，已加入借还 🤝"],[/^(.+) owes us (\S+ [\d,.]+) for this\. Added to IOU 🤝$/,(m,a,b)=>a+" 欠我们 "+b+"，已加入借还 🤝"]);
 
 /* monthly wrapped */
 function wrapData(ym){
