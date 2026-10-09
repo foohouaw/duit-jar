@@ -582,6 +582,43 @@ button:active{transform:scale(.97)}
 .ev-actions.big{grid-template-columns:1fr 1fr}
 .ev-actions.big .btn{padding:14px}
 .private .ev-amt{filter:blur(7px)}
+
+/* buddy 2.0 */
+.say{display:block;text-align:left;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;width:100%}
+.say small .tr{float:right;letter-spacing:0;text-transform:none;color:var(--ink);font-weight:800;font-size:12px}
+.dog.sleep .eyes{animation:none;transform:scaleY(.1)}
+.dog.sleep .tail{animation-duration:3.2s}
+.zzz{position:absolute;right:0;top:6px;font-weight:800;color:var(--muted);font-size:13px;opacity:0;pointer-events:none;animation:zzz 2.7s ease-in infinite}
+@keyframes zzz{0%{opacity:0;transform:translate(0,0) scale(.7)}30%{opacity:1}100%{opacity:0;transform:translate(12px,-26px) scale(1.3)}}
+.dog.tilt{animation:tilt 1.6s ease}
+@keyframes tilt{30%{transform:rotate(-7deg)}70%{transform:rotate(5deg)}}
+.dog.look .eyes{animation:look 1.6s ease}
+@keyframes look{25%{transform:translateX(-2.5px)}65%{transform:translateX(2.5px)}}
+.dog.wagburst .tail{animation-duration:.16s}
+.dog.spin{animation:spin .9s cubic-bezier(.4,1.4,.6,1);transform-origin:60px 70px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dog.hashead .bow{display:none}
+.petgrid{grid-template-columns:repeat(5,minmax(0,1fr))}
+.petopt{font-size:11px}
+.petopt .dog{width:46px}
+.bp-hero{display:grid;place-items:center}
+.bp-hero .dog{width:150px;height:auto}
+.bp-name{text-align:center;font-family:var(--display);font-size:22px;display:flex;justify-content:center;align-items:center;gap:8px}
+.bp-meters{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bp-meters .gbar{margin-top:6px}
+.gbar.hp i{background:linear-gradient(90deg,#F7A9C4,var(--exp))}
+.bp-treats{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--chip);border-radius:16px;padding:10px 12px}
+.bp-tc{font-weight:700;font-size:15px}
+.wardrobe{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.witem{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:16px;background:var(--chip);border:2px solid transparent;font-weight:700;font-size:12.5px}
+.witem svg{width:56px;height:44px}
+.witem small{color:var(--muted);font-weight:700;font-size:11.5px}
+.witem.on{border-color:var(--ink);background:var(--card)}
+.badges{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.badge{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:8px 2px;border-radius:14px;background:var(--chip)}
+.badge span{font-size:24px}
+.badge small{font-size:10.5px;font-weight:700;line-height:1.2}
+.badge.locked{opacity:.45}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -708,16 +745,16 @@ const RX=[
  [/^Hi, I'm (.+)! Tap Add to log your first spend 🐾$/, (_,a)=>"嗨，我是 "+a+"！点 + 记下你的第一笔支出 🐾"],
  [/^(\d+) entr(?:y|ies) today\. Good human! 🦴(?: (.+))?$/, (_,a,b)=>"今天记了 "+a+" 笔，真棒！🦴"+streakZ(b)],
  [/^(Good morning|Good afternoon|Good evening)! Nothing logged today yet\.(?: (.+))?$/, (_,a,b)=>GREETZ[a]+"！今天还没记账哦。"+streakZ(b)],
- [/^(Woof|Meow|\*thump thump\*)! 🐾$/, (_,a)=>SNDZ[a]+"！🐾"],
+ [/^(Woof|Meow|Squeak|\*[a-z ]+\*)! 🐾$/, (_,a)=>SNDZ[a]+"！🐾"],
  [/^Uh oh, (.+) just went over its limit 🥺$/, (_,a)=>"糟糕，"+zt(a)+" 刚刚超出限额了 🥺"],
  [/^Heads up! (.+) is at (\d+)% of its monthly limit\.$/, (_,a,b)=>"注意！"+zt(a)+" 已用了每月限额的 "+b+"%。"],
  [/^Is that for ME\?! (.+)$/, (_,a)=>"那是给我的吗？！"+a],
- [/^Logged! (Woof|Meow|\*thump thump\*) 🐾$/, (_,a)=>"记好了！"+SNDZ[a]+" 🐾"],
+ [/^Logged! (Woof|Meow|Squeak|\*[a-z ]+\*) 🐾$/, (_,a)=>"记好了！"+SNDZ[a]+" 🐾"],
  [/^Hi! I'm (.+) now 🐾$/, (_,a)=>"嗨！我现在叫 "+a+" 🐾"],
  [/^Hi! I'm (.+)$/, (_,a)=>"嗨！我是 "+a],
  [/^Wow, (\d+) entries! That's a lot of sniffing 🐾$/, (_,a)=>"哇，"+a+" 笔记录！要嗅好久呢 🐾"],
  [/^We did it! (.+) is fully funded! 🎉$/, (_,a)=>"我们做到了！"+a+" 已经存满了！🎉"],
- [/^(Woof|Meow|\*thump thump\*)! (\d+)% there!$/, (_,a,b)=>SNDZ[a]+"！已经完成 "+b+"%！"],
+ [/^(Woof|Meow|Squeak|\*[a-z ]+\*)! (\d+)% there!$/, (_,a,b)=>SNDZ[a]+"！已经完成 "+b+"%！"],
  [/^We're spending (\d+)% less than last month\. Proud of you! 🐾$/, (_,a)=>"我们比上个月少花了 "+a+"%，为你骄傲！🐾"],
  [/^We're (\d+)% ahead of last month's spending\. Let's slow down a little 🙈$/, (_,a)=>"我们比上个月多花了 "+a+"%，稍微放慢一点吧 🙈"],
  [/^(.+) renews (today|tomorrow) \((.+)\) 🔔$/, (_,a,b,c)=>a+" "+(b==="today"?"今天":"明天")+"续费（"+c+"）🔔"],
@@ -1050,13 +1087,13 @@ function render(){
 }
 
 /* ---------- sheets ---------- */
-function draw(){ if(CE) drawCat(); else if(WE) drawWallet(); else if(CM) drawCatManager(); else if(ED) drawEditor(); else if(EV) drawView(); else if(SE) drawSub(); else if(GE) drawGoalEditor(); else if(GD) drawGoalDetail(); else if(SR) drawSearch(); else if(MP) drawMonthPicker(); else if(CD) drawCatDetail(); else if(ST) drawSettings(); else $("sheetRoot").innerHTML="" }
+function draw(){ if(CE) drawCat(); else if(WE) drawWallet(); else if(CM) drawCatManager(); else if(ED) drawEditor(); else if(EV) drawView(); else if(SE) drawSub(); else if(GE) drawGoalEditor(); else if(GD) drawGoalDetail(); else if(BPV) drawProfile(); else if(SR) drawSearch(); else if(MP) drawMonthPicker(); else if(CD) drawCatDetail(); else if(ST) drawSettings(); else $("sheetRoot").innerHTML="" }
 function shell(title,body,backLabel){
   const fresh=!$("sheetRoot").innerHTML;
   return '<div class="scrim'+(fresh?' in':'')+'" data-close="1"><div class="sheet'+(fresh?' in':'')+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="grab"></div>'+
     '<div class="sheet-head"><h2>'+esc(title)+'</h2><button class="icon-btn" data-'+(backLabel?'back':'close')+'="1" aria-label="'+(backLabel||'Close')+'"><svg class="i" viewBox="0 0 24 24">'+(backLabel?'<path d="M15 5l-7 7 7 7"/>':'<path d="M6 6l12 12M18 6L6 18"/>')+'</svg></button></div>'+body+'</div></div>';
 }
-function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=EV=null; $("sheetRoot").innerHTML="" }
+function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=EV=BPV=null; $("sheetRoot").innerHTML="" }
 function keepScroll(fn){ const s=document.querySelector(".sheet"); const y=s?s.scrollTop:0; fn(); const n=document.querySelector(".sheet"); if(n) n.scrollTop=y }
 
 /* entry editor */
@@ -1124,7 +1161,7 @@ function saveEntry(){
   let st=ensureWallets(); if(S.settings.lastW!==ED.w){ S.settings.lastW=ED.w; st=true } if(st) persistSettings();
   const wasNew=!ED.id, typ=ED.t; closeAll(); S.view=mk; render();
   toast(wasNew?({e:"Expense saved",i:"Income saved",x:"Transfer saved",a:"Saved"}[typ]):"Changes saved");
-  if(wasNew) reactSave(typ,rec);
+  if(wasNew){ reactSave(typ,rec); const earned=onNewEntry(); if(earned) toast(({e:"Expense saved",i:"Income saved",x:"Transfer saved",a:"Saved"}[typ])+" · +"+earned+" "+treatIc()) }
 }
 function deleteEntry(){ deleteTx(ED.id) }
 
@@ -1374,12 +1411,12 @@ async function wipeAll(){
 /* ---------- buddy (maltese) ---------- */
 let sayT=null, firstLoad=true;
 function dogName(){return (S.settings.dog||petT().def).slice(0,16)}
-function renderBuddyShell(){ $("buddy").innerHTML='<button class="dogbtn" id="dogBtn" aria-label="Pet '+esc(dogName())+'"><span class="dogwrap" id="dogWrap">'+petSVG(petType())+'</span></button><div class="say" id="say" aria-live="polite"></div>' }
+function renderBuddyShell(){ $("buddy").innerHTML='<button class="dogbtn" id="dogBtn" aria-label="Pet '+esc(dogName())+'"><span class="dogwrap" id="dogWrap">'+petSVG(petType(),{outfit:effOutfit()})+'</span></button><button class="say" id="say" data-bprof="1" aria-live="polite"></button>' }
 function dogEl(){return document.querySelector("#dogWrap .dog")}
 function say(text,mood,ms){
   const el=$("say"), d=dogEl(); if(!el||!d) return;
-  el.innerHTML='<small>'+esc(dogName())+'</small>'+esc(text);
-  d.classList.remove("happy","sad"); if(mood) d.classList.add(mood);
+  el.innerHTML=bubbleHead()+esc(text);
+  d.classList.remove("happy","sad","sleep"); if(mood) d.classList.add(mood); sleepFx(mood==="sleep");
   if(mood==="happy"){ d.classList.remove("hop"); d.getBoundingClientRect(); d.classList.add("hop") }
   clearTimeout(sayT); if(ms) sayT=setTimeout(buddyIdle,ms);
 }
@@ -1390,6 +1427,7 @@ function streak(){
 }
 function buddyIdle(){
   if(S.mode==="loading"){ say("Sniffing out your jar…"); return }
+  if(isNight()){ say("zZz… 💤","sleep"); return }
   const any=Object.keys(S.months).some(k=>S.months[k].length);
   if(S.page==="stats"){ say(statsQuip()); return }
   if(S.page==="goals"&&S.plan==="subs"){ say(subsQuip()); return }
@@ -1397,6 +1435,9 @@ function buddyIdle(){
   if(!any){ say("Hi, I'm "+dogName()+"! Tap Add to log your first spend 🐾"); return }
   const due=subsDueSoon(); if(due){ say(due,""); return }
   if(backupDue()&&!BK_SNOOZE&&Math.random()<.5){ say("Let's do today's backup! Tap \u201cBack up\u201d below 💾",""); return }
+  const ssn=season(); if(ssn&&Math.random()<.4){ say(SEASON_HI[ssn.k],""); return }
+  const hp=happiness(), bb=bud(); if(hp<35){ const hrs=bb.fedAt?(Date.now()-bb.fedAt)/36e5:999; say(hrs>48&&bb.treats>0?"I'm hungry… got a "+treatIc()+"? 🥺":"I miss you! Let's log something today 🥺","sad"); return }
+  const tps=tipsList(); if(tps.length&&Math.random()<.45){ say(tps[Math.floor(Math.random()*tps.length)],""); return }
   const h=new Date().getHours(); const hi=h<12?"Good morning":h<18?"Good afternoon":"Good evening";
   const nToday=(S.months[ymOf(new Date())]||[]).filter(x=>x.d===today()).length;
   const st=streak(); const b=+S.settings.budget||0; const spent=totals(ymOf(new Date())).e;
@@ -1406,7 +1447,9 @@ function buddyIdle(){
   say(msg,"");
 }
 function petDog(){
-  const w=$("dogWrap"); if(!w) return;
+  const w=$("dogWrap"); if(!w) return; const dd=dogEl();
+  if(dd&&dd.classList.contains("sleep")){ WOKE=Date.now(); say("*yawn*… oh, hi! 🥱","happy",4000); return }
+  const nw=Date.now(); TAPS=TAPS.filter(t=>nw-t<2500); TAPS.push(nw); if(TAPS.length>=5){ TAPS=[]; if(dd){ dd.classList.remove("spin"); dd.getBoundingClientRect(); dd.classList.add("spin"); setTimeout(()=>dd.classList.remove("spin"),950) } say("Wheee! 🌀","",2500); return }
   for(let k=0;k<3;k++){ const h=document.createElement("span"); h.className="heart"; h.textContent="♥"; h.style.setProperty("--dx",(Math.random()*50-25).toFixed(0)+"px"); h.style.animationDelay=(k*120)+"ms"; w.appendChild(h); setTimeout(()=>h.remove(),1600) }
   const L=petLines(); say(L[Math.floor(Math.random()*L.length)],"happy",3500);
 }
@@ -1594,10 +1637,10 @@ function addToGoal(sign){
   const before=goalSaved(g); g.adds=(g.adds||[]).concat([{id:uid(),d:today(),a:a*sign,n:($("gNote").value||"").trim()}]);
   persistGoals(); const after=goalSaved(g); draw(); render();
   toast(sign>0?"Added to "+g.name:"Taken out of "+g.name);
-  if(before<g.target&&after>=g.target){ confetti(); say("We did it! "+g.name+" is fully funded! 🎉","happy",7000) }
+  if(before<g.target&&after>=g.target){ confetti(); checkBadges(true); say("We did it! "+g.name+" is fully funded! 🎉","happy",7000) }
   else if(sign>0) say(["Into the goal jar! 🐾","Closer every day!",petT().snd+"! "+Math.floor(after/g.target*100)+"% there!"][Math.floor(Math.random()*3)],"happy",3500);
 }
-function topSheet(){return CE?"CE":WE?"WE":CM?"CM":ED?"ED":EV?"EV":SE?"SE":GE?"GE":GD?"GD":SR?"SR":MP?"MP":CD?"CD":ST?"ST":null}
+function topSheet(){return CE?"CE":WE?"WE":CM?"CM":ED?"ED":EV?"EV":SE?"SE":GE?"GE":GD?"GD":BPV?"BP":SR?"SR":MP?"MP":CD?"CD":ST?"ST":null}
 
 /* ---------- pets ---------- */
 const PETS_T={
@@ -1620,7 +1663,7 @@ function petFace(o){ o=o||{}; const nose=o.nose||INK;
   (o.teeth?'<rect x="58" y="61.4" width="4" height="3.6" rx=".8" fill="#fff" stroke="'+INK+'" stroke-width=".8"/>':'')+
   (o.whiskers?'<path d="M38 56 L26 53 M38 60 L26 61 M82 56 L94 53 M82 60 L94 61" stroke="'+o.whiskers+'" stroke-width="1.2" stroke-linecap="round"/>':'');
 }
-function petSVG(type){
+function petBase(type){
   type=PETS_T[type]?type:"maltese";
   const open='<svg class="dog" viewBox="0 0 124 124" aria-hidden="true">';
   if(type==="maltese"){
@@ -1831,7 +1874,7 @@ function runRecurring(){
   if(changed){ touched.forEach(persistMonth); persistSettings() }
   return made;
 }
-function afterLoadRecurring(){ const n=runRecurring()+runSubs(); if(n){ render(); toast("Added "+n+" repeating "+(n===1?"entry":"entries")) } }
+function afterLoadRecurring(){ const n=runRecurring()+runSubs(); if(n){ render(); toast("Added "+n+" repeating "+(n===1?"entry":"entries")) } const bb=bud(); if(!bb.init){ bb.init=1; checkBadges(true) } else checkBadges(); refreshBubble() }
 function stopRec(id){ const r=(S.settings.rec||[]).find(x=>x.id===id); if(!r) return; r.stop=true; persistSettings(); if(ED&&ED.rid===id) ED.rid=null; draw(); toast("Stopped repeating. Past entries stay.") }
 
 /* ---------- category limits ---------- */
@@ -2104,6 +2147,164 @@ function gdSection(){ if(!gdReady()) return "";
   if(GDR.status) h+='<p class="warn">'+esc(GDR.status)+'</p>';
   return h+'</section>' }
 
+/* ---------- buddy 2.0 ---------- */
+Object.assign(PETS_T,{
+  hamster:{label:"Hamster",def:"Nugget",snd:"Squeak",emo:"🐹",treat:"🌻"},
+  panda:{label:"Panda",def:"Bao",snd:"*munch munch*",emo:"🐼",treat:"🎋"},
+  teddy:{label:"Teddy",def:"Caramel",snd:"*bear hug*",emo:"🧸",treat:"🍯"},
+  penguin:{label:"Penguin",def:"Pebble",snd:"*waddle waddle*",emo:"🐧",treat:"🐟"},
+  corgi:{label:"Corgi",def:"Biscuit",snd:"Woof",emo:"🐶",treat:"🦴"},
+  redpanda:{label:"Red panda",def:"Maple",snd:"*chirp chirp*",emo:"🍁",treat:"🍎"}
+});
+PETS_T.maltese.treat="🦴"; PETS_T.shiba.treat="🦴"; PETS_T.kitty.treat="🐟"; PETS_T.bunny.treat="🥕";
+Object.assign(SNDZ,{"Squeak":"吱吱","*munch munch*":"*嚼嚼*","*bear hug*":"*熊抱*","*waddle waddle*":"*摇摇摆摆*","*chirp chirp*":"*啾啾*"});
+function treatIc(){ return petT().treat||"🦴" }
+function faceX(o){ o=o||{}; const nose=o.nose||INK;
+  const eyes=o.eyesOnDark?'<g class="eyes"><circle cx="51" cy="48" r="4.8" fill="#fff"/><circle cx="69" cy="48" r="4.8" fill="#fff"/><circle cx="51.4" cy="48.6" r="3.3" fill="'+INK+'"/><circle cx="68.6" cy="48.6" r="3.3" fill="'+INK+'"/><circle cx="52.4" cy="47.4" r="1.1" fill="#fff"/><circle cx="69.6" cy="47.4" r="1.1" fill="#fff"/></g>'
+    :'<g class="eyes"><ellipse cx="51" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><ellipse cx="69" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><circle cx="52.5" cy="46.3" r="1.5" fill="#fff"/><circle cx="70.5" cy="46.3" r="1.5" fill="#fff"/></g>';
+  const nz=o.beak?'<path d="M54.5 54.5 L65.5 54.5 L60 61.5 Z" fill="#F3A23B" stroke="#C9781A" stroke-width="1" stroke-linejoin="round"/>':o.smallNose?'<path d="M57 55 h6 l-3 3.4 z" fill="'+nose+'" stroke="'+nose+'" stroke-width="1.2" stroke-linejoin="round"/>':'<ellipse cx="60" cy="57" rx="4.6" ry="3.4" fill="'+nose+'"/>';
+  return '<circle cx="44" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/><circle cx="76" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/>'+eyes+nz+
+   (o.beak?'':'<path class="tongue" d="M57.6 62.4 q2.4 7.5 4.8 0 z" fill="#F08AA0"/>'+'<path class="m-ok" d="M55.5 61.2 q4.5 4.2 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/><path class="m-sad" d="M55.5 64.2 q4.5 -3.6 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/>')+
+   (o.teeth?'<rect x="58" y="61.4" width="4" height="3.6" rx=".8" fill="#fff" stroke="'+INK+'" stroke-width=".8"/>':'') }
+function petExtra(type){
+  const open='<svg class="dog" viewBox="0 0 124 124" aria-hidden="true">'; const S2=(c)=>' stroke="'+c+'" stroke-width="2.4" stroke-linejoin="round"';
+  if(type==="hamster"){ const f="#E9B27C",l="#B9844F",c="#FFF1DE",p="#F4B3C0",st=S2(l);
+    return open+'<g class="tail" style="transform-origin:86px 104px"><circle cx="88" cy="106" r="3.5" fill="'+f+'"'+st+'/></g><ellipse cx="60" cy="98" rx="30" ry="21" fill="'+f+'"'+st+'/><ellipse cx="60" cy="100" rx="16" ry="14" fill="'+c+'"/>'+
+      '<ellipse cx="48" cy="114" rx="6.5" ry="4" fill="'+p+'"'+st+'/><ellipse cx="72" cy="114" rx="6.5" ry="4" fill="'+p+'"'+st+'/>'+
+      '<circle cx="39" cy="30" r="9" fill="'+f+'"'+st+'/><circle cx="39" cy="30" r="5" fill="'+p+'"/><circle cx="81" cy="30" r="9" fill="'+f+'"'+st+'/><circle cx="81" cy="30" r="5" fill="'+p+'"/>'+
+      '<ellipse cx="60" cy="52" rx="29" ry="26" fill="'+f+'"'+st+'/><ellipse cx="41" cy="62" rx="10" ry="8" fill="'+c+'"/><ellipse cx="79" cy="62" rx="10" ry="8" fill="'+c+'"/><ellipse cx="60" cy="61" rx="13" ry="10" fill="'+c+'"/><path d="M60 27 v8" stroke="'+l+'" stroke-width="2.4" stroke-linecap="round"/>'+faceX({smallNose:true,nose:"#E58A9C",teeth:true})+'</svg>' }
+  if(type==="panda"){ const k="#2E2B33",st=' style="fill:var(--fur);stroke:var(--fur-line)" stroke-width="2.4"';
+    return open+'<g class="tail" style="transform-origin:86px 104px"><circle cx="89" cy="104" r="6"'+st+'/></g><ellipse cx="60" cy="97" rx="27" ry="20"'+st+'/><ellipse cx="60" cy="83" rx="27" ry="8" fill="'+k+'"/>'+
+      '<ellipse cx="49" cy="113" rx="8" ry="5.5" fill="'+k+'"/><ellipse cx="71" cy="113" rx="8" ry="5.5" fill="'+k+'"/><circle cx="37" cy="28" r="10" fill="'+k+'"/><circle cx="83" cy="28" r="10" fill="'+k+'"/>'+
+      '<circle cx="60" cy="50" r="27"'+st+'/><ellipse cx="50" cy="48" rx="8" ry="10.5" transform="rotate(22 50 48)" fill="'+k+'"/><ellipse cx="70" cy="48" rx="8" ry="10.5" transform="rotate(-22 70 48)" fill="'+k+'"/>'+faceX({eyesOnDark:true})+'</svg>' }
+  if(type==="teddy"){ const f="#C98B57",l="#9A6436",c="#F1D3AE",st=S2(l);
+    return open+'<g class="tail" style="transform-origin:86px 104px"><circle cx="89" cy="104" r="6" fill="'+f+'"'+st+'/></g><ellipse cx="60" cy="97" rx="27" ry="20" fill="'+f+'"'+st+'/><ellipse cx="60" cy="99" rx="14" ry="13" fill="'+c+'"/>'+
+      '<ellipse cx="49" cy="113" rx="8" ry="5.5" fill="'+c+'"'+st+'/><ellipse cx="71" cy="113" rx="8" ry="5.5" fill="'+c+'"'+st+'/><circle cx="37" cy="30" r="11" fill="'+f+'"'+st+'/><circle cx="37" cy="30" r="6" fill="'+c+'"/><circle cx="83" cy="30" r="11" fill="'+f+'"'+st+'/><circle cx="83" cy="30" r="6" fill="'+c+'"/>'+
+      '<circle cx="60" cy="50" r="27" fill="'+f+'"'+st+'/><ellipse cx="60" cy="60" rx="12.5" ry="9" fill="'+c+'"/>'+faceX()+'</svg>' }
+  if(type==="penguin"){ const n="#2F3A56",l="#1F2740",w="#FFFFFF",st=S2(l);
+    return open+'<path d="M36 78 Q20 92 28 104 Q34 96 38 88 Z" fill="'+n+'"/><g class="tail" style="transform-origin:84px 80px"><path d="M84 78 Q100 92 92 104 Q86 96 82 88 Z" fill="'+n+'"/></g>'+
+      '<ellipse cx="60" cy="92" rx="28" ry="26" fill="'+n+'"'+st+'/><ellipse cx="60" cy="96" rx="18" ry="20" fill="'+w+'"/><ellipse cx="49" cy="116" rx="8" ry="4" fill="#F3A23B"/><ellipse cx="71" cy="116" rx="8" ry="4" fill="#F3A23B"/>'+
+      '<circle cx="60" cy="48" r="26" fill="'+n+'"'+st+'/><path d="M60 40 C52 30 36 34 38 50 C39 62 50 68 60 68 C70 68 81 62 82 50 C84 34 68 30 60 40 Z" fill="'+w+'"/>'+faceX({beak:true})+'</svg>' }
+  if(type==="corgi"){ const o="#E08B3C",l="#B0662A",w="#FFF6EC",e="#F7C6A3",st=S2(l);
+    return open+'<g class="tail" style="transform-origin:90px 92px"><circle cx="97" cy="88" r="7" fill="'+o+'"'+st+'/><circle cx="101" cy="80" r="6" fill="'+w+'"'+st+'/></g><ellipse cx="60" cy="98" rx="29" ry="19" fill="'+o+'"'+st+'/><ellipse cx="60" cy="97" rx="14" ry="14" fill="'+w+'"/>'+
+      '<ellipse cx="47" cy="113" rx="7" ry="4.5" fill="'+w+'"'+st+'/><ellipse cx="73" cy="113" rx="7" ry="4.5" fill="'+w+'"'+st+'/>'+
+      '<path d="M33 44 L32 8 L56 28 Z" fill="'+o+'"'+st+'/><path d="M37 37 L37 16 L51 28 Z" fill="'+e+'"/><path d="M87 44 L88 8 L64 28 Z" fill="'+o+'"'+st+'/><path d="M83 37 L83 16 L69 28 Z" fill="'+e+'"/>'+
+      '<ellipse cx="60" cy="50" rx="28" ry="24" fill="'+o+'"'+st+'/><path d="M60 29 C56 38 54 46 52 53 L68 53 C66 46 64 38 60 29 Z" fill="'+w+'"/><ellipse cx="60" cy="60" rx="16" ry="10" fill="'+w+'"/>'+faceX()+'</svg>' }
+  if(type==="redpanda"){ const r="#C4572F",l="#8F3A1D",w="#FFF4EA",d="#5A2A1E",st=S2(l);
+    return open+'<g class="tail" style="transform-origin:84px 98px"><path d="M84 98 C108 100 114 80 104 66" fill="none" stroke="'+l+'" stroke-width="14" stroke-linecap="round"/><path d="M84 98 C108 100 114 80 104 66" fill="none" stroke="'+r+'" stroke-width="10" stroke-linecap="round"/><path d="M84 98 C108 100 114 80 104 66" fill="none" stroke="'+d+'" stroke-width="10" stroke-dasharray="4 8"/></g>'+
+      '<ellipse cx="60" cy="98" rx="27" ry="19" fill="'+d+'"'+st+'/><ellipse cx="49" cy="113" rx="7.5" ry="5" fill="'+d+'"/><ellipse cx="71" cy="113" rx="7.5" ry="5" fill="'+d+'"/>'+
+      '<path d="M35 36 L37 12 L56 26 Z" fill="'+r+'"'+st+'/><path d="M39 31 L40 18 L51 26 Z" fill="'+w+'"/><path d="M85 36 L83 12 L64 26 Z" fill="'+r+'"'+st+'/><path d="M81 31 L80 18 L69 26 Z" fill="'+w+'"/>'+
+      '<ellipse cx="60" cy="50" rx="28" ry="24" fill="'+r+'"'+st+'/><ellipse cx="60" cy="60" rx="14" ry="9" fill="'+w+'"/><ellipse cx="49" cy="39" rx="5" ry="3" fill="'+w+'"/><ellipse cx="71" cy="39" rx="5" ry="3" fill="'+w+'"/><ellipse cx="40" cy="58" rx="6" ry="5" fill="'+w+'"/><ellipse cx="80" cy="58" rx="6" ry="5" fill="'+w+'"/>'+faceX()+'</svg>' }
+  return null }
+const ACC={
+  party:'<path d="M47 27 L60 0 L73 27 Z" style="fill:var(--exp)"/><path d="M52.5 16 L67.5 16 M50 22 L70 22" stroke="#fff" stroke-width="2.4"/><circle cx="60" cy="1" r="4" style="fill:var(--lid)"/>',
+  crown:'<path d="M44 26 L46 10 L53 18 L60 6 L67 18 L74 10 L76 26 Z" fill="#F2C14E" stroke="#C99A2E" stroke-width="1.6" stroke-linejoin="round"/><circle cx="60" cy="19" r="2.6" fill="#E0635A"/><circle cx="50" cy="21" r="1.8" fill="#7FA7E8"/><circle cx="70" cy="21" r="1.8" fill="#7FA7E8"/>',
+  beanie:'<path d="M39 30 C39 9 81 9 81 30 Z" style="fill:var(--inc)"/><rect x="37" y="25" width="46" height="8" rx="4" fill="#fff" opacity=".85"/><circle cx="60" cy="8" r="5" fill="#fff"/>',
+  flower:'<g transform="translate(78 26)"><circle cx="0" cy="-5" r="4.5" fill="#F7A9C4"/><circle cx="4.8" cy="-1.5" r="4.5" fill="#F7A9C4"/><circle cx="3" cy="4" r="4.5" fill="#F7A9C4"/><circle cx="-3" cy="4" r="4.5" fill="#F7A9C4"/><circle cx="-4.8" cy="-1.5" r="4.5" fill="#F7A9C4"/><circle cx="0" cy="0" r="3.2" fill="#F2C14E"/></g>',
+  cap:'<path d="M40 29 C40 11 80 11 80 29 Z" fill="#7FA7E8"/><path d="M60 26 Q86 23 94 30 Q80 33 60 31 Z" fill="#5E86C8"/><circle cx="60" cy="13" r="2.2" fill="#5E86C8"/>',
+  shades:'<rect x="41.5" y="42" width="17" height="11.5" rx="4.5" fill="#1d1d24"/><rect x="61.5" y="42" width="17" height="11.5" rx="4.5" fill="#1d1d24"/><path d="M58.5 46 h3" stroke="#1d1d24" stroke-width="2.2"/><path d="M45 45.5 h5" stroke="#fff" stroke-width="1.5" opacity=".55" stroke-linecap="round"/><path d="M65 45.5 h5" stroke="#fff" stroke-width="1.5" opacity=".55" stroke-linecap="round"/>',
+  round:'<circle cx="51" cy="48" r="7.5" fill="none" stroke="#3a3340" stroke-width="2"/><circle cx="69" cy="48" r="7.5" fill="none" stroke="#3a3340" stroke-width="2"/><path d="M58.5 47 q1.5 -1.5 3 0" stroke="#3a3340" stroke-width="2" fill="none"/>',
+  hearts:'<path d="M51 54 C42 48 44 40 51 45 C58 40 60 48 51 54 Z" fill="#F06A93" opacity=".92"/><path d="M69 54 C60 48 62 40 69 45 C76 40 78 48 69 54 Z" fill="#F06A93" opacity=".92"/><path d="M57 47 h6" stroke="#F06A93" stroke-width="2"/>',
+  scarf:'<path d="M38 68 Q60 78 82 68 L83 76 Q60 86 37 76 Z" style="fill:var(--exp)"/><path d="M70 77 L76 97 L66 95 L64 79 Z" style="fill:var(--exp)"/><path d="M42 72 Q60 80 78 72" stroke="#fff" stroke-opacity=".45" stroke-width="1.5" fill="none"/>',
+  bowtie:'<path d="M60 75 L48 68 L48 82 Z M60 75 L72 68 L72 82 Z" fill="#E0635A"/><circle cx="60" cy="75" r="3.6" fill="#B84A43"/>',
+  bandana:'<path d="M38 68 Q60 76 82 68 L60 92 Z" fill="#4C8BD6"/><circle cx="52" cy="74" r="1.4" fill="#fff"/><circle cx="62" cy="78" r="1.4" fill="#fff"/><circle cx="68" cy="73" r="1.4" fill="#fff"/><circle cx="58" cy="85" r="1.4" fill="#fff"/>',
+  bell:'<path d="M40 70 Q60 80 80 70" stroke="#E0635A" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="60" cy="80" r="5" fill="#F2C14E" stroke="#C99A2E" stroke-width="1.2"/><path d="M57 81.5 h6" stroke="#8a6a20" stroke-width="1.2"/>',
+  songkok:'<path d="M44 26 L46 11 Q60 7 74 11 L76 26 Q60 30 44 26 Z" fill="#23222a"/><path d="M46 12 Q60 8 74 12" stroke="#5a5866" stroke-width="1.4" fill="none"/>',
+  santa:'<path d="M40 28 C44 8 70 2 86 14 L80 20 C72 14 62 16 60 28 Z" fill="#D9383A"/><rect x="36" y="24" width="48" height="8" rx="4" fill="#fff"/><circle cx="86" cy="15" r="5" fill="#fff"/>',
+  cnyband:'<path d="M38 68 Q60 76 82 68 L60 92 Z" fill="#D9383A" stroke="#F2C14E" stroke-width="1.6" stroke-linejoin="round"/><circle cx="60" cy="78" r="3.6" fill="#F2C14E"/>',
+  ketupat:'<path d="M92 94 L102 105 L92 116 L82 105 Z" fill="#6FAE4F" stroke="#3E7A2C" stroke-width="1.4" stroke-linejoin="round"/><path d="M87 99.5 L97 110.5 M97 99.5 L87 110.5" stroke="#3E7A2C" stroke-width="1.1"/><path d="M92 94 L95 86" stroke="#3E7A2C" stroke-width="1.6" stroke-linecap="round"/>',
+  orange:'<circle cx="93" cy="108" r="8" fill="#F39A2B"/><path d="M93 100 q4 -5 8 -3 q-3 4 -8 3z" fill="#5FA14A"/><circle cx="90" cy="105" r="1.6" fill="#fff" opacity=".5"/>',
+  diya:'<path d="M80 109 Q92 121 104 109 Z" fill="#C77B3B"/><path d="M92 106 q-4 -6 0 -12 q4 6 0 12z" fill="#F7B733"/><path d="M92 104 q-1.6 -3 0 -6 q1.6 3 0 6z" fill="#fff6c8"/>'
+};
+const ITEMS=[["party","head","Party hat",10],["flower","head","Flower",8],["cap","head","Cap",12],["beanie","head","Beanie",15],["crown","head","Crown",40],
+  ["round","face","Round glasses",10],["shades","face","Sunglasses",12],["hearts","face","Heart glasses",15],
+  ["bowtie","neck","Bow tie",8],["bandana","neck","Bandana",8],["scarf","neck","Scarf",10],["bell","neck","Bell collar",12]].map(([id,slot,name,cost])=>({id,slot,name,cost}));
+const FEST=[["raya",["2026-03-20","2027-03-10","2028-02-27"],-3,21,{head:"songkok",prop:"ketupat"}],["cny",["2026-02-17","2027-02-06","2028-01-26"],-5,15,{neck:"cnyband",prop:"orange"}],["deepavali",["2026-11-08","2027-10-28","2028-10-17"],-3,4,{head:"flower",prop:"diya"}],["xmas",["2026-12-25","2027-12-25","2028-12-25"],-10,1,{head:"santa"}]];
+function season(){ const t=today(); for(const [k,ds,a,b,o] of FEST) for(const d of ds){ const diff=-daysUntil(d); if(diff>=a&&diff<=b) return {k,o} } return null }
+function bud(){ const b=S.settings.buddy=S.settings.buddy||{}; b.treats=b.treats||0; b.xp=b.xp||0; b.owned=b.owned||[]; b.outfit=b.outfit||{}; b.badges=b.badges||[]; if(!b.since) b.since=firstEntryDay()||today(); return b }
+function firstEntryDay(){ let m=null; for(const k in S.months) for(const x of S.months[k]) if(!m||x.d<m) m=x.d; return m }
+function effOutfit(){ const b=bud(); const o=Object.assign({},b.outfit); const s=season(); if(s&&b.seasonal!==false) Object.assign(o,s.o); return o }
+function petSVG(type,opts){ type=PETS_T[type]?type:"maltese"; let svg=petExtra(type)||petBase(type); const o=opts&&opts.outfit; if(!o) return svg;
+  const acc=["neck","face","head","prop"].map(sl=>o[sl]&&ACC[o[sl]]?'<g class="acc acc-'+sl+'">'+ACC[o[sl]]+'</g>':"").join("");
+  if(o.head) svg=svg.replace('class="dog"','class="dog hashead"'); return svg.replace(/<\/svg>$/,acc+"</svg>") }
+function lvlInfo(xp){ let L=1, need=40, x=xp; while(x>=need){ x-=need; L++; need=40+20*(L-1) } return {L,cur:x,need} }
+function level(){ return lvlInfo(bud().xp).L }
+function happiness(){ const b=bud(); let h=50; const hrs=b.fedAt?(Date.now()-b.fedAt)/36e5:999; h+=hrs<24?25:hrs<48?10:hrs<96?-5:-20;
+  const nToday=(S.months[ymOf(new Date())]||[]).filter(x=>x.d===today()).length; const st=streak(); h+=nToday?15:(st>0?5:-10); h+=Math.min(st,10);
+  const bg=+S.settings.budget||0; if(bg>0&&totals(ymOf(new Date())).e>bg) h-=15; return Math.max(0,Math.min(100,Math.round(h))) }
+function bestStreak(){ const days=[...new Set(Object.values(S.months).flat().map(x=>x.d))].sort(); let best=0,run=0,prev=null; for(const d of days){ run=(prev&&-daysUntil(d)===-daysUntil(prev)-1)?run+1:1; best=Math.max(best,run); prev=d } return best }
+function monthHist(test){ const cur=ymOf(new Date()); return Object.keys(S.months).some(k=>{ if(k>=cur) return false; let e=0,i=0; S.months[k].forEach(x=>{if(x.t==="e")e+=x.a;else if(x.t==="i")i+=x.a}); return test(e,i) }) }
+const BADGES=[["first","🌱","First entry",()=>entryCount()>=1,3],["streak7","🔥","7-day streak",()=>bestStreak()>=7,10],["streak30","🏆","30-day streak",()=>bestStreak()>=30,30],
+  ["e100","💯","100 entries",()=>entryCount()>=100,15],["e1000","🚀","1,000 entries",()=>entryCount()>=1000,50],["goal","🎯","First goal reached",()=>(S.goals||[]).some(g=>goalSaved(g)>=g.target),20],
+  ["budget","🛡️","Budget hero",()=>{const bg=+S.settings.budget||0; return bg>0&&monthHist((e)=>e>0&&e<=bg)},15],["saver","💰","Super saver",()=>monthHist((e,i)=>i>0&&(i-e)/i>=0.2),15],
+  ["lv5","⭐","Level 5",()=>level()>=5,10],["lv10","🌟","Level 10",()=>level()>=10,25],["style","👒","Fashionista",()=>bud().owned.length>=5,10]];
+const BADGE_DESC={budget:"Finish a month under budget",saver:"Save 20% of income in a month",style:"Own 5 outfits"};
+function checkBadges(silent){ const b=bud(); const got=[]; BADGES.forEach(([id,ic,name,test,tr])=>{ if(!b.badges.includes(id)&&test()){ b.badges.push(id); b.treats+=tr; got.push([ic,name,tr]) } });
+  if(got.length){ persistSettings(); refreshBubble(); if(!silent){ const g=got[got.length-1]; setTimeout(()=>{ toast("New badge: "+g[1]+" "+g[0]); say("We earned a badge: "+g[1]+"! +"+g[2]+" "+treatIc(),"happy",5000); confetti() },700) } } }
+function onNewEntry(){ const b=bud(); let n=0; if(b.eday!==today()){ b.eday=today(); b.ecount=0; n+=2 } if(b.ecount<10){ b.ecount++; n+=1 } b.treats+=n; persistSettings(); refreshBubble(); checkBadges(); return n }
+function bubbleHead(){ const b=bud(); return '<small>'+esc(dogName())+' · Lv '+level()+'<span class="tr">'+treatIc()+' '+b.treats+'</span></small>' }
+function refreshBubble(){ const el=$("say"); const sm=el&&el.querySelector("small"); if(sm) sm.outerHTML=bubbleHead() }
+let WOKE=0, TAPS=[];
+function isNight(){ const h=new Date().getHours(); return (h>=23||h<6)&&Date.now()-WOKE>60000 }
+function sleepFx(on){ const w=$("dogWrap"); if(!w) return; w.querySelectorAll(".zzz").forEach(z=>z.remove()); if(on) for(let k=0;k<3;k++){ const z=document.createElement("span"); z.className="zzz"; z.textContent="z"; z.style.animationDelay=(k*0.9)+"s"; w.appendChild(z) } }
+const FEEDL=["Nom nom nom! 😋","Yummy! Thank you! 💕","*happy crunching*","Best treat ever! 🤤"];
+function feedPet(times){ const b=bud(); times=Math.min(times||1,b.treats); if(times<1){ toast("No treats yet. Log entries to earn some!"); return }
+  const before=level(); b.treats-=times; b.xp+=10*times; b.fedAt=Date.now(); persistSettings(); const after=level();
+  if(BPV) drawProfile(); refreshBubble(); checkBadges();
+  if(after>before){ confetti(); say("Level up! I'm level "+after+" now! ⭐","happy",5000) } else say(FEEDL[Math.floor(Math.random()*FEEDL.length)],"happy",3000);
+  const w=$("dogWrap"); if(w) for(let k=0;k<Math.min(times,4);k++){ const h=document.createElement("span"); h.className="heart"; h.textContent=treatIc(); h.style.setProperty("--dx",(Math.random()*40-20).toFixed(0)+"px"); h.style.animationDelay=(k*120)+"ms"; w.appendChild(h); setTimeout(()=>h.remove(),1600) } }
+function tipsList(){ const out=[]; const td=today(); const wk=[]; for(const k in S.months) for(const x of S.months[k]) if(x.t==="e"&&-daysUntil(x.d)>=0&&-daysUntil(x.d)<=6) wk.push(x);
+  if(wk.length>=3){ const s={},c={}; wk.forEach(x=>{s[x.c]=(s[x.c]||0)+x.a;c[x.c]=(c[x.c]||0)+1}); const top=Object.keys(s).sort((a,b)=>s[b]-s[a])[0];
+    out.push(/drink|coffee|boba|tea|kopi/i.test(top)?"This week you spent "+cur()+" "+money(s[top])+" on "+top+". That's "+c[top]+" cups 🧋":"This week you spent "+cur()+" "+money(s[top])+" on "+top+" ("+c[top]+" times)") }
+  const now=new Date(), tk=ymOf(now), lk=shiftMonth(tk,-1), day=now.getDate(); const a={},p={};
+  (S.months[tk]||[]).forEach(x=>{if(x.t==="e"&&+x.d.slice(8)<=day)a[x.c]=(a[x.c]||0)+x.a}); (S.months[lk]||[]).forEach(x=>{if(x.t==="e"&&+x.d.slice(8)<=day)p[x.c]=(p[x.c]||0)+x.a});
+  let up=null,dn=null; Object.keys(a).forEach(k=>{ if(p[k]>0){ const r=(a[k]-p[k])/p[k]; if(r>=0.3&&a[k]-p[k]>=30&&(!up||r>up[1])) up=[k,r]; } }); Object.keys(p).forEach(k=>{ const r=((a[k]||0)-p[k])/p[k]; if(r<=-0.3&&p[k]-(a[k]||0)>=30&&(!dn||r<dn[1])) dn=[k,r] });
+  if(up) out.push(up[0]+" is up "+Math.round(up[1]*100)+"% vs this time last month"); if(dn) out.push(dn[0]+" is down "+Math.round(-dn[1]*100)+"% vs last month. Nice! 👏");
+  const pay=(S.months[tk]||[]).filter(x=>x.t==="i"&&x.d===td&&x.a>=500).reduce((s,x)=>s+x.a,0); const g=(S.goals||[]).find(g=>goalSaved(g)<g.target&&!g.w);
+  if(pay&&g) out.push("Payday! 🎉 Want to put "+cur()+" "+money(Math.round(pay*0.1))+" into "+g.name+"?");
+  const subs=(S.settings.subs||[]).filter(x=>!x.paused&&daysUntil(x.next)>=0&&daysUntil(x.next)<=7);
+  if(subs.length){ const t=subs.reduce((s,x)=>s+x.a,0); out.push(subs.length===1?subs[0].name+" renews this week ("+cur()+" "+money(t)+")":subs.slice(0,2).map(x=>x.name).join(" and ")+(subs.length>2?" and more":"")+" renew this week ("+cur()+" "+money(t)+")") }
+  return out }
+const SEASON_HI={raya:"Selamat Hari Raya! Maaf zahir & batin 🌙",cny:"Gong Xi Fa Cai! May your jar overflow 🍊",deepavali:"Happy Deepavali! May your days be bright 🪔",xmas:"Merry Christmas! 🎄 Don't overspend on gifts!"};
+/* profile */
+let BPV=null;
+function openProfile(){ BPV={tab:"head"}; draw() }
+function drawProfile(){ const b=bud(); const li=lvlInfo(b.xp); const hp=happiness(); const of=effOutfit();
+  const vb={head:"30 -4 64 48",face:"36 34 48 26",neck:"30 62 64 40"};
+  let body='<div class="bp-hero">'+petSVG(petType(),{outfit:of})+'</div>'+
+   '<div class="bp-name"><b>'+esc(dogName())+'</b> <span class="pill">Lv '+li.L+'</span></div>'+
+   '<div class="bp-meters"><div><div class="label">XP '+li.cur+' / '+li.need+'</div><div class="gbar"><i style="width:'+(li.cur/li.need*100).toFixed(1)+'%"></i></div></div><div><div class="label">Happiness '+hp+'%</div><div class="gbar hp"><i style="width:'+hp+'%"></i></div></div></div>'+
+   '<div class="bp-treats"><span class="bp-tc">'+treatIc()+' <b class="num">'+b.treats+'</b> treats</span><span class="row-btns" style="flex-wrap:nowrap"><button class="btn soft" data-feed="5"'+(b.treats<2?' disabled':'')+'>×5</button><button class="btn primary" data-feed="1"'+(b.treats<1?' disabled':'')+'>Feed '+treatIc()+'</button></span></div>'+
+   '<p class="hint">Earn treats by logging entries (up to 10 a day), your first entry each day, and badges.</p>'+
+   '<div class="stats">'+mini("Days together",String(Math.max(1,-daysUntil(b.since)+1)))+mini("Streak",String(streak()))+mini("Best streak",String(bestStreak()))+mini("Entries",String(entryCount()))+'</div>';
+  const s=season(); body+='<div class="label">Wardrobe</div><div class="seg">'+[["head","Head"],["face","Face"],["neck","Neck"]].map(([k,l])=>'<button data-bptab="'+k+'" aria-pressed="'+(BPV.tab===k)+'">'+l+'</button>').join("")+'</div>'+
+   '<div class="wardrobe">'+ITEMS.filter(i=>i.slot===BPV.tab).map(i=>{ const own=b.owned.includes(i.id), on=b.outfit[i.slot]===i.id; return '<button class="witem'+(on?' on':'')+'" data-item="'+i.id+'"><svg viewBox="'+vb[i.slot]+'" aria-hidden="true">'+ACC[i.id]+'</svg><span>'+esc(i.name)+'</span><small>'+(on?"Wearing":own?"Owned":treatIc()+" "+i.cost)+'</small></button>' }).join("")+'</div>'+
+   '<div class="switchrow"><div>Seasonal outfits<small>'+(s?"Now: "+({raya:"Hari Raya",cny:"Chinese New Year",deepavali:"Deepavali",xmas:"Christmas"}[s.k]):"Raya, Chinese New Year, Deepavali, Christmas")+'</small></div><button class="sw" role="switch" data-bpseason="1" aria-checked="'+(b.seasonal!==false)+'" aria-label="Seasonal outfits"></button></div>';
+  body+='<div class="label">Badges</div><div class="badges">'+BADGES.map(([id,ic,name])=>{ const got=b.badges.includes(id); return '<div class="badge'+(got?'':' locked')+'" title="'+esc(BADGE_DESC[id]||name)+'"><span aria-hidden="true">'+(got?ic:"🔒")+'</span><small>'+esc(name)+'</small></div>' }).join("")+'</div>';
+  const tips=tipsList(); body+='<div class="label">'+esc(dogName())+'’s tips</div>'+(tips.length?'<div class="highlights">'+tips.map(t=>'<div class="hl"><span aria-hidden="true">💡</span><div>'+esc(t)+'</div></div>').join("")+'</div>':'<p class="hint">Log a few more entries and I’ll start spotting patterns.</p>');
+  body+='<div class="label">Pet &amp; name</div><div class="petgrid">'+Object.keys(PETS_T).map(k=>'<button class="petopt" data-pet="'+k+'" aria-pressed="'+(petType()===k)+'">'+petSVG(k)+esc(PETS_T[k].label)+'</button>').join("")+'</div><input class="field" id="dogName" maxlength="16" placeholder="'+esc(petT().def)+'" value="'+esc(S.settings.dog||"")+'" aria-label="Pet name">';
+  keepScroll(()=>{ $("sheetRoot").innerHTML=shell(dogName(),body) }) }
+function tapItem(id){ const b=bud(); const it=ITEMS.find(i=>i.id===id); if(!it) return;
+  if(b.owned.includes(id)){ b.outfit[it.slot]=b.outfit[it.slot]===id?null:id }
+  else { if(b.treats<it.cost){ toast("You need "+(it.cost-b.treats)+" more treats"); return } b.treats-=it.cost; b.owned.push(id); b.outfit[it.slot]=id; say("Ooh, a new "+it.name+"! How do I look? ✨","happy",4000); checkBadges() }
+  persistSettings(); renderBuddyShell(); refreshBubble(); drawProfile() }
+setInterval(()=>{ if(document.hidden||$("sheetRoot").innerHTML) return; const d=dogEl(); if(!d||d.classList.contains("sleep")) return; const r=Math.random(); const c=r<.35?"tilt":r<.7?"look":"wagburst"; d.classList.add(c); setTimeout(()=>d.classList.remove(c),1600) },8000);
+Object.assign(ZH,{"Hamster":"仓鼠","Panda":"熊猫","Teddy":"泰迪熊","Penguin":"企鹅","Corgi":"柯基","Red panda":"小熊猫","Feed":"喂食","treats":"零食","Days together":"相伴天数","Streak":"连续天数","Best streak":"最长连续","Wardrobe":"衣橱","Head":"头部","Face":"脸部","Neck":"颈部","Wearing":"穿戴中","Owned":"已拥有","Seasonal outfits":"节日服装","Raya, Chinese New Year, Deepavali, Christmas":"开斋节、农历新年、屠妖节、圣诞节","Badges":"徽章","Pet & name":"宠物与名字",
+ "Earn treats by logging entries (up to 10 a day), your first entry each day, and badges.":"记账可以赚零食（每天最多 10 个），每天第一笔和获得徽章也有奖励。","Log a few more entries and I'll start spotting patterns.":"再多记几笔，我就能帮你发现消费规律。","No treats yet. Log entries to earn some!":"还没有零食，记账就能赚到！",
+ "Party hat":"派对帽","Flower":"小花","Cap":"棒球帽","Beanie":"毛线帽","Crown":"皇冠","Round glasses":"圆框眼镜","Sunglasses":"太阳眼镜","Heart glasses":"爱心眼镜","Bow tie":"领结","Bandana":"三角巾","Scarf":"围巾","Bell collar":"铃铛项圈",
+ "First entry":"第一笔记录","7-day streak":"连续 7 天","30-day streak":"连续 30 天","100 entries":"100 笔记录","1,000 entries":"1,000 笔记录","First goal reached":"首个目标达成","Budget hero":"预算英雄","Super saver":"储蓄达人","Level 5":"5 级","Level 10":"10 级","Fashionista":"时尚达人",
+ "Finish a month under budget":"一个月内不超预算","Save 20% of income in a month":"一个月存下 20% 收入","Own 5 outfits":"拥有 5 件服饰",
+ "Nom nom nom! 😋":"啊呜啊呜！😋","Yummy! Thank you! 💕":"好好吃！谢谢你！💕","*happy crunching*":"*开心地嚼嚼*","Best treat ever! 🤤":"最好吃的零食！🤤","Wheee! 🌀":"呜哇～！🌀","zZz… 💤":"呼噜噜… 💤","*yawn*… oh, hi! 🥱":"*打哈欠*… 哦，嗨！🥱",
+ "Selamat Hari Raya! Maaf zahir & batin 🌙":"开斋节快乐！Maaf zahir & batin 🌙","Gong Xi Fa Cai! May your jar overflow 🍊":"恭喜发财！愿你的储蓄罐满满 🍊","Happy Deepavali! May your days be bright 🪔":"屠妖节快乐！愿你的日子光明灿烂 🪔","Merry Christmas! 🎄 Don't overspend on gifts!":"圣诞快乐！🎄 买礼物别超支哦！",
+ "I miss you! Let's log something today 🥺":"好想你！今天来记一笔吧 🥺","Hari Raya":"开斋节","Chinese New Year":"农历新年","Deepavali":"屠妖节","Christmas":"圣诞节"});
+RX.push([/^(.+)'s tips$/, (_,a)=>a+" 的小贴士"],[/^XP (\d+) \/ (\d+)$/, (_,a,b)=>"经验 "+a+" / "+b],[/^Happiness (\d+)%$/, (_,a)=>"开心度 "+a+"%"],[/^Now: (.+)$/, (_,a)=>"现在："+zt(a)],
+ [/^New badge: (.+) (\S+)$/, (_,a,b)=>"新徽章："+zt(a)+" "+b],[/^We earned a badge: (.+)! \+(\d+) (.+)$/, (_,a,b,c)=>"我们获得了徽章："+zt(a)+"！+"+b+" "+c],[/^Level up! I'm level (\d+) now! ⭐$/, (_,a)=>"升级啦！我现在 "+a+" 级了！⭐"],
+ [/^You need (\d+) more treats$/, (_,a)=>"还差 "+a+" 个零食"],[/^Ooh, a new (.+)! How do I look\? ✨$/, (_,a)=>"哇，新的"+zt(a)+"！我好看吗？✨"],[/^(.+) · \+(\d+) (\S+)$/, (_,a,b,c)=>{ const r=trPart(a); return r==null?null:r+" · +"+b+" "+c }],
+ [/^This week you spent (.+) on (.+)\. That's (\d+) cups 🧋$/, (_,a,b,c)=>"这周你在"+zt(b)+"上花了 "+a+"，相当于 "+c+" 杯 🧋"],[/^This week you spent (.+) on (.+) \((\d+) times\)$/, (_,a,b,c)=>"这周你在"+zt(b)+"上花了 "+a+"（"+c+" 次）"],
+ [/^(.+) is up (\d+)% vs this time last month$/, (_,a,b)=>zt(a)+" 比上月同期多了 "+b+"%"],[/^(.+) is down (\d+)% vs last month\. Nice! 👏$/, (_,a,b)=>zt(a)+" 比上月少了 "+b+"%，真棒！👏"],
+ [/^Payday! 🎉 Want to put (.+) into (.+)\?$/, (_,a,b)=>"发薪日！🎉 要不要存 "+a+" 到「"+b+"」？"],[/^(.+) renews this week \((.+)\)$/, (_,a,b)=>a+" 本周续费（"+b+"）"],[/^(.+) renew this week \((.+)\)$/, (_,a,b)=>a.replace(/ and more$/,"等").replace(/ and /g,"和")+" 本周续费（"+b+"）"],
+ [/^I'm hungry… got a (.+)\? 🥺$/, (_,a)=>"我饿了… 有"+a+"吗？🥺"]);
+
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
@@ -2123,6 +2324,7 @@ document.addEventListener("click",e=>{
   if("aw" in ds&&!t.closest(".sheet")){S.af.w=ds.aw||null;render();return}
   if(t.id==="navHome"){S.page="home";window.scrollTo(0,0);render();buddyIdle();return}
   if(t.id==="navGoals"){S.page="goals";window.scrollTo(0,0);render();buddyIdle();return}
+  if(ds.bprof){openProfile();return}
   if(t.id==="dogBtn"){petDog();return}
   if(t.id==="addBtn"){ if(S.page==="goals"){ if(S.plan==="subs") openSub(null); else openGoal(null) } else openEditor(); return }
   if(ds.act==="add"){openEditor();return}
@@ -2245,6 +2447,14 @@ document.addEventListener("click",e=>{
   }
   if(CD){
     if(ds.editcd){openCat(CD.t,CD.c);return}
+    return;
+  }
+  if(BPV&&!CE&&!WE){
+    if(ds.feed){feedPet(+ds.feed);return}
+    if(ds.bptab){BPV.tab=ds.bptab;drawProfile();return}
+    if(ds.item){tapItem(ds.item);return}
+    if(ds.bpseason){const b=bud(); b.seasonal=b.seasonal===false; persistSettings(); renderBuddyShell(); refreshBubble(); drawProfile(); return}
+    if(ds.pet){ const n=$("dogName"); const nm=n?n.value.trim():""; const isDef=!nm||Object.values(PETS_T).some(p=>p.def===nm); S.settings.pet=ds.pet; if(isDef) delete S.settings.dog; else S.settings.dog=nm; persistSettings(); renderBuddyShell(); say("Hi! I'm "+dogName()+" "+petT().emo,"happy",4000); drawProfile(); return }
     return;
   }
   if(ST){
