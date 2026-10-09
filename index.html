@@ -561,6 +561,8 @@ button:active{transform:scale(.97)}
 .cmname .bubble{width:34px;height:34px;border-radius:11px;font-size:17px;flex:none}
 .cmname > span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .cmname small{display:block;color:var(--muted);font-size:11.5px;font-weight:600}
+#subcard:empty,#bkcard:empty,#filterbar:empty{display:none}
+.bkcard{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:20px;padding:12px 12px 12px 14px}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -587,6 +589,7 @@ button:active{transform:scale(.97)}
     <div class="wstrip" id="wstrip" aria-label="Wallets"></div>
     <div id="filterbar"></div>
     <div id="subcard"></div>
+    <div id="bkcard"></div>
     <div class="tabs" role="tablist">
       <button role="tab" id="tabDaily" aria-selected="true">Daily</button>
       <button role="tab" id="tabCats" aria-selected="false">Categories</button>
@@ -1012,7 +1015,7 @@ function render(){
   $("addLabel").textContent=pg==="goals"?"Goal":"Add";
   if(pg==="goals"){ renderGoals(); return }
   if(pg==="stats"){ renderStats(); return }
-  renderHero(); countUp(); renderWallets(); renderSubCard();
+  renderHero(); countUp(); renderWallets(); renderSubCard(); renderBkCard();
   $("tabDaily").setAttribute("aria-selected",S.tab==="daily"); $("tabCats").setAttribute("aria-selected",S.tab==="cats"); $("tabYear").setAttribute("aria-selected",S.tab==="year");
   const main=$("main"); const list=monthTx(S.view);
   if(S.mode==="loading"){ main.innerHTML=""; return }
@@ -1068,9 +1071,8 @@ function drawEditor(){
   body+='<input class="field" id="noteIn" placeholder="Note (optional)" maxlength="80" value="'+esc(ED.n)+'">'+
    '<div class="datechips"><button class="dchip" data-dq="0" aria-pressed="'+(ED.d===today())+'">Today</button><button class="dchip" data-dq="1" aria-pressed="'+(ED.d===yday())+'">Yesterday</button><input class="field" id="dateIn" type="date" value="'+esc(ED.d)+'" aria-label="Date"></div>'+
    (ED.t!=="a"?repeatRow():'')+
-   '<div class="padfoot"><div class="keypad">'+["1","2","3","⌫","4","5","6","+","7","8","9","−",".","0","00","="].map(k=>'<button data-key="'+k+'"'+("+−=".includes(k)?' class="op"':'')+' aria-label="'+({"⌫":"Delete digit","+":"Plus","−":"Minus","=":"Equals"}[k]||k)+'">'+k+'</button>').join("")+'</div>'+
-   '<button class="save" id="saveBtn"'+(canSave()?'':' disabled')+'>'+(ED.id?"Save changes":"Save "+({e:"expense",i:"income",x:"transfer",a:"adjustment"}[ED.t]))+'</button></div>'+
-   (ED.id?(ED.confirm?'<div class="confirm"><span>Delete this entry?</span><span class="row-btns"><button class="btn soft" data-delno="1">Keep</button><button class="btn danger" data-delyes="1">Delete</button></span></div>':'<button class="btn danger" data-del="1">Delete entry</button>'):'');
+   (ED.id?(ED.confirm?'<div class="confirm"><span>Delete this entry?</span><span class="row-btns"><button class="btn soft" data-delno="1">Keep</button><button class="btn danger" data-delyes="1">Delete</button></span></div>':'<button class="btn danger" data-del="1">Delete entry</button>'):'')+'<div class="padfoot"><div class="keypad">'+["1","2","3","⌫","4","5","6","+","7","8","9","−",".","0","00","="].map(k=>'<button data-key="'+k+'"'+("+−=".includes(k)?' class="op"':'')+' aria-label="'+({"⌫":"Delete digit","+":"Plus","−":"Minus","=":"Equals"}[k]||k)+'">'+k+'</button>').join("")+'</div>'+
+   '<button class="save" id="saveBtn"'+(canSave()?'':' disabled')+'>'+(ED.id?"Save changes":"Save "+({e:"expense",i:"income",x:"transfer",a:"adjustment"}[ED.t]))+'</button></div>';
   keepScroll(()=>{ $("sheetRoot").innerHTML=shell(ED.id?"Edit entry":"New entry",body) });
 }
 function canSave(){ const v=evalAmt(ED.amt); if(!(v>0)) return false; if(ED.t==="x") return !!ED.to&&ED.to!==ED.w; return true }
@@ -1212,7 +1214,11 @@ function drawSettings(){
   '<section class="set-block"><h3>Monthly budget</h3><p>The jar shows how much of it is left. Leave at 0 to use your income instead.</p>'+
    '<div class="inline"><b>'+esc(cur())+'</b><input class="field num" id="budgetIn" inputmode="decimal" value="'+(S.settings.budget||"")+'" placeholder="0.00"></div></section>'+
   '<section class="set-block"><h3>Currency symbol</h3><input class="field" id="curIn" maxlength="4" value="'+esc(cur())+'"></section>'+
-  '<section class="set-block"><h3>Backup</h3><p>Save every entry as a CSV file you can open in Excel or Numbers.</p><button class="btn soft" data-export="1">Export CSV</button></section>'+
+  '<section class="set-block"><h3>Backup</h3><p>Saves everything (entries, wallets, goals, subscriptions, categories and settings) as one file. Choose Mail to email it to yourself, or Save to Files for iCloud Drive.</p><p class="hint">Last backup: '+lastBkLabel()+'</p>'+
+   '<button class="btn primary" data-backup="1">Back up now</button>'+
+   (ST.restore?'<div class="confirmbox"><b>Backup from '+esc(ST.restore.at)+' · '+ST.restore.n+' entries</b><p class="hint">Replace everything on this phone with this backup? Anything added since then will be removed.</p><div class="row-btns"><button class="btn soft" data-rsno="1">Cancel</button><button class="btn danger" data-rsyes="1">Replace</button></div></div>':'<label class="btn soft file-btn">Restore from backup<input type="file" id="restoreIn" accept=".json,application/json"></label>')+
+   '<div class="label">Remind me</div><div class="seg">'+[["daily","Daily"],["weekly","Weekly"],["off","Off"]].map(([k,l])=>'<button data-bkr="'+k+'" aria-pressed="'+((S.settings.bkRemind||"daily")===k)+'">'+l+'</button>').join("")+'</div>'+
+   '<button class="link" data-export="1" style="align-self:flex-start">Export entries as CSV (for Excel)</button></section>'+
   '<section class="set-block"><h3>Start over</h3>'+(ST.wipe?'<div class="confirm"><span>Delete every entry?</span><span class="row-btns"><button class="btn soft" data-wipeno="1">Cancel</button><button class="btn danger" data-wipeyes="1">Delete all</button></span></div>':'<button class="btn danger" data-wipe="1">Delete all entries</button>')+'</section>';
   keepScroll(()=>{ $("sheetRoot").innerHTML=shell("Settings",body) });
   if(ST.focus==="budget"){ const x=$("budgetIn"); x&&x.focus(); ST.focus=null }
@@ -1371,6 +1377,7 @@ function buddyIdle(){
   if(S.page==="goals"){ say((S.goals||[]).length?"Every ringgit counts. I'm cheering for you!":"What are we saving for? A wedding? A house? Treats?"); return }
   if(!any){ say("Hi, I'm "+dogName()+"! Tap Add to log your first spend 🐾"); return }
   const due=subsDueSoon(); if(due){ say(due,""); return }
+  if(backupDue()&&!BK_SNOOZE&&Math.random()<.5){ say("Let's do today's backup! Tap \u201cBack up\u201d below 💾",""); return }
   const h=new Date().getHours(); const hi=h<12?"Good morning":h<18?"Good afternoon":"Good evening";
   const nToday=(S.months[ymOf(new Date())]||[]).filter(x=>x.d===today()).length;
   const st=streak(); const b=+S.settings.budget||0; const spent=totals(ymOf(new Date())).e;
@@ -1930,6 +1937,38 @@ function deleteWallet(mode){ ensureWallets(); const id=WE.id, to=mode==="move"?W
   if(S.wf===id) S.wf=null; if(S.af.w===id) S.af.w=null; if(S.settings.lastW===id) delete S.settings.lastW;
   touched.forEach(persistMonth); persistSettings(); persistGoals(); const nm=fw?fw.name:"Wallet"; WE=null; draw(); render(); toast(nm+" deleted") }
 
+/* ---------- full backup ---------- */
+Object.assign(ZH,{"Time to back up":"该备份啦","Back up":"备份","Later":"稍后","Backup":"备份","Back up now":"立即备份","Restore from backup":"从备份恢复","Remind me":"提醒我","Daily":"每天","Weekly":"每周","Off":"关闭","Export entries as CSV (for Excel)":"导出记录为 CSV（用于 Excel）",
+ "Saves everything (entries, wallets, goals, subscriptions, categories and settings) as one file. Choose Mail to email it to yourself, or Save to Files for iCloud Drive.":"把所有内容（记录、钱包、目标、订阅、类别和设置）保存成一个文件。选择“邮件”发送给自己，或选择“存储到文件”保存到 iCloud 云盘。",
+ "Backup sent":"备份已完成","Everything restored":"已全部恢复","That isn't a Duit Jar backup file.":"这不是 Duit Jar 备份文件。","Replace":"替换","Not backed up yet":"还没有备份",
+ "Replace everything on this phone with this backup? Anything added since then will be removed.":"用这个备份替换手机上的所有内容？之后新增的记录会被移除。","Let's do today's backup! Tap \"Back up\" below 💾":"来做今天的备份吧！点下面的“备份” 💾","Restored to before the backup":"已恢复到恢复备份之前","Backed up! Your data is safe with me 💾":"备份好了！你的数据交给我保管 💾"});
+RX.push([/^Last backup: (.+)$/, (_,a)=>"上次备份："+bkZ(a)],[/^Backup from (.+) · (\d+) entries$/, (_,a,b)=>a+" 的备份 · "+b+" 笔记录"]);
+function bkZ(a){ if(a==="never") return "从未"; if(a==="today") return "今天"; if(a==="yesterday") return "昨天"; const m=a.match(/^(\d+) days ago$/); return m?m[1]+" 天前":a }
+function lastBkLabel(){ const lb=S.settings.lastBackup; if(!lb) return "never"; const d=-daysUntil(lb); return d<=0?"today":d===1?"yesterday":d+" days ago" }
+function backupDue(){ const r=S.settings.bkRemind||"daily"; if(r==="off") return false; if(!Object.keys(S.months).some(k=>S.months[k].length)) return false; const lb=S.settings.lastBackup; if(!lb) return true; return -daysUntil(lb)>=(r==="weekly"?7:1) }
+let BK_SNOOZE=false;
+function renderBkCard(){ const el=$("bkcard"); if(!el) return; if(S.mode==="loading"||BK_SNOOZE||!backupDue()){ el.innerHTML=""; return }
+  el.innerHTML='<div class="bkcard"><span class="bubble neu" aria-hidden="true">💾</span><span class="tx-main"><div class="tx-cat">Time to back up</div><div class="tx-note">'+(S.settings.lastBackup?'Last backup: '+lastBkLabel():'Not backed up yet')+'</div></span><span class="row-btns" style="flex-wrap:nowrap"><button class="mini" data-bklater="1">Later</button><button class="btn primary" data-backup="1" style="padding:9px 14px">Back up</button></span></div>' }
+function backupObj(){ return {app:"duitjar",v:1,at:new Date().toISOString(),months:S.months,settings:S.settings,goals:S.goals||[]} }
+async function doBackup(){
+  const name="duit-jar-backup-"+today()+".json"; const json=JSON.stringify(backupObj());
+  const done=()=>{ S.settings.lastBackup=today(); persistSettings(); BK_SNOOZE=false; render(); if(ST) drawSettings(); toast("Backup sent"); say("Backed up! Your data is safe with me 💾","happy",3500) };
+  if(DL){ try{ await DL.save({filename:name,data:json}); done(); return }catch(e){ if(e&&e.code==="declined") return } }
+  try{ const f=new File([json],name,{type:"application/json"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f],title:"Duit Jar backup",text:"Duit Jar backup · "+fmtD(today())}); done(); return }
+    const a=document.createElement("a"); a.href=URL.createObjectURL(f); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500); done();
+  }catch(e){ if(e&&e.name==="AbortError") return; toast("Export didn't work. Try again.") }
+}
+async function readRestore(file){
+  try{ const d=JSON.parse(await file.text()); if(!d||d.app!=="duitjar"||typeof d.months!=="object") throw 0;
+    const n=Object.values(d.months).reduce((s,a)=>s+(Array.isArray(a)?a.length:0),0); ST.restore={d,n,at:d.at?fmtD(String(d.at).slice(0,10)):"?"}; drawSettings() }
+  catch(e){ ST.restore=null; drawSettings(); toast("That isn't a Duit Jar backup file.") }
+}
+function applyRestore(){ const d=ST.restore.d; const old={months:S.months,settings:S.settings,goals:S.goals};
+  const swap=(src)=>{ const oldKeys=Object.keys(S.months); S.months=JSON.parse(JSON.stringify(src.months||{})); S.settings=Object.assign({cur:"RM",budget:0},JSON.parse(JSON.stringify(src.settings||{}))); S.goals=JSON.parse(JSON.stringify(src.goals||[]));
+    new Set(oldKeys.concat(Object.keys(S.months))).forEach(persistMonth); persistSettings(); persistGoals(); applyPalette(); if(S.settings.lang&&S.settings.lang!==LANG) applyLang(S.settings.lang); render(); renderBuddyShell(); buddyIdle() };
+  swap(d); ST.restore=null; closeAll(); toast("Everything restored",()=>{ swap(old); toast("Restored to before the backup") }) }
+
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
@@ -1959,6 +1998,8 @@ document.addEventListener("click",e=>{
   if(ds.gomonth){S.view=ds.gomonth;S.tab="daily";render();window.scrollTo(0,0);return}
   if("catd" in ds){openCatDetail(ds.catt,ds.catd,ds.scope);return}
   if(ds.goal){openGoalDetail(ds.goal);return}
+  if(ds.backup){doBackup();return}
+  if(ds.bklater){BK_SNOOZE=true;renderBkCard();return}
   if(ds.gosubs){S.page="goals";S.plan="subs";window.scrollTo(0,0);render();buddyIdle();return}
   if(ds.plan&&!t.closest(".sheet")){S.plan=ds.plan;render();buddyIdle();return}
   if(ds.sub&&!t.closest(".sheet")){openSub(ds.sub);return}
@@ -2009,7 +2050,7 @@ document.addEventListener("click",e=>{
     if(ds.rep){ syncFields(); ED.rep=!ED.rep; drawEditor(); return }
     if(ds.key){pressKey(ds.key);return}
     if(t.id==="saveBtn"){saveEntry();return}
-    if(ds.del){syncFields();ED.confirm=true;drawEditor();return}
+    if(ds.del){syncFields();ED.confirm=true;drawEditor();const c=document.querySelector(".sheet .confirm");if(c)c.scrollIntoView({block:"center",behavior:"smooth"});return}
     if(ds.delno){syncFields();ED.confirm=false;drawEditor();return}
     if(ds.delyes){deleteEntry();return}
     return;
@@ -2062,6 +2103,9 @@ document.addEventListener("click",e=>{
     return;
   }
   if(ST){
+    if(ds.bkr){S.settings.bkRemind=ds.bkr;persistSettings();drawSettings();render();return}
+    if(ds.rsno){ST.restore=null;drawSettings();return}
+    if(ds.rsyes){applyRestore();return}
     if(ds.lang){ S.settings.lang=ds.lang; persistSettings(); applyLang(ds.lang); render(); drawSettings(); renderBuddyShell(); buddyIdle(); return }
     if(ds.pet){ const n=$("dogName"); const nm=n?n.value.trim():""; const isDef=!nm||Object.values(PETS_T).some(p=>p.def===nm); S.settings.pet=ds.pet; if(isDef) delete S.settings.dog; else S.settings.dog=nm; persistSettings(); renderBuddyShell(); say("Hi! I'm "+dogName()+" "+petT().emo,"happy",4000); drawSettings(); return }
     if(ds.pal){S.settings.palette=ds.pal;applyPalette();persistSettings();drawSettings();return}
@@ -2085,6 +2129,7 @@ document.addEventListener("change",async e=>{
     ST.busy=false; drawSettings();
   }
   if(e.target.id==="dateIn"&&ED){ syncFields(); drawEditor() }
+  if(e.target.id==="restoreIn"&&ST){ const f=e.target.files&&e.target.files[0]; if(f) readRestore(f) }
   if(e.target.id==="budgetIn"){ const v=Math.max(0,parseFloat(e.target.value)||0); S.settings.budget=Math.round(v*100)/100; persistSettings(); render() }
   if(e.target.id==="curIn"){ S.settings.cur=e.target.value.trim()||"RM"; persistSettings(); render(); drawSettings() }
   if(e.target.id==="dogName"){ S.settings.dog=e.target.value.trim(); persistSettings(); renderBuddyShell(); say("Hi! I'm "+dogName()+" now 🐾","happy",4000) }
