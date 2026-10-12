@@ -721,6 +721,59 @@ button:active{transform:scale(.97)}
 .splitprev .warn{color:var(--exp);margin-top:4px}
 .cmlist .cmrow{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .cmlist.sorting .cmrow:not(.dragging){transition:transform .12s}
+/* v13 */
+.optrow{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:2px 16px}
+.optrow::-webkit-scrollbar,.qprow::-webkit-scrollbar{display:none}
+.opill{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 10px 7px 8px;border-radius:999px;background:var(--chip);font-weight:800;font-size:13.5px;max-width:190px;border:1.5px solid transparent;color:var(--ink)}
+.opill>span:not(.pe):not(.wicon){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opill .pe{font-size:15px;line-height:1}
+.opill .wicon.sm{width:22px;height:22px;border-radius:7px}
+.opill .chevd{width:14px;height:14px;opacity:.45;transition:transform .2s;flex:none}
+.opill[aria-expanded="true"]{border-color:var(--ink);background:var(--card)}
+.opill[aria-expanded="true"] .chevd{transform:rotate(180deg)}
+.opill.on{background:color-mix(in srgb,var(--inc) 15%,var(--card));border-color:color-mix(in srgb,var(--inc) 35%,transparent)}
+.opill.on[aria-expanded="true"]{border-color:var(--ink)}
+.optpanel{background:var(--chip);border-radius:16px;padding:10px;animation:optin .18s ease-out}
+.optpanel .wchip,.optpanel .dchip{background:var(--card)}
+.optpanel .field{background:var(--card)}
+@keyframes optin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.edsub{margin-top:-6px;padding-left:4px;font-size:12px}
+.qprow{margin-top:-4px}
+.btn.danger.subtle{background:transparent;color:var(--exp);box-shadow:none}
+.wline.srow{grid-template-columns:auto auto minmax(0,1fr) auto;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.wline.srow .cmh{width:22px;height:28px;color:var(--muted);opacity:.6}
+.wlist.sorting .wline:not(.dragging){transition:transform .12s}
+.wline.dragging{box-shadow:0 12px 26px -10px rgba(0,0,0,.35);position:relative;z-index:2}
+#popRoot .popbg{position:fixed;inset:0;z-index:40;background:rgba(10,12,20,.32);border:0;padding:0;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+#popRoot .popbg.in{animation:popfade .18s ease-out}
+#popRoot .popcard{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:41;width:min(340px,calc(100% - 32px));max-height:70vh;overflow-y:auto;background:var(--card);border-radius:24px;padding:14px 14px 16px;box-shadow:0 24px 60px -20px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:10px}
+#popRoot .popcard.in{animation:popin .2s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes popfade{from{opacity:0}to{opacity:1}}
+@keyframes popin{from{opacity:0;transform:translate(-50%,-46%) scale(.96)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.pophead{display:flex;justify-content:space-between;align-items:center;padding-left:4px}
+.pophead b{font-family:var(--display);font-size:18px}
+.icon-btn.sm{width:34px;height:34px}
+.poplist{display:flex;flex-direction:column;gap:6px}
+.poprow{display:grid;grid-template-columns:auto minmax(0,1fr) auto 18px;gap:12px;align-items:center;text-align:left;padding:10px 12px;border-radius:16px;background:var(--chip);border:2px solid transparent;font-weight:800;font-size:15px;width:100%}
+.poprow[aria-pressed="true"]{border-color:var(--ink);background:var(--card)}
+.poprow .pn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.poprow .pb{color:var(--muted);font-weight:700;font-size:13.5px}
+.poprow .pk{font-weight:900;color:var(--ink)}
+.poprow .pe2{font-size:20px;width:36px;text-align:center}
+.poprow.add{grid-template-columns:auto minmax(0,1fr);color:var(--muted);background:transparent;border:1.5px dashed var(--line)}
+#popRoot .field{background:var(--chip)}
+#popRoot .popcard.top{top:24%}
+/* v14: no sideways scrolling in the add sheet */
+.cats.edcats{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px 4px}
+.cats.edcats .cat{padding:5px 0;gap:3px;font-size:11px;border-radius:14px}
+.cats.edcats .cat em{width:40px;height:40px;font-size:20px;border-radius:13px}
+.opill{padding:6px 10px 6px 7px;font-size:13px}
+.optrow{flex-wrap:wrap;overflow:visible;margin-inline:0;padding:0}
+.opill{max-width:100%}
+.datepill{position:relative;cursor:pointer}
+.datepill input{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;margin:0;-webkit-appearance:none;appearance:none;cursor:pointer}
+.wpick.wrapw .wrow{flex-wrap:wrap;overflow:visible}
+.splitbox .chipwrap{flex-wrap:wrap}
 </style>
 
 </head>
@@ -1000,7 +1053,7 @@ function catList(t){
 function initCats(t){ S.settings.cats=S.settings.cats||{}; if(!S.settings.cats[t]) S.settings.cats[t]=catList(t).map(([n,ic])=>({n,ic})) }
 
 /* ---------- storage ---------- */
-function saveLocal(){ try{localStorage.setItem("duitjar.v1",JSON.stringify({months:S.months,settings:S.settings,goals:S.goals}))}catch(e){} if(typeof gdSchedule==="function") gdSchedule() }
+function saveLocal(){ try{localStorage.setItem("duitjar.v1",JSON.stringify({months:S.months,settings:S.settings,goals:S.goals}))}catch(e){} try{ if(!GDR.suppress) localStorage.setItem("duitjar.chg",String(Date.now())) }catch(e){} if(typeof gdSchedule==="function") gdSchedule() }
 function loadLocal(){ try{const j=JSON.parse(localStorage.getItem("duitjar.v1")||"null"); if(j){S.months=j.months||{}; S.settings=Object.assign(S.settings,j.settings||{}); S.goals=j.goals||[]}}catch(e){} applyPalette() }
 function errMsg(e){
   const c=e&&e.code;
@@ -1063,7 +1116,7 @@ async function init(){
       if(firstLoad){ firstLoad=false; renderBuddyShell(); afterLoadRecurring(); buddyIdle() }
     },e=>{ goLocal() });
   }else{
-    S.mode="local"; loadLocal(); render(); renderBuddyShell(); afterLoadRecurring(); buddyIdle(); gdSchedule();
+    S.mode="local"; loadLocal(); render(); renderBuddyShell(); afterLoadRecurring(); buddyIdle(); gdSchedule(); gdPreload();
   }
 }
 
@@ -1189,13 +1242,13 @@ function render(){
 }
 
 /* ---------- sheets ---------- */
-function draw(){ if(CE) drawCat(); else if(WE) drawWallet(); else if(CM) drawCatManager(); else if(ED) drawEditor(); else if(EV) drawView(); else if(SE) drawSub(); else if(GE) drawGoalEditor(); else if(GD) drawGoalDetail(); else if(BPV) drawProfile(); else if(drawExt()){} else if(SR) drawSearch(); else if(MP) drawMonthPicker(); else if(CD) drawCatDetail(); else if(ST) drawSettings(); else $("sheetRoot").innerHTML="" }
+function draw(){ const pr=document.getElementById("popRoot"); if(pr&&!(ED&&topSheet()==="ED")) pr.innerHTML=""; if(CE) drawCat(); else if(WE) drawWallet(); else if(CM) drawCatManager(); else if(ED) drawEditor(); else if(EV) drawView(); else if(SE) drawSub(); else if(GE) drawGoalEditor(); else if(GD) drawGoalDetail(); else if(BPV) drawProfile(); else if(drawExt()){} else if(SR) drawSearch(); else if(MP) drawMonthPicker(); else if(CD) drawCatDetail(); else if(ST) drawSettings(); else $("sheetRoot").innerHTML="" }
 function shell(title,body,backLabel){
   const fresh=!$("sheetRoot").innerHTML;
   return '<div class="scrim'+(fresh?' in':'')+'" data-close="1"><div class="sheet'+(fresh?' in':'')+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="grab"></div>'+
     '<div class="sheet-head"><h2>'+esc(title)+'</h2><button class="icon-btn" data-'+(backLabel?'back':'close')+'="1" aria-label="'+(backLabel||'Close')+'"><svg class="i" viewBox="0 0 24 24">'+(backLabel?'<path d="M15 5l-7 7 7 7"/>':'<path d="M6 6l12 12M18 6L6 18"/>')+'</svg></button></div>'+body+'</div></div>';
 }
-function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=EV=BPV=BG=IE=WR=NW=null; $("sheetRoot").innerHTML="" }
+function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=EV=BPV=BG=IE=WR=NW=null; LASTTOP=null; SCR={}; const pr=document.getElementById("popRoot"); if(pr) pr.innerHTML=""; $("sheetRoot").innerHTML="" }
 function keepScroll(fn){ const s=document.querySelector(".sheet"); const y=s?s.scrollTop:0; fn(); const n=document.querySelector(".sheet"); if(n) n.scrollTop=y }
 
 /* entry editor */
@@ -1362,7 +1415,7 @@ function drawSettings(){
   '<section class="set-block" data-notr><h3>Language · 语言</h3><div class="seg"><button data-lang="en" aria-pressed="'+(LANG!=="zh")+'">English</button><button data-lang="zh" aria-pressed="'+(LANG==="zh")+'">中文</button></div></section>'+
   '<section class="set-block"><h3>Colours</h3><div class="palettes">'+Object.keys(PALETTES).map(k=>{const v=PALETTES[k];return '<button class="pal" data-pal="'+k+'" aria-pressed="'+(pal===k)+'"><span class="dots" aria-hidden="true"><i style="background:'+v[1]+'"></i><i style="background:'+v[2]+'"></i><i style="background:'+v[3]+'"></i></span>'+esc(v[0])+'</button>'}).join("")+'</div></section>'+
   '<section class="set-block"><h3>Your buddy</h3><p>Pick a pet and give them a name. Tap them on any page for pats.</p><div class="petgrid">'+Object.keys(PETS_T).map(k=>'<button class="petopt" data-pet="'+k+'" aria-pressed="'+(petType()===k)+'">'+petSVG(k)+esc(PETS_T[k].label)+'</button>').join("")+'</div><input class="field" id="dogName" maxlength="16" placeholder="'+esc(petT().def)+'" value="'+esc(S.settings.dog||"")+'" aria-label="Pet name"></section>'+
-  '<section class="set-block"><h3>Wallets</h3><div class="wlist">'+wallets().map(w=>'<button class="wline" data-editwallet="'+esc(w.id)+'">'+wIcon(w,true)+'<span>'+esc(w.name)+'</span><span class="num">'+money(b[w.id]||0)+'</span></button>').join("")+'</div><button class="btn soft" data-nwopen="1">Set real balances</button><button class="btn soft" data-addwallet="1">+ Add wallet</button></section>'+
+  '<section class="set-block"><h3>Wallets</h3>'+walletListHTML(b)+'<button class="btn soft" data-nwopen="1">Set real balances</button><button class="btn soft" data-addwallet="1">+ Add wallet</button></section>'+
   (()=>{const rs=(S.settings.rec||[]).filter(r=>!r.stop); return '<section class="set-block"><h3>Repeating entries</h3>'+(rs.length?'<div class="wlist">'+rs.map(r=>'<div class="wline"><span class="bubble'+(r.t==="i"?" inc":r.t==="x"?" neu":"")+'" style="width:28px;height:28px;border-radius:9px;font-size:15px" aria-hidden="true">'+esc(r.t==="x"?"↔️":(r.ic||iconFor(r.t,r.c)))+'</span><span>'+esc(r.n||r.c)+'<br><small style="color:var(--muted)">Day '+r.day+' of each month</small></span><span class="gright"><span class="num">'+money(r.a)+'</span><button class="mini" data-recstop="'+esc(r.id)+'">Stop</button></span></div>').join("")+'</div>':'<p>Turn on \u201cRepeat every month\u201d when adding rent, bills, subscriptions or salary, and they\u2019re added for you each month.</p>')+'</section>'})()+
   '<section class="set-block"><h3>Categories</h3><p>Add, delete, rename and drag to reorder your expense and income categories, including the defaults.</p><button class="btn soft" data-cmopen="e">Manage categories</button></section>'+
   '<section class="set-block" id="importBlock"><h3>Import from Money Manager</h3>'+
@@ -1379,7 +1432,7 @@ function drawSettings(){
    '<div class="label">Remind me</div><div class="seg">'+[["daily","Daily"],["weekly","Weekly"],["off","Off"]].map(([k,l])=>'<button data-bkr="'+k+'" aria-pressed="'+((S.settings.bkRemind||"daily")===k)+'">'+l+'</button>').join("")+'</div>'+
    '<button class="link" data-export="1" style="align-self:flex-start">Export entries as CSV (for Excel)</button></section>'+
   '<section class="set-block"><h3>Start over</h3>'+(ST.wipe?'<div class="confirm"><span>Delete every entry?</span><span class="row-btns"><button class="btn soft" data-wipeno="1">Cancel</button><button class="btn danger" data-wipeyes="1">Delete all</button></span></div>':'<button class="btn danger" data-wipe="1">Delete all entries</button>')+'</section>';
-  keepScroll(()=>{ $("sheetRoot").innerHTML=shell("Settings",body) });
+  keepScroll(()=>{ $("sheetRoot").innerHTML=shell("Settings",body) }); attachWalletSort();
   if(ST.focus==="budget"){ const x=$("budgetIn"); x&&x.focus(); ST.focus=null }
   if(ST.focus==="import"){ const x=$("importBlock"); x&&x.scrollIntoView({block:"start"}); ST.focus=null }
 }
@@ -2236,7 +2289,7 @@ async function gdUpload(){ const body=JSON.stringify(backupObj()); const id=awai
   const gd0=S.settings.gdrive||{};
   if(gd0.daily!==today()){ try{ await gdPut("duitjar-day-"+new Date().getDay()+".json",body) }catch(e){} }
   S.settings.gdrive=Object.assign({},gd0,{on:true,last:new Date().toISOString(),daily:today(),n:entryCount()}); S.settings.lastBackup=today(); GDR.status=""; GDR.held=false;
-  GDR.suppress=true; saveLocal(); GDR.suppress=false }
+  GDR.suppress=true; saveLocal(); GDR.suppress=false; gdRemember() }
 function gdErr(e){ const m=e&&e.message; return m==="popup"?"Google sign-in was closed or blocked. Try again.":m==="401"?"Tap to sign in and sync":"Couldn't reach Google Drive. Check your connection." }
 function gdSchedule(){ if(!gdOn()||GDR.suppress) return; clearTimeout(GDR.timer); GDR.timer=setTimeout(gdAuto,3500) }
 async function gdAuto(){ if(!gdOn()||GDR.busy) return; if(!gdTokOk()){ renderBkCard(); return }
@@ -2571,7 +2624,7 @@ function settleIOU(){ syncIE(); const p=people().find(x=>x.who===IE.who); if(!p)
 function deleteIOU(id){ S.settings.iou=ious().filter(o=>o.id!==id); persistSettings(); IE.del=null; draw(); render(); toast("Deleted") }
 /* split in the add sheet */
 function splitRow(){ if(ED.id||ED.t!=="e") return ""; const sp=ED.split||{};
-  let h='<div class="switchrow"><div>Split with others<small>'+(sp.on?'They’ll show up in IOU':'Paid for friends? Track what they owe you')+'</small></div><button class="sw" role="switch" data-split="1" aria-checked="'+(!!sp.on)+'" aria-label="Split with others"></button></div>';
+  let h='';
   if(!sp.on) return h;
   const sel=sp.ppl||[]; const known=people().map(p=>p.who); const all=sel.concat(known.filter(n=>!sel.some(s=>s.toLowerCase()===n.toLowerCase()))).slice(0,14);
   h+='<div class="splitbox"><span class="label">Who’s in? Tap to pick</span>'+(all.length?'<div class="chipwrap">'+all.map(n=>'<button class="wchip" data-splitp="'+esc(n)+'" aria-pressed="'+sel.includes(n)+'">'+avatar(n,"sm")+esc(n)+'</button>').join("")+'</div>':'')+
@@ -2700,7 +2753,7 @@ function extClick(t,ds){
   if(ds.iouwho&&!t.closest(".sheet")){ openPerson(ds.iouwho); return true }
   if(ds.iounew&&!t.closest(".sheet")){ IE=null; openIOU(ds.iounew); return true }
   if(t.id==="addBtn"&&S.page==="goals"&&S.plan==="iou"){ openIOU("in"); return true }
-  if(top==="ED"){
+  if(top==="ED"){ if(editorExtClick(t,ds)) return true;
     if(ds.recent){ const f=findTx(ds.recent); if(!f) return true; syncFields(); if(ED.qp===ds.recent&&canSave()){ saveEntry(); return true }
       const x=f.x; ED.c=x.c; ED.ic=x.ic||iconFor(x.t,x.c); ED.n=x.n||""; ED.amt=String(x.a); if(wallets().some(w=>w.id===wOf(x))) ED.w=wOf(x); ED.qp=ds.recent; drawEditor(); return true }
     if(ds.split){ syncFields(); ED.split=ED.split||{ppl:[],mode:"even",me:true}; ED.split.on=!ED.split.on; drawEditor(); if(ED.split.on) setTimeout(()=>{ const i=$("splitWho"); if(i) i.scrollIntoView({block:"center",behavior:"smooth"}) },60); return true }
@@ -2762,6 +2815,130 @@ RX.push(
  [/^A bit of a splurge month\. Let's be gentle on the jar next month 🙈$/,()=>"这个月有点放纵。下个月对储蓄罐温柔点吧 🙈"],[/^We kept (\S+ [\d,.]+) in the jar\. Treat for me\? 🦴$/,(m,a)=>"我们存下了 "+a+"。给我个零食吧？🦴"],[/^Another month, all logged\. So proud of us! 🐾$/,()=>"又一个月，全都记好了。好骄傲！🐾"]
 );
 
+/* ---------- v13: sheet scroll memory, Drive auto-renew, sortable wallets, calmer add sheet ---------- */
+/* 1. each sheet opens at its own top; going back restores where you were */
+const SHEET_ORDER=["CE","WE","CM","ED","EV","SE","GE","GD","BP","BG","IE","WR","NW","SR","MP","CD","ST"];
+let LASTTOP=null, SCR={};
+function keepScroll(fn){ const s=document.querySelector(".sheet"); const y=s?s.scrollTop:0; const prev=s?LASTTOP:null; const cur=topSheet();
+  if(prev&&prev!==cur){ if(SHEET_ORDER.indexOf(cur)>SHEET_ORDER.indexOf(prev)) delete SCR[prev]; else SCR[prev]=y }
+  fn(); LASTTOP=cur; const n=document.querySelector(".sheet"); if(!n) return;
+  n.scrollTop=(!prev||prev===cur)?(prev?y:0):(SCR[cur]||0) }
+
+/* 2. Google Drive: renew sign-in quietly so auto-sync keeps going */
+function gdDirty(){ const last=Date.parse((S.settings.gdrive||{}).last||0)||0; let chg=0; try{ chg=+localStorage.getItem("duitjar.chg")||0 }catch(e){} return chg>last+1000 }
+function gdClient(){ if(GDR.client) return GDR.client; if(!(window.google&&google.accounts&&google.accounts.oauth2)) return null;
+  GDR.client=google.accounts.oauth2.initTokenClient({client_id:GCID,scope:"https://www.googleapis.com/auth/drive.appdata",
+    callback:r=>{ const p=GDR.pend; GDR.pend=null; if(r&&r.access_token){ GDR.tok=r.access_token; GDR.exp=Date.now()+((+r.expires_in||3600)*1000); try{localStorage.setItem("duitjar.gtok",JSON.stringify({t:GDR.tok,exp:GDR.exp}))}catch(e){} if(p) p.res() } else if(p) p.rej(new Error("popup")) },
+    error_callback:()=>{ const p=GDR.pend; GDR.pend=null; if(p) p.rej(new Error("popup")) } });
+  return GDR.client }
+function gdAuth(prompt){ return loadGIS().then(()=>new Promise((res,rej)=>{ const c=gdClient(); if(!c){ rej(new Error("net")); return } GDR.pend={res,rej}; const o={prompt}; const em=(S.settings.gdrive||{}).email; if(em) o.hint=em; c.requestAccessToken(o) })) }
+async function gdRemember(){ const g=S.settings.gdrive||{}; if(g.email||!gdTokOk()) return; try{ const r=await gfetch("https://www.googleapis.com/drive/v3/about?fields=user(emailAddress)"); const j=await r.json(); const em=j&&j.user&&j.user.emailAddress; if(em){ S.settings.gdrive=Object.assign({},S.settings.gdrive||{},{email:em}); GDR.suppress=true; saveLocal(); GDR.suppress=false } }catch(e){} }
+function gdPreload(){ if(gdOn()) loadGIS().then(()=>gdClient()).catch(()=>{}) }
+/* runs inside a tap, so Google allows the quick sign-in window; it closes by itself */
+function gdQuietRenew(t){ if(!gdOn()||gdTokOk()||GDR.busy||GDR.pend) return; const c=gdClient(); if(!c) { gdPreload(); return }
+  if(t&&t.closest&&t.closest("[data-gsync],[data-gconnect],[data-grestore],[data-grid],[data-gdisc]")) return;
+  const saving=t&&t.closest&&t.closest("#saveBtn,.save,[data-recent],[data-iousettle]");
+  if(!saving&&!gdDirty()) return; if(Date.now()-(GDR.lastTry||0)<15*60e3) return; GDR.lastTry=Date.now();
+  GDR.pend={res:()=>{ GDR.status=""; setTimeout(()=>{ gdAuto().then(gdRemember) },saving?600:0) },rej:()=>{}};
+  const o={prompt:""}; const em=(S.settings.gdrive||{}).email; if(em) o.hint=em; try{ c.requestAccessToken(o) }catch(e){ GDR.pend=null } }
+document.addEventListener("click",e=>gdQuietRenew(e.target),true);
+
+/* 3. generic press-and-hold sorting (categories and wallets) */
+function makeSortable(list,onDone){ if(!list) return; const sh=list.closest(".sheet");
+  let row=null, timer=null, sx=0, sy=0, lastY=0, auto=null, grab=0, blockUntil=0;
+  const rows=()=>[...list.children].filter(r=>r.dataset&&r.dataset.name!=null);
+  const reorder=y=>{ let g=0;
+    while(g++<50){ const prev=row.previousElementSibling; if(!prev||prev.dataset.name==null) break; const r=prev.getBoundingClientRect(); if(y<r.top+r.height/2) list.insertBefore(prev,row.nextElementSibling); else break }
+    while(g++<100){ const next=row.nextElementSibling; if(!next||next.dataset.name==null) break; const r=next.getBoundingClientRect(); if(y>r.top+r.height/2) list.insertBefore(next,row); else break } };
+  const follow=y=>{ lastY=y; row.style.transform="none"; reorder(y); const top=row.getBoundingClientRect().top; row.style.transform="translateY("+(y-grab-top)+"px) scale(1.02)" };
+  const tick=()=>{ if(!row||!sh) return; const sr=sh.getBoundingClientRect(); let d=0; if(lastY<sr.top+80) d=-8; else if(lastY>sr.bottom-80) d=8; if(d){ sh.scrollTop+=d; follow(lastY) } auto=requestAnimationFrame(tick) };
+  const start=(r,y)=>{ row=r; lastY=y; grab=y-r.getBoundingClientRect().top; row.classList.add("dragging"); list.classList.add("sorting"); try{ if(navigator.vibrate) navigator.vibrate(12) }catch(_){} auto=requestAnimationFrame(tick) };
+  const finish=()=>{ clearTimeout(timer); timer=null; if(!row) return; cancelAnimationFrame(auto); row.style.transform=""; row.classList.remove("dragging"); list.classList.remove("sorting"); row=null; blockUntil=Date.now()+400; onDone(rows().map(r=>r.dataset.name)) };
+  list.addEventListener("touchstart",e=>{ if(e.touches.length!==1) return; const r=e.target.closest("[data-name]"); if(!r||r.parentNode!==list||e.target.closest("[data-cmdel]")) return; const t=e.touches[0]; sx=t.clientX; sy=t.clientY;
+    if(e.target.closest(".cmh")){ e.preventDefault(); start(r,sy); return }
+    clearTimeout(timer); timer=setTimeout(()=>{ timer=null; start(r,sy) },320) },{passive:false});
+  list.addEventListener("touchmove",e=>{ const t=e.touches[0]; if(row){ e.preventDefault(); follow(t.clientY); return }
+    if(timer&&(Math.abs(t.clientX-sx)>8||Math.abs(t.clientY-sy)>8)){ clearTimeout(timer); timer=null } },{passive:false});
+  list.addEventListener("touchend",finish); list.addEventListener("touchcancel",finish);
+  list.addEventListener("contextmenu",e=>e.preventDefault());
+  list.addEventListener("click",e=>{ if(Date.now()<blockUntil){ e.stopImmediatePropagation(); e.preventDefault() } },true);
+  list.querySelectorAll(".cmh").forEach(h=>h.addEventListener("pointerdown",e=>{ if(e.pointerType==="touch") return; e.preventDefault(); start(h.closest("[data-name]"),e.clientY);
+    const mv=ev=>follow(ev.clientY); const up=()=>{ window.removeEventListener("pointermove",mv); window.removeEventListener("pointerup",up); finish() };
+    window.addEventListener("pointermove",mv); window.addEventListener("pointerup",up) }));
+}
+function attachDrag(){ makeSortable($("cmList"),order=>{ const curL=S.settings.cats[CM.t]; S.settings.cats[CM.t]=order.map(n=>curL.find(c=>c.n===n)).filter(Boolean); persistSettings(); if(CM&&topSheet()==="CM") drawCatManager() }) }
+function attachWalletSort(){ makeSortable($("wList"),order=>{ ensureWallets(); const cw=S.settings.wallets; S.settings.wallets=order.map(id=>cw.find(w=>w.id===id)).filter(Boolean).concat(cw.filter(w=>!order.includes(w.id))); persistSettings(); render(); if(ST&&topSheet()==="ST") drawSettings(); toast("Wallet order saved") }) }
+const DRAG_IC='<span class="cmh" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h14"/></svg></span>';
+function walletListHTML(b){ return '<p class="hint">Press and hold a wallet to move it. The order here is the order on Home.</p><div class="wlist" id="wList">'+wallets().map(w=>'<button class="wline srow" data-name="'+esc(w.id)+'" data-editwallet="'+esc(w.id)+'">'+DRAG_IC+wIcon(w,true)+'<span>'+esc(w.name)+'</span><span class="num">'+money(b[w.id]||0)+'</span></button>').join("")+'</div>' }
+
+/* 4. calmer add / edit sheet */
+function shortDay(d){ if(d===today()) return "Today"; if(d===yday()) return "Yesterday"; const [Y,M,D]=d.split("-").map(Number); const o={day:"numeric",month:"short"}; if(Y!==new Date().getFullYear()) o.year="numeric"; return new Date(Y,M-1,D).toLocaleDateString(LOC(),o) }
+function opill(k,inner,on){ const open=ED.panel===k; return '<button class="opill'+(on?' on':'')+'" data-edp="'+k+'" aria-expanded="'+open+'">'+inner+'<svg class="i chevd" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' }
+function drawEditor(){
+  const amtNum=evalAmt(ED.amt); const isX=ED.t==="x", isA=ED.t==="a"; const sp=ED.split||{};
+  let body='<div class="seg"><button class="e" aria-pressed="'+(ED.t==="e")+'" data-type="e">Expense</button><button class="i" aria-pressed="'+(ED.t==="i")+'" data-type="i">Income</button><button aria-pressed="'+isX+'" data-type="x">Transfer</button></div>'+
+   (isA?'<p class="hint">Balance adjustment imported from Money Manager. It changes the wallet balance but isn’t counted as spending or income.</p>':'')+
+   '<div class="amount-display num'+(amtNum?'':' zero')+'">'+amtInner()+'</div>';
+  if(!isX&&!isA){
+    body+='<div class="cats edcats">'+catList(ED.t).map(([n,ic])=>'<button class="cat" aria-pressed="'+(ED.c===n)+'" data-cat="'+esc(n)+'" data-ic="'+esc(ic)+'"><em aria-hidden="true">'+esc(ic)+'</em><span>'+esc(n)+'</span></button>').join("")+
+     '<button class="cat dashed" data-newcat="1"><em aria-hidden="true">+</em><span>New</span></button><button class="cat dashed" data-cmopen="'+ED.t+'"><em aria-hidden="true">✎</em><span>Edit</span></button></div>'+budHint();
+  }
+  if(isX){
+    body+='<div class="wpick wrapw"><span class="label">From</span>'+wChips("w",ED.w)+'</div><div class="wpick wrapw"><span class="label">To</span>'+wChips("to",ED.to,ED.w)+'</div>';
+    if(wallets().length<2) body+='<p class="warn">Add a second wallet to move money between them.</p>';
+  }
+  const w=wallet(ED.w);
+  let pills='';
+  if(!isX) pills+=opill("w",wIcon(w,true)+'<span>'+esc(w.name)+'</span>',false);
+  pills+='<span class="opill datepill'+(ED.d!==today()?' on':'')+'"><span class="pe" aria-hidden="true">📅</span><span class="dlbl">'+esc(shortDay(ED.d))+'</span><input type="date" id="dateIn" value="'+esc(ED.d)+'" aria-label="Date"></span>';
+  if(!ED.id&&!isA) pills+='<button class="opill'+(ED.rep?' on':'')+'" data-rep="1"><span class="pe" aria-hidden="true">🔁</span><span>'+(ED.rep?'Monthly':'Repeat')+'</span></button>';
+  if(!ED.id&&ED.t==="e") pills+='<button class="opill'+(sp.on?' on':'')+'" data-split="1"><span class="pe" aria-hidden="true">👥</span><span>Split</span></button>';
+  body+='<div class="optrow">'+pills+'</div><input class="field" id="noteIn" placeholder="Note (optional)" maxlength="80" value="'+esc(ED.n)+'" enterkeyhint="done">';
+  if(!ED.id&&ED.rep) body+='<p class="hint edsub">Added for you on day '+(+ED.d.slice(8))+' of each month</p>';
+  if(ED.id&&ED.t!=="a") body+=repeatRow();
+  body+=splitRow();
+  body+=(ED.id?(ED.confirm?'<div class="confirm"><span>Delete this entry?</span><span class="row-btns"><button class="btn soft" data-delno="1">Keep</button><button class="btn danger" data-delyes="1">Delete</button></span></div>':'<button class="btn danger subtle" data-del="1">Delete entry</button>'):'')+
+   '<div class="padfoot"><div class="keypad">'+["1","2","3","⌫","4","5","6","+","7","8","9","−",".","0","00","="].map(k=>'<button data-key="'+k+'"'+("+−=".includes(k)?' class="op"':'')+' aria-label="'+({"⌫":"Delete digit","+":"Plus","−":"Minus","=":"Equals"}[k]||k)+'">'+k+'</button>').join("")+'</div>'+
+   '<button class="save" id="saveBtn"'+(canSave()?'':' disabled')+'>'+(ED.id?"Save changes":"Save "+({e:"expense",i:"income",x:"transfer",a:"adjustment"}[ED.t]))+'</button></div>';
+  keepScroll(()=>{ $("sheetRoot").innerHTML=shell(ED.id?"Edit entry":"New entry",body) });
+  renderPop();
+}
+function popRoot(){ let r=$("popRoot"); if(!r){ r=document.createElement("div"); r.id="popRoot"; document.body.appendChild(r) } return r }
+function renderPop(){ const r=popRoot(); if(!ED||topSheet()!=="ED"||!ED.panel){ r.innerHTML=""; return }
+  const fresh=!r.innerHTML; let title="", inner="";
+  if(ED.panel==="w"){ const b=balances(); title=ED.t==="i"?"Into wallet":"Paid from";
+    inner='<div class="poplist">'+wallets().map(w=>'<button class="poprow" data-pickw="'+esc(w.id)+'" data-role="w" aria-pressed="'+(ED.w===w.id)+'">'+wIcon(w)+'<span class="pn">'+esc(w.name)+'</span><span class="pb num'+((b[w.id]||0)<0?' neg':'')+'">'+money(b[w.id]||0)+'</span><span class="pk" aria-hidden="true">'+(ED.w===w.id?'✓':'')+'</span></button>').join("")+
+      '<button class="poprow add" data-addwallet="1"><span class="wicon" style="--wc:var(--muted)" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span class="pn">New wallet</span></button></div>' }
+  else if(ED.panel==="d"){ title="Date";
+    inner='<div class="poplist"><button class="poprow" data-dq="0" aria-pressed="'+(ED.d===today())+'"><span class="pe2" aria-hidden="true">☀️</span><span class="pn">Today</span><span class="pk" aria-hidden="true">'+(ED.d===today()?'✓':'')+'</span></button><button class="poprow" data-dq="1" aria-pressed="'+(ED.d===yday())+'"><span class="pe2" aria-hidden="true">🌙</span><span class="pn">Yesterday</span><span class="pk" aria-hidden="true">'+(ED.d===yday()?'✓':'')+'</span></button></div><div class="label">Other day</div><input class="field" id="dateIn" type="date" value="'+esc(ED.d)+'" aria-label="Date">' }
+  else if(ED.panel==="n"){ title="Note";
+    inner='<input class="field" id="noteIn" placeholder="e.g. Kopi with Amy" maxlength="80" value="'+esc(ED.n)+'" enterkeyhint="done"><button class="save" data-notedone="1">Done</button>' }
+  r.innerHTML='<button class="popbg'+(fresh?' in':'')+'" data-popclose="1" aria-label="Close"></button><div class="popcard'+(ED.panel==="n"?' top':'')+(fresh?' in':'')+'" role="dialog" aria-label="'+esc(title)+'"><div class="pophead"><b>'+esc(title)+'</b><button class="icon-btn sm" data-popclose="1" aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'+inner+'</div>';
+}
+function recentHTML(){
+  if(ED.id||(ED.t!=="e"&&ED.t!=="i")) return "";
+  let qp=quickPicks(ED.t); if(!qp.length) qp=recentList(ED.t).map(x=>({x,n:1}));
+  if(!qp.length) return "";
+  const multi=wallets().length>1;
+  return '<div class="recent qprow" aria-label="Quick picks">'+qp.slice(0,8).map(({x})=>'<button class="rchip qp" data-recent="'+esc(x.id)+'" aria-pressed="'+(ED.qp===x.id)+'"><em aria-hidden="true">'+esc(x.ic||iconFor(x.t,x.c))+'</em><span class="qpt"><span>'+esc(x.n||x.c)+'</span><small>'+(multi?'<span>'+esc(wallet(wOf(x)).name)+'</span> · ':'')+'<b class="num">'+money(x.a)+'</b></small></span></button>').join("")+'</div>';
+}
+function editorExtClick(t,ds){
+  if(ds.edp){ syncFields(); ED.panel=ED.panel===ds.edp?null:ds.edp; drawEditor(); if(ED.panel==="n"){ const i=$("noteIn"); if(i){ i.focus(); const v=i.value; try{ i.setSelectionRange(v.length,v.length) }catch(_){} } } return true }
+  if(ds.popclose||ds.notedone){ syncFields(); ED.panel=null; drawEditor(); return true }
+  if(ds.addwallet) ED.panel=null;
+  if(ds.recent&&!(ED.qp===ds.recent)) setTimeout(()=>{ if(ED&&ED.qp===ds.recent) toast("Tap it again to save") },0);
+  if(ds.pickw&&ds.role!=="to"&&ED.t!=="x") ED.panel=null;
+  if(ds.dq) ED.panel=null;
+  return false;
+}
+document.addEventListener("keydown",e=>{ if(e.target&&e.target.id==="noteIn"&&e.key==="Enter"&&ED){ e.preventDefault(); e.stopImmediatePropagation(); syncFields(); e.target.blur() } },true);
+Object.assign(ZH,{"Date":"日期","Other day":"其他日期","Done":"完成","e.g. Kopi with Amy":"例如：和 Amy 喝咖啡","Into wallet":"存入钱包","Paid from":"付款钱包","Note":"备注","Repeat":"重复","Monthly":"每月","Tap it again to save":"再点一下就保存","Press and hold a wallet to move it. The order here is the order on Home.":"长按钱包可移动位置，这里的顺序就是首页的顺序。","Wallet order saved":"钱包顺序已保存"});
+
+
+/* date: update in place so the iPhone calendar isn't closed by a redraw */
+function onDatePick(e){ if(!e.target||e.target.id!=="dateIn"||!ED) return; const v=e.target.value; if(!/^\d{4}-\d{2}-\d{2}$/.test(v)) return; ED.d=v;
+  const pill=e.target.closest(".datepill"); if(pill){ const l=pill.querySelector(".dlbl"); if(l){ l.textContent=shortDay(v); if(LANG==="zh"){ const z=trPart(l.textContent); if(z!=null) l.textContent=z } } pill.classList.toggle("on",v!==today()) } }
+document.addEventListener("input",onDatePick); document.addEventListener("change",onDatePick);
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
@@ -2948,7 +3125,6 @@ document.addEventListener("change",async e=>{
     catch(err){ ST.error=err&&err.message&&!/^load$/.test(err.message)?err.message:"That file couldn't be read. Try the Excel export from Money Manager, or a CSV." }
     ST.busy=false; drawSettings();
   }
-  if(e.target.id==="dateIn"&&ED){ syncFields(); drawEditor() }
   if(e.target.id==="restoreIn"&&ST){ const f=e.target.files&&e.target.files[0]; if(f) readRestore(f) }
   if(e.target.id==="budgetIn"){ const v=Math.max(0,parseFloat(e.target.value)||0); S.settings.budget=Math.round(v*100)/100; persistSettings(); render() }
   if(e.target.id==="curIn"){ S.settings.cur=e.target.value.trim()||"RM"; persistSettings(); render(); drawSettings() }
