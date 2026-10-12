@@ -20,6 +20,7 @@ img{max-width:100%}
 [hidden]{display:none!important}
 </style>
 
+<script>try{var __t=localStorage.getItem("duitjar.theme");if(__t==="light"||__t==="dark")document.documentElement.setAttribute("data-theme",__t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -774,6 +775,45 @@ button:active{transform:scale(.97)}
 .datepill input{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;margin:0;-webkit-appearance:none;appearance:none;cursor:pointer}
 .wpick.wrapw .wrow{flex-wrap:wrap;overflow:visible}
 .splitbox .chipwrap{flex-wrap:wrap}
+/* light hero card in light mode */
+:root[data-theme="light"] .hero{color:var(--ink);border:1px solid color-mix(in srgb,var(--glow) 18%,transparent);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 18px 40px -22px color-mix(in srgb,var(--glow) 55%,rgba(0,0,0,.25));
+ background:radial-gradient(120% 95% at 100% 0%,color-mix(in srgb,var(--glow) 26%,transparent) 0%,transparent 60%),radial-gradient(80% 70% at 0% 100%,color-mix(in srgb,var(--lid) 22%,transparent) 0%,transparent 62%),linear-gradient(155deg,color-mix(in srgb,var(--glow) 7%,#fff),#fff)}
+:root[data-theme="light"] .hero::after{opacity:.05;mix-blend-mode:multiply}
+:root[data-theme="light"] .hero .label{color:var(--muted)}
+:root[data-theme="light"] .hero .big{color:var(--ink)}
+:root[data-theme="light"] .hero .big small{color:var(--muted)}
+:root[data-theme="light"] .hero .meter{background:color-mix(in srgb,var(--ink) 9%,transparent)}
+:root[data-theme="light"] .hero .hmeta{color:var(--muted)}
+:root[data-theme="light"] .hero .hmeta b{color:var(--ink)}
+:root[data-theme="light"] .hero .pill{background:color-mix(in srgb,var(--ink) 5%,#fff);color:var(--muted);border:1px solid color-mix(in srgb,var(--ink) 8%,transparent)}
+:root[data-theme="light"] .hero .pill b{color:var(--ink)}
+:root[data-theme="light"] .hero .pill.good b{color:color-mix(in srgb,var(--inc) 80%,#000)}
+:root[data-theme="light"] .hero .pill.bad{background:var(--exp-soft)}
+:root[data-theme="light"] .hero .link{color:var(--ink)}
+:root[data-theme="light"] .hero-body > div[style]{color:var(--muted)!important}
+:root[data-theme="light"] .hero .jar{filter:drop-shadow(0 10px 16px color-mix(in srgb,var(--glow) 35%,rgba(0,0,0,.18)))}
+:root[data-theme="light"] .hero .jar .glass{fill:color-mix(in srgb,var(--glow) 8%,rgba(255,255,255,.7));stroke:color-mix(in srgb,var(--ink) 22%,transparent)}
+:root[data-theme="light"] .hero .jar .shine{stroke:rgba(255,255,255,.9)}
+@media (prefers-color-scheme: light){
+:root:not([data-theme="dark"]) .hero{color:var(--ink);border:1px solid color-mix(in srgb,var(--glow) 18%,transparent);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 18px 40px -22px color-mix(in srgb,var(--glow) 55%,rgba(0,0,0,.25));
+ background:radial-gradient(120% 95% at 100% 0%,color-mix(in srgb,var(--glow) 26%,transparent) 0%,transparent 60%),radial-gradient(80% 70% at 0% 100%,color-mix(in srgb,var(--lid) 22%,transparent) 0%,transparent 62%),linear-gradient(155deg,color-mix(in srgb,var(--glow) 7%,#fff),#fff)}
+:root:not([data-theme="dark"]) .hero::after{opacity:.05;mix-blend-mode:multiply}
+:root:not([data-theme="dark"]) .hero .label{color:var(--muted)}
+:root:not([data-theme="dark"]) .hero .big{color:var(--ink)}
+:root:not([data-theme="dark"]) .hero .big small{color:var(--muted)}
+:root:not([data-theme="dark"]) .hero .meter{background:color-mix(in srgb,var(--ink) 9%,transparent)}
+:root:not([data-theme="dark"]) .hero .hmeta{color:var(--muted)}
+:root:not([data-theme="dark"]) .hero .hmeta b{color:var(--ink)}
+:root:not([data-theme="dark"]) .hero .pill{background:color-mix(in srgb,var(--ink) 5%,#fff);color:var(--muted);border:1px solid color-mix(in srgb,var(--ink) 8%,transparent)}
+:root:not([data-theme="dark"]) .hero .pill b{color:var(--ink)}
+:root:not([data-theme="dark"]) .hero .pill.good b{color:color-mix(in srgb,var(--inc) 80%,#000)}
+:root:not([data-theme="dark"]) .hero .pill.bad{background:var(--exp-soft)}
+:root:not([data-theme="dark"]) .hero .link{color:var(--ink)}
+:root:not([data-theme="dark"]) .hero-body > div[style]{color:var(--muted)!important}
+:root:not([data-theme="dark"]) .hero .jar{filter:drop-shadow(0 10px 16px color-mix(in srgb,var(--glow) 35%,rgba(0,0,0,.18)))}
+:root:not([data-theme="dark"]) .hero .jar .glass{fill:color-mix(in srgb,var(--glow) 8%,rgba(255,255,255,.7));stroke:color-mix(in srgb,var(--ink) 22%,transparent)}
+:root:not([data-theme="dark"]) .hero .jar .shine{stroke:rgba(255,255,255,.9)}
+}
 </style>
 
 </head>
@@ -1413,6 +1453,7 @@ function drawSettings(){
   const pal=S.settings.palette||"blueberry";
   const body='<div class="status"><span class="dot'+(S.mode==="cloud"?"":" local")+'"></span>'+(S.mode==="cloud"?"Saved privately to your Claude account. Only you can see your entries.":"Saved on this phone only. Export a CSV backup now and then.")+'</div>'+
   '<section class="set-block" data-notr><h3>Language · 语言</h3><div class="seg"><button data-lang="en" aria-pressed="'+(LANG!=="zh")+'">English</button><button data-lang="zh" aria-pressed="'+(LANG==="zh")+'">中文</button></div></section>'+
+  '<section class="set-block"><h3>Appearance</h3><div class="seg themeseg">'+[["auto","🌗","Auto"],["light","☀️","Light"],["dark","🌙","Dark"]].map(([k,ic,l])=>'<button data-themeset="'+k+'" aria-pressed="'+(themePref()===k)+'"><span aria-hidden="true">'+ic+'</span> '+l+'</button>').join("")+'</div><p class="hint">Auto follows your iPhone’s light or dark setting.</p></section>'+
   '<section class="set-block"><h3>Colours</h3><div class="palettes">'+Object.keys(PALETTES).map(k=>{const v=PALETTES[k];return '<button class="pal" data-pal="'+k+'" aria-pressed="'+(pal===k)+'"><span class="dots" aria-hidden="true"><i style="background:'+v[1]+'"></i><i style="background:'+v[2]+'"></i><i style="background:'+v[3]+'"></i></span>'+esc(v[0])+'</button>'}).join("")+'</div></section>'+
   '<section class="set-block"><h3>Your buddy</h3><p>Pick a pet and give them a name. Tap them on any page for pats.</p><div class="petgrid">'+Object.keys(PETS_T).map(k=>'<button class="petopt" data-pet="'+k+'" aria-pressed="'+(petType()===k)+'">'+petSVG(k)+esc(PETS_T[k].label)+'</button>').join("")+'</div><input class="field" id="dogName" maxlength="16" placeholder="'+esc(petT().def)+'" value="'+esc(S.settings.dog||"")+'" aria-label="Pet name"></section>'+
   '<section class="set-block"><h3>Wallets</h3>'+walletListHTML(b)+'<button class="btn soft" data-nwopen="1">Set real balances</button><button class="btn soft" data-addwallet="1">+ Add wallet</button></section>'+
@@ -2939,6 +2980,15 @@ Object.assign(ZH,{"Date":"日期","Other day":"其他日期","Done":"完成","e.
 function onDatePick(e){ if(!e.target||e.target.id!=="dateIn"||!ED) return; const v=e.target.value; if(!/^\d{4}-\d{2}-\d{2}$/.test(v)) return; ED.d=v;
   const pill=e.target.closest(".datepill"); if(pill){ const l=pill.querySelector(".dlbl"); if(l){ l.textContent=shortDay(v); if(LANG==="zh"){ const z=trPart(l.textContent); if(z!=null) l.textContent=z } } pill.classList.toggle("on",v!==today()) } }
 document.addEventListener("input",onDatePick); document.addEventListener("change",onDatePick);
+
+/* light / dark mode (saved on this phone) */
+function themePref(){ let t="auto"; try{ t=localStorage.getItem("duitjar.theme")||"auto" }catch(e){} return t==="light"||t==="dark"?t:"auto" }
+function applyTheme(){ const t=themePref(); const r=document.documentElement; if(t==="auto") r.removeAttribute("data-theme"); else r.setAttribute("data-theme",t);
+  const dark=t==="dark"||(t==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m=>{ if(t==="auto"){ m.setAttribute("content",/dark/.test(m.getAttribute("media")||"")?"#14151E":"#ECEEF8") } else m.setAttribute("content",dark?"#14151E":"#ECEEF8") }) }
+function setTheme(t){ try{ if(t==="auto") localStorage.removeItem("duitjar.theme"); else localStorage.setItem("duitjar.theme",t) }catch(e){} applyTheme(); say(t==="dark"?"Lights off… cosy 🌙":t==="light"?"Good morning, sunshine ☀️":"I'll follow your phone 🌗","happy",3000) }
+applyTheme();
+Object.assign(ZH,{"Appearance":"外观","Auto":"自动","Light":"浅色","Dark":"深色","Auto follows your iPhone's light or dark setting.":"自动会跟随 iPhone 的浅色或深色设置。","Lights off… cosy 🌙":"关灯啦……好舒服 🌙","Good morning, sunshine ☀️":"早安，小太阳 ☀️","I'll follow your phone 🌗":"我会跟着手机设置 🌗"});
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
@@ -3105,6 +3155,7 @@ document.addEventListener("click",e=>{
     if(ds.rsyes){applyRestore();return}
     if(ds.lang){ S.settings.lang=ds.lang; persistSettings(); applyLang(ds.lang); render(); drawSettings(); renderBuddyShell(); buddyIdle(); return }
     if(ds.pet){ const n=$("dogName"); const nm=n?n.value.trim():""; const isDef=!nm||Object.values(PETS_T).some(p=>p.def===nm); S.settings.pet=ds.pet; if(isDef) delete S.settings.dog; else S.settings.dog=nm; persistSettings(); renderBuddyShell(); say("Hi! I'm "+dogName()+" "+petT().emo,"happy",4000); drawSettings(); return }
+    if(ds.themeset){ setTheme(ds.themeset); drawSettings(); return }
     if(ds.pal){S.settings.palette=ds.pal;applyPalette();persistSettings();drawSettings();return}
     if(ds.ct){ST.ct=ds.ct;drawSettings();return}
     if(ds.editcat){openCat(ST.ct,ds.editcat);return}
