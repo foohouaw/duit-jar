@@ -898,6 +898,44 @@ button:active{transform:scale(.97)}
 .gdone h2{margin:0;font-family:var(--display)}
 .gwin{margin:0 0 6px;font-weight:700;color:var(--muted)}
 .gwin b{color:var(--inc);font-size:18px}
+/* try before you buy */
+.witem.trying,.decit.trying{border-color:var(--inc)!important;background:var(--inc-soft)!important}
+.trybar{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom,0px));z-index:4;margin:0 -16px calc(-18px - env(safe-area-inset-bottom,0px));padding:10px 16px calc(14px + env(safe-area-inset-bottom,0px));background:var(--card);box-shadow:0 -12px 24px -14px rgba(0,0,0,.3);display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:10px;align-items:center;border-top:1px solid var(--line);border-radius:22px 22px 0 0}
+.trybar.pulse{animation:trypulse .35s ease-out}
+@keyframes trypulse{from{transform:translateY(18px);opacity:.4}to{transform:none;opacity:1}}
+.trybar .tb-pet{width:58px;height:58px;display:grid;place-items:center;background:var(--chip);border-radius:16px;overflow:hidden}
+.trybar .tb-pet .dog{width:54px}
+.trybar .tb-dec{width:58px;height:58px;display:grid;place-items:center;background:var(--chip);border-radius:16px}
+.trybar .tb-dec .dem{font-style:normal;font-size:32px}
+.trybar .tb-dec .dsw{width:40px;height:32px;border-radius:9px;display:block}
+.trybar .tb-dec .dsw.rug{border-radius:50%;height:22px}
+.trybar .tb-tx{display:flex;flex-direction:column;min-width:0}
+.trybar .tb-tx b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trybar .tb-tx small{color:var(--muted);font-weight:700}
+.trybar .btn{padding:10px 14px}
+.dec-prev{position:sticky;top:-10px;z-index:3;background:var(--card);padding-bottom:6px}
+/* no sideways scrolling inside sheets */
+.sheet .wrow{flex-wrap:wrap;overflow:visible}
+.sheet .recent{flex-wrap:wrap;overflow:visible;margin-inline:0;padding:0}
+.sheet .rchip{max-width:100%}
+/* moods */
+.dog .eyes-h,.dog .brows,.dog .m-neu,.dog .tear{display:none}
+.dog.mood-happy .eyes{display:none} .dog.mood-happy .eyes-h{display:inline} .dog.mood-happy .tongue{display:inline}
+.dog.mood-normal .m-ok{display:none} .dog.mood-normal .m-neu{display:inline}
+.dog.mood-sad .m-ok{display:none} .dog.mood-sad .m-sad,.dog.mood-sad .brows,.dog.mood-sad .tear{display:inline}
+.dog.mood-sad .tail{animation-duration:2.8s}
+.dog.mood-sad .tear{animation:tear 2.4s ease-in infinite}
+@keyframes tear{0%,40%{opacity:0;transform:translateY(-2px)}55%{opacity:1}100%{opacity:0;transform:translateY(7px)}}
+.dog.happy .m-ok{display:inline!important} .dog.happy .tongue{display:inline!important} .dog.happy .m-sad,.dog.happy .m-neu,.dog.happy .brows,.dog.happy .tear{display:none!important}
+.dog.sleep .eyes-h{display:none!important}
+/* level locks */
+.witem.locked,.decit.locked{opacity:.62}
+.witem.locked.trying,.decit.locked.trying{opacity:1}
+.nxu{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px 14px;box-shadow:var(--shadow);font-size:13.5px;font-weight:700}
+.nxu .nxl{grid-row:span 2;background:var(--chip);border-radius:12px;padding:8px 10px;font-weight:800;white-space:nowrap}
+.nxu .nxn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nxu .hint{font-size:12px}
+p.nxu{display:block;text-align:center}
 </style>
 
 </head>
@@ -1334,7 +1372,7 @@ function dailyChart(list){
     '<text class="axis" x="'+L+'" y="10">Peak '+esc(cur())+' '+money(max)+' on day '+(peak+1)+'</text>'+
     '<text class="axis" x="'+L+'" y="'+(H-4)+'">1</text><text class="axis" x="'+(W/2)+'" y="'+(H-4)+'" text-anchor="middle">'+Math.ceil(n/2)+'</text><text class="axis" x="'+(W-L)+'" y="'+(H-4)+'" text-anchor="end">'+n+'</text></svg></section>';
 }
-function render(){
+function render(){ try{ refreshMood() }catch(e){}
   if((S.settings.lang||"en")!==LANG&&S.settings.lang) applyLang(S.settings.lang);
   const pg=S.page;
   $("homePage").hidden=pg!=="home"; $("goalsPage").hidden=pg!=="goals"; $("statsPage").hidden=pg!=="stats"; $("buddyPage").hidden=pg!=="buddy"; $("buddy").hidden=pg==="buddy"; $("navBuddy").setAttribute("aria-current",pg==="buddy"?"page":"false");
@@ -1687,7 +1725,7 @@ async function wipeAll(){
 /* ---------- buddy (maltese) ---------- */
 let sayT=null, firstLoad=true;
 function dogName(){return (S.settings.dog||petT().def).slice(0,16)}
-function renderBuddyShell(){ $("buddy").innerHTML='<button class="dogbtn" id="dogBtn" aria-label="Pet '+esc(dogName())+'"><span class="dogwrap" id="dogWrap">'+petSVG(petType(),{outfit:effOutfit()})+'</span></button><button class="say" id="say" data-bprof="1" aria-live="polite"></button>' ; if(S.page==="buddy"&&typeof renderBuddyPage==="function") renderBuddyPage() }
+function renderBuddyShell(){ $("buddy").innerHTML='<button class="dogbtn" id="dogBtn" aria-label="Pet '+esc(dogName())+'"><span class="dogwrap" id="dogWrap">'+petSVG(petType(),{outfit:effOutfit()})+'</span></button><button class="say" id="say" data-btip="1" aria-live="polite"></button>' ; if(S.page==="buddy"&&typeof renderBuddyPage==="function") renderBuddyPage() }
 function dogEl(){return document.querySelector("#dogWrap .dog")}
 function say(text,mood,ms){
   const el=$("say"), d=dogEl(); if(!el||!d) return;
@@ -1932,11 +1970,11 @@ function petLines(){const p=petType(), s=petT().snd; return ["Hehe, that tickles
 const INK="#2B2522";
 function petFace(o){ o=o||{}; const nose=o.nose||INK;
   return '<circle cx="44" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/><circle cx="76" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/>'+
-  '<g class="eyes"><ellipse cx="51" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><ellipse cx="69" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><circle cx="52.5" cy="46.3" r="1.5" fill="#fff"/><circle cx="70.5" cy="46.3" r="1.5" fill="#fff"/></g>'+
+  '<g class="eyes"><ellipse cx="51" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><ellipse cx="69" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><circle cx="52.5" cy="46.3" r="1.5" fill="#fff"/><circle cx="70.5" cy="46.3" r="1.5" fill="#fff"/></g>'+'<g class="eyes-h"><path d="M46.5 49.5 q4.5 -6.5 9 0 M64.5 49.5 q4.5 -6.5 9 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/></g><path class="brows" d="M45.5 43.5 l8 -3.2 M74.5 43.5 l-8 -3.2" stroke="'+INK+'" stroke-width="2" fill="none" stroke-linecap="round"/><path class="tear" d="M73 53 q2.6 4 0 6 q-2.6 -2 0 -6z" fill="#7FC6E8"/>'+
   (o.smallNose?'<path d="M57 55 h6 l-3 3.4 z" fill="'+nose+'" stroke="'+nose+'" stroke-width="1.2" stroke-linejoin="round"/>':'<ellipse cx="60" cy="57" rx="4.6" ry="3.4" fill="'+nose+'"/>')+
   '<path class="tongue" d="M57.6 62.4 q2.4 7.5 4.8 0 z" fill="#F08AA0"/>'+
   (o.cat?'<path class="m-ok" d="M55 60.5 q2.5 3 5 0 q2.5 3 5 0" stroke="'+INK+'" stroke-width="1.6" fill="none" stroke-linecap="round"/>':'<path class="m-ok" d="M55.5 61.2 q4.5 4.2 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/>')+
-  '<path class="m-sad" d="M55.5 64.2 q4.5 -3.6 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/>'+
+  '<path class="m-sad" d="M55.5 64.2 q4.5 -3.6 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/><path class="m-neu" d="M56.5 62.6 q3.5 1.4 7 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/>'+
   (o.teeth?'<rect x="58" y="61.4" width="4" height="3.6" rx=".8" fill="#fff" stroke="'+INK+'" stroke-width=".8"/>':'')+
   (o.whiskers?'<path d="M38 56 L26 53 M38 60 L26 61 M82 56 L94 53 M82 60 L94 61" stroke="'+o.whiskers+'" stroke-width="1.2" stroke-linecap="round"/>':'');
 }
@@ -1950,8 +1988,7 @@ function petBase(type){
       g([[60,92,27],[40,95,14],[80,95,14],[50,103,12],[70,103,12]],"var(--fur)")+
       g([[31,58,11],[29,72,10],[32,85,8],[89,58,11],[91,72,10],[88,85,8]],"var(--fur-ear)")+
       g([[60,48,25],[41,42,12],[79,42,12],[46,29,12],[74,29,12],[60,25,13],[38,54,11],[82,54,11],[50,62,10],[70,62,10]],"var(--fur)")+
-      g([[49,111,6.5],[71,111,6.5]],"var(--fur)")+petFace()+
-      '<g style="fill:var(--exp)"><path d="M60 14 L49 8 L50 20 Z M60 14 L71 8 L70 20 Z"/><circle cx="60" cy="14" r="3.2"/></g></svg>';
+      g([[49,111,6.5],[71,111,6.5]],"var(--fur)")+petFace()+'</svg>';
   }
   if(type==="shiba"){
     const o="#E39A55", ln="#B9763A", cr="#FFF4E6", ear="#F6C9A8"; const st=' stroke="'+ln+'" stroke-width="2.4" stroke-linejoin="round"';
@@ -2459,8 +2496,8 @@ function faceX(o){ o=o||{}; const nose=o.nose||INK;
   const eyes=o.eyesOnDark?'<g class="eyes"><circle cx="51" cy="48" r="4.8" fill="#fff"/><circle cx="69" cy="48" r="4.8" fill="#fff"/><circle cx="51.4" cy="48.6" r="3.3" fill="'+INK+'"/><circle cx="68.6" cy="48.6" r="3.3" fill="'+INK+'"/><circle cx="52.4" cy="47.4" r="1.1" fill="#fff"/><circle cx="69.6" cy="47.4" r="1.1" fill="#fff"/></g>'
     :'<g class="eyes"><ellipse cx="51" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><ellipse cx="69" cy="48" rx="4.3" ry="4.9" fill="'+INK+'"/><circle cx="52.5" cy="46.3" r="1.5" fill="#fff"/><circle cx="70.5" cy="46.3" r="1.5" fill="#fff"/></g>';
   const nz=o.beak?'<path d="M54.5 54.5 L65.5 54.5 L60 61.5 Z" fill="#F3A23B" stroke="#C9781A" stroke-width="1" stroke-linejoin="round"/>':o.smallNose?'<path d="M57 55 h6 l-3 3.4 z" fill="'+nose+'" stroke="'+nose+'" stroke-width="1.2" stroke-linejoin="round"/>':'<ellipse cx="60" cy="57" rx="4.6" ry="3.4" fill="'+nose+'"/>';
-  return '<circle cx="44" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/><circle cx="76" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/>'+eyes+nz+
-   (o.beak?'':'<path class="tongue" d="M57.6 62.4 q2.4 7.5 4.8 0 z" fill="#F08AA0"/>'+'<path class="m-ok" d="M55.5 61.2 q4.5 4.2 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/><path class="m-sad" d="M55.5 64.2 q4.5 -3.6 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/>')+
+  return '<circle cx="44" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/><circle cx="76" cy="59" r="4.2" fill="#F5A3B5" opacity=".5"/>'+eyes+'<g class="eyes-h"><path d="M46.5 49.5 q4.5 -6.5 9 0 M64.5 49.5 q4.5 -6.5 9 0" stroke="'+(o.eyesOnDark?"#fff":INK)+'" stroke-width="2.6" fill="none" stroke-linecap="round"/></g><path class="brows" d="M45.5 43.5 l8 -3.2 M74.5 43.5 l-8 -3.2" stroke="'+(o.eyesOnDark?"#fff":INK)+'" stroke-width="2" fill="none" stroke-linecap="round"/><path class="tear" d="M73 53 q2.6 4 0 6 q-2.6 -2 0 -6z" fill="#7FC6E8"/>'+nz+
+   (o.beak?'':'<path class="tongue" d="M57.6 62.4 q2.4 7.5 4.8 0 z" fill="#F08AA0"/>'+'<path class="m-ok" d="M55.5 61.2 q4.5 4.2 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/><path class="m-sad" d="M55.5 64.2 q4.5 -3.6 9 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/><path class="m-neu" d="M56.5 62.6 q3.5 1.4 7 0" stroke="'+INK+'" stroke-width="1.8" fill="none" stroke-linecap="round"/>')+
    (o.teeth?'<rect x="58" y="61.4" width="4" height="3.6" rx=".8" fill="#fff" stroke="'+INK+'" stroke-width=".8"/>':'') }
 function petExtra(type){
   const open='<svg class="dog" viewBox="0 0 124 124" aria-hidden="true">'; const S2=(c)=>' stroke="'+c+'" stroke-width="2.4" stroke-linejoin="round"';
@@ -2522,7 +2559,7 @@ function firstEntryDay(){ let m=null; for(const k in S.months) for(const x of S.
 function effOutfit(){ const b=bud(); const o=Object.assign({},b.outfit); const s=season(); if(s&&b.seasonal!==false) Object.assign(o,s.o); return o }
 function petSVG(type,opts){ type=PETS_T[type]?type:"maltese"; let svg=petExtra(type)||petBase(type); const o=opts&&opts.outfit; if(!o) return svg;
   const acc=["neck","face","head","prop"].map(sl=>o[sl]&&ACC[o[sl]]?'<g class="acc acc-'+sl+'">'+ACC[o[sl]]+'</g>':"").join("");
-  if(o.head) svg=svg.replace('class="dog"','class="dog hashead"'); return svg.replace(/<\/svg>$/,acc+"</svg>") }
+  if(o.head) svg=svg.replace('class="dog"','class="dog hashead"'); svg=svg.replace('class="dog','class="dog mood-'+moodName()+' '); return svg.replace(/<\/svg>$/,acc+"</svg>") }
 function lvlInfo(xp){ let L=1, need=40, x=xp; while(x>=need){ x-=need; L++; need=40+20*(L-1) } return {L,cur:x,need} }
 function level(){ return lvlInfo(bud().xp).L }
 function happiness(){ const b=bud(); let h=50; const hrs=b.fedAt?(Date.now()-b.fedAt)/36e5:999; h+=hrs<24?25:hrs<48?10:hrs<96?-5:-20;
@@ -2547,7 +2584,7 @@ const FEEDL=["Nom nom nom! 😋","Yummy! Thank you! 💕","*happy crunching*","B
 function feedPet(times){ const b=bud(); times=Math.min(times||1,b.treats); if(times<1){ toast("No treats yet. Log entries to earn some!"); return }
   const before=level(); b.treats-=times; b.xp+=10*times; b.fedAt=Date.now(); persistSettings(); const after=level();
   if(BPV) drawProfile(); refreshBubble(); checkBadges();
-  if(after>before){ confetti(); say("Level up! I'm level "+after+" now! ⭐","happy",5000) } else say(FEEDL[Math.floor(Math.random()*FEEDL.length)],"happy",3000);
+  if(after>before){ confetti(); say("Level up! I'm level "+after+" now! ⭐","happy",5000); const nu=unlocksAt(after,before); if(nu.length) setTimeout(()=>toast("Unlocked: "+nu.join(", ")),600); if(S.page==="buddy") renderBuddyPage() } else say(FEEDL[Math.floor(Math.random()*FEEDL.length)],"happy",3000);
   const w=$("dogWrap"); if(w) for(let k=0;k<Math.min(times,4);k++){ const h=document.createElement("span"); h.className="heart"; h.textContent=treatIc(); h.style.setProperty("--dx",(Math.random()*40-20).toFixed(0)+"px"); h.style.animationDelay=(k*120)+"ms"; w.appendChild(h); setTimeout(()=>h.remove(),1600) } }
 function tipsList(){ const out=[]; const td=today(); const wk=[]; for(const k in S.months) for(const x of S.months[k]) if(x.t==="e"&&-daysUntil(x.d)>=0&&-daysUntil(x.d)<=6) wk.push(x);
   if(wk.length>=3){ const s={},c={}; wk.forEach(x=>{s[x.c]=(s[x.c]||0)+x.a;c[x.c]=(c[x.c]||0)+1}); const top=Object.keys(s).sort((a,b)=>s[b]-s[a])[0];
@@ -2565,7 +2602,7 @@ const SEASON_HI={raya:"Selamat Hari Raya! Maaf zahir & batin 🌙",cny:"Gong Xi 
 /* profile */
 let BPV=null;
 function openProfile(){ BPV={tab:"head"}; draw() }
-function drawProfile(){ const b=bud(); const li=lvlInfo(b.xp); const hp=happiness(); const of=effOutfit();
+function drawProfile(){ const b=bud(); const li=lvlInfo(b.xp); const hp=happiness(); const of=Object.assign({},effOutfit(),BPV.try||{});
   const vb={head:"30 -4 64 48",face:"36 34 48 26",neck:"30 62 64 40",prop:"76 52 40 70"};
   let body='<div class="bp-hero">'+petSVG(petType(),{outfit:of})+'</div>'+
    '<div class="bp-name"><b>'+esc(dogName())+'</b> <span class="pill">Lv '+li.L+'</span></div>'+
@@ -2574,15 +2611,15 @@ function drawProfile(){ const b=bud(); const li=lvlInfo(b.xp); const hp=happines
    '<p class="hint">Earn treats by logging entries (up to 10 a day), your first entry each day, and badges.</p>'+
    '<div class="stats">'+mini("Days together",String(Math.max(1,-daysUntil(b.since)+1)))+mini("Streak",String(streak()))+mini("Best streak",String(bestStreak()))+mini("Entries",String(entryCount()))+'</div>';
   const s=season(); body+='<div class="label">Wardrobe</div><div class="seg">'+[["head","Head"],["face","Face"],["neck","Neck"],["prop","Hold"]].map(([k,l])=>'<button data-bptab="'+k+'" aria-pressed="'+(BPV.tab===k)+'">'+l+'</button>').join("")+'</div>'+
-   '<div class="wardrobe">'+ITEMS.filter(i=>i.slot===BPV.tab).map(i=>{ const own=b.owned.includes(i.id), on=b.outfit[i.slot]===i.id; return '<button class="witem'+(on?' on':'')+'" data-item="'+i.id+'"><svg viewBox="'+(ITEM_VB[i.id]||vb[i.slot])+'" aria-hidden="true">'+ACC[i.id]+'</svg><span>'+esc(i.name)+'</span><small>'+(on?"Wearing":own?"Owned":treatIc()+" "+i.cost)+'</small></button>' }).join("")+'</div>'+
+   '<div class="wardrobe">'+ITEMS.filter(i=>i.slot===BPV.tab).map(i=>{ const own=b.owned.includes(i.id), on=b.outfit[i.slot]===i.id; const tr=BPV.try&&BPV.try[i.slot]===i.id; return '<button class="witem'+(on?' on':'')+(tr?' trying':'')+(!own&&lockLv(i.id)?' locked':'')+'" data-item="'+i.id+'"><svg viewBox="'+(ITEM_VB[i.id]||vb[i.slot])+'" aria-hidden="true">'+ACC[i.id]+'</svg><span>'+esc(i.name)+'</span><small>'+(tr?"Trying on":on?"Wearing":own?"Owned":lockLv(i.id)?"🔒 Lv "+lockLv(i.id):treatIc()+" "+i.cost)+'</small></button>' }).join("")+'</div>'+tryBarW()+
    '<div class="switchrow"><div>Seasonal outfits<small>'+(s?"Now: "+({raya:"Hari Raya",cny:"Chinese New Year",deepavali:"Deepavali",xmas:"Christmas"}[s.k]):"Raya, Chinese New Year, Deepavali, Christmas")+'</small></div><button class="sw" role="switch" data-bpseason="1" aria-checked="'+(b.seasonal!==false)+'" aria-label="Seasonal outfits"></button></div>';
   body+='<div class="label">Badges</div><div class="badges">'+BADGES.map(([id,ic,name])=>{ const got=b.badges.includes(id); return '<div class="badge'+(got?'':' locked')+'" title="'+esc(BADGE_DESC[id]||name)+'"><span aria-hidden="true">'+(got?ic:"🔒")+'</span><small>'+esc(name)+'</small></div>' }).join("")+'</div>';
   const tips=tipsList(); body+='<div class="label">'+esc(dogName())+'’s tips</div>'+(tips.length?'<div class="highlights">'+tips.map(t=>'<div class="hl"><span aria-hidden="true">💡</span><div>'+esc(t)+'</div></div>').join("")+'</div>':'<p class="hint">Log a few more entries and I’ll start spotting patterns.</p>');
   body+='<div class="label">Pet &amp; name</div><div class="petgrid">'+Object.keys(PETS_T).map(k=>'<button class="petopt" data-pet="'+k+'" aria-pressed="'+(petType()===k)+'">'+petSVG(k)+esc(PETS_T[k].label)+'</button>').join("")+'</div><input class="field" id="dogName" maxlength="16" placeholder="'+esc(petT().def)+'" value="'+esc(S.settings.dog||"")+'" aria-label="Pet name">';
   keepScroll(()=>{ $("sheetRoot").innerHTML=shell(dogName(),body) }) }
 function tapItem(id){ const b=bud(); const it=ITEMS.find(i=>i.id===id); if(!it) return;
-  if(b.owned.includes(id)){ b.outfit[it.slot]=b.outfit[it.slot]===id?null:id }
-  else { if(b.treats<it.cost){ toast("You need "+(it.cost-b.treats)+" more treats"); return } b.treats-=it.cost; b.owned.push(id); b.outfit[it.slot]=id; say("Ooh, a new "+it.name+"! How do I look? ✨","happy",4000); checkBadges() }
+  if(b.owned.includes(id)){ BPV.try=null; b.outfit[it.slot]=b.outfit[it.slot]===id?null:id }
+  else { BPV.try={[it.slot]:id}; drawProfile(); const tb=document.querySelector(".trybar"); if(tb) tb.classList.add("pulse"); return }
   persistSettings(); renderBuddyShell(); refreshBubble(); drawProfile() }
 setInterval(()=>{ if(document.hidden||$("sheetRoot").innerHTML) return; const d=dogEl(); if(!d||d.classList.contains("sleep")) return; const r=Math.random(); const c=r<.35?"tilt":r<.7?"look":"wagburst"; d.classList.add(c); setTimeout(()=>d.classList.remove(c),1600) },8000);
 Object.assign(ZH,{"Hamster":"仓鼠","Panda":"熊猫","Teddy":"泰迪熊","Penguin":"企鹅","Corgi":"柯基","Red panda":"小熊猫","Feed":"喂食","treats":"零食","Days together":"相伴天数","Streak":"连续天数","Best streak":"最长连续","Wardrobe":"衣橱","Head":"头部","Face":"脸部","Neck":"颈部","Wearing":"穿戴中","Owned":"已拥有","Seasonal outfits":"节日服装","Raya, Chinese New Year, Deepavali, Christmas":"开斋节、农历新年、屠妖节、圣诞节","Badges":"徽章","Pet & name":"宠物与名字",
@@ -2865,6 +2902,8 @@ function renderXCards(){ const el=$("xcard"); if(!el) return; if(S.mode==="loadi
 function drawExt(){ if(BG) drawBudgets(); else if(IE) drawIE(); else if(WR) drawWrapped(); else if(NW) drawBalances(); else return false; return true }
 function extClick(t,ds){
   const top=topSheet();
+  if(ds.btip){ showTip(); return true }
+  if(tryExtClick(t,ds)) return true;
   if(buddyExtClick(t,ds)) return true;
   if(ds.emojump){ const g=$("eg"+ds.emojump); if(g) g.scrollIntoView({block:"start",behavior:"smooth"}); return true }
   if(ds.bgopen){ if(ST) closeAll(); openBudgets(); return true }
@@ -3099,7 +3138,7 @@ const DECOR=[
 const DSLOTS=[["wall","🎨","Wallpaper"],["floor","🪵","Floor"],["rug","🟣","Rug"],["wallL","🖼️","Wall left"],["wallR","📚","Wall right"],["floorL","🛋️","Furniture"],["floorR","🪴","Plants & lamps"],["toy","🎾","Toys"],["ceil","✨","Ceiling"]];
 function home(){ const b=bud(); const h=b.home=b.home||{}; h.own=h.own||["w_cream","f_wood"]; h.put=h.put||{}; if(!h.put.wall) h.put.wall="w_cream"; if(!h.put.floor) h.put.floor="f_wood"; return h }
 function decor(id){ return DECOR.find(d=>d.id===id) }
-function roomHTML(big){ const h=home(); const g=s=>{ const d=h.put[s]&&decor(h.put[s]); return d?d.v:null };
+function roomHTML(big,ov){ const h=home(); const put=Object.assign({},h.put,ov||{}); const g=s=>{ const d=put[s]&&decor(put[s]); return d?d.v:null };
   const night=isNight()||new Date().getHours()>=19||new Date().getHours()<7;
   const ce=g("ceil"); const ceil=ce?'<div class="rm-ceil" aria-hidden="true">'+Array(7).fill('<span>'+ce+'</span>').join("")+'</div>':'';
   const rug=g("rug");
@@ -3116,7 +3155,7 @@ function renderBuddyPage(){ const el=$("buddyPage"); if(!el) return; if(S.mode==
   el.innerHTML='<div class="page-head bphead"><div><h1>'+esc(dogName())+'’s home</h1><p><span>Lv '+li.L+'</span> · <span class="num">'+treatIc()+' '+b.treats+'</span> <span>treats</span></p></div></div>'+
    roomHTML(true)+
    '<div class="bp-meters bpm2"><div><div class="label">XP '+li.cur+' / '+li.need+'</div><div class="gbar"><i style="width:'+(li.cur/li.need*100).toFixed(1)+'%"></i></div></div><div><div class="label">Happiness '+hp+'%</div><div class="gbar hp"><i style="width:'+hp+'%"></i></div></div></div>'+
-   '<div class="bactions"><button class="bact" data-bfeed="1"'+(b.treats<1?' disabled':'')+'><span aria-hidden="true">'+treatIc()+'</span>Feed</button><button class="bact" data-bwardrobe="1"><span aria-hidden="true">🎀</span>Wardrobe</button><button class="bact" data-bdecor="1"><span aria-hidden="true">🛋️</span>Decorate</button></div>'+
+   nextUnlockHTML()+'<div class="bactions"><button class="bact" data-bfeed="1"'+(b.treats<1?' disabled':'')+'><span aria-hidden="true">'+treatIc()+'</span>Feed</button><button class="bact" data-bwardrobe="1"><span aria-hidden="true">🎀</span>Wardrobe</button><button class="bact" data-bdecor="1"><span aria-hidden="true">🛋️</span>Decorate</button></div>'+
    '<div class="gsec"><div class="gsec-h"><h3>Mini games</h3><span class="hint"><span>Treats today</span> <b class="num">'+gd.gearn+' / '+GAME_CAP+'</b></span></div>'+
    [["catch","🧺","Catch the treats","Drag to catch falling treats. Dodge the bills!"],["memory","🃏","Memory match","Find all the pairs in as few moves as you can."],["pop","🪙","Coin pop","Tap the coins before they hide. Not the bills!"]].map(([k,ic,n,d])=>'<button class="gcard" data-game="'+k+'"><span class="gic" aria-hidden="true">'+ic+'</span><span class="gtx"><b>'+n+'</b><small>'+d+'</small></span><span class="gplay">Play</span></button>').join("")+
    (gd.gearn>=GAME_CAP?'<p class="hint">You’ve earned all of today’s game treats. Games are still fun to play!</p>':'')+'</div>'+
@@ -3125,18 +3164,19 @@ function renderBuddyPage(){ const el=$("buddyPage"); if(!el) return; if(S.mode==
 function roomSay(text){ const s=$("rmSay"); if(!s) return; s.textContent=text; s.hidden=false; if(LANG==="zh") trTree(s); clearTimeout(roomSay.t); roomSay.t=setTimeout(()=>{ s.hidden=true },2600);
   const p=document.querySelector(".rm-pet .dog"); if(p){ p.classList.remove("hop"); void p.getBoundingClientRect(); p.classList.add("hop","happy"); setTimeout(()=>p.classList.remove("happy"),1500) } }
 /* decorate sheet */
-function openDecor(){ DS={tab:"wall"}; draw() }
+function openDecor(){ DS={tab:"wall",try:null}; draw() }
 function drawDecor(){ const h=home(), b=bud();
   const items=DECOR.filter(d=>d.slot===DS.tab);
-  const body='<div class="dec-prev">'+roomHTML(false)+'</div><div class="dec-tr"><span>'+treatIc()+' <b class="num">'+b.treats+'</b> <span>treats</span></span></div>'+
+  const body='<div class="dec-prev">'+roomHTML(false,DS.try)+'</div><div class="dec-tr"><span>'+treatIc()+' <b class="num">'+b.treats+'</b> <span>treats</span></span></div>'+
    '<div class="emojump">'+DSLOTS.map(([k,ic,l])=>'<button data-dtab="'+k+'" aria-pressed="'+(DS.tab===k)+'"><span aria-hidden="true">'+ic+'</span>'+l+'</button>').join("")+'</div>'+
    '<div class="decgrid">'+items.map(d=>{ const own=h.own.includes(d.id), on=h.put[d.slot]===d.id; const pv=/^(w|f|r)_/.test(d.id)?'<i class="dsw'+(d.slot==="rug"?' rug':'')+'" style="background:'+esc(d.v)+'"></i>':'<i class="dem">'+d.v+'</i>';
-     return '<button class="decit'+(on?' on':'')+'" data-decor="'+d.id+'">'+pv+'<span>'+esc(d.name)+'</span><small>'+(on?"Placed":own?"Owned":d.cost?treatIc()+" "+d.cost:"Free")+'</small></button>' }).join("")+'</div>'+
+     const tr=DS.try&&DS.try[d.slot]===d.id; return '<button class="decit'+(on?' on':'')+(tr?' trying':'')+(!own&&lockLv(d.id)?' locked':'')+'" data-decor="'+d.id+'">'+pv+'<span>'+esc(d.name)+'</span><small>'+(tr?"Previewing":on?"Placed":own?"Owned":lockLv(d.id)?"🔒 Lv "+lockLv(d.id):d.cost?treatIc()+" "+d.cost:"Free")+'</small></button>' }).join("")+'</div>'+tryBarD()+
    (["wall","floor"].includes(DS.tab)?'':'<p class="hint">Tap a placed item again to put it away.</p>');
   keepScroll(()=>{ $("sheetRoot").innerHTML=shell("Decorate",body) }) }
 function tapDecor(id){ const d=decor(id); if(!d) return; const h=home(), b=bud();
+  DS.try=null;
   if(h.own.includes(id)){ if(h.put[d.slot]===id){ if(d.slot==="wall"||d.slot==="floor") return; delete h.put[d.slot] } else h.put[d.slot]=id }
-  else { if(b.treats<d.cost){ toast("You need "+(d.cost-b.treats)+" more treats"); return } b.treats-=d.cost; h.own.push(id); h.put[d.slot]=id; toast("New "+d.name+"!"); }
+  else { if(!d.cost){ h.own.push(id); h.put[d.slot]=id } else { DS.try={[d.slot]:id}; drawDecor(); const pv=document.querySelector(".dec-prev"); if(pv) pv.scrollIntoView({block:"nearest",behavior:"smooth"}); return } }
   persistSettings(); refreshBubble(); drawDecor(); if(S.page==="buddy") renderBuddyPage() }
 /* mini games */
 function gameReward(n){ const b=gameDay(); const give=Math.max(0,Math.min(n,GAME_CAP-b.gearn)); b.gearn+=give; b.treats+=give; persistSettings(); refreshBubble(); return give }
@@ -3216,6 +3256,50 @@ Object.assign(ZH,{"Buddy":"宠物","Decorate":"装饰","Mini games":"小游戏",
  "Moves":"步数","Pairs":"配对","Score":"分数","Start":"开始","Play again":"再玩一次","Solved in":"完成用了","moves":"步","treats earned!":"零食到手！","Daily game treats used up":"今天的游戏零食已用完","No treats this time. Try again!":"这次没有零食，再试一次！","Hold":"手持"});
 RX.push([/^(.+)'s home$/,(m,a)=>a+" 的家"],[/^Lv (\d+)$/,(m,a)=>"等级 "+a],[/^New (.+)!$/,(m,a)=>{ const z=ZH[a]; return z?"新的"+z+"！":null }],[/^Yum, (\d+) treats from playing! 🎮$/,(m,a)=>"好吃！玩游戏赚了 "+a+" 个零食！🎮"],[/^Drag left and right to catch (.+) and 🌟\. Avoid 🧾 bills!$/,(m,a)=>"左右拖动接住 "+a+" 和 🌟，躲开 🧾 账单！"],[/^Tap 🪙 coins as they pop up\. Don't tap 🧾 bills!$/,()=>"硬币 🪙 冒出来就点它，别点 🧾 账单！"]);
 
+
+/* try before you buy */
+function tryBarW(){ if(!BPV||!BPV.try) return ""; const [slot,id]=Object.entries(BPV.try)[0]; const it=ITEMS.find(i=>i.id===id); if(!it) return ""; const b=bud(); const lk=lockLv(id); const can=!lk&&b.treats>=it.cost;
+  return '<div class="trybar"><span class="tb-pet" aria-hidden="true">'+petSVG(petType(),{outfit:Object.assign({},effOutfit(),BPV.try)})+'</span><span class="tb-tx"><b>'+esc(it.name)+'</b><small>'+(lk?'🔒 <span>Unlocks at Lv '+lk+'</span>':can?treatIc()+' '+it.cost:'<span>Need</span> '+(it.cost-b.treats)+' <span>more treats</span>')+'</small></span><button class="btn soft" data-trycancel="1">Cancel</button><button class="btn primary" data-trybuy="1"'+(can?'':' disabled')+'>Buy</button></div>' }
+function tryBarD(){ if(!DS||!DS.try) return ""; const [slot,id]=Object.entries(DS.try)[0]; const d=decor(id); if(!d) return ""; const b=bud(); const lk=lockLv(id); const can=!lk&&b.treats>=d.cost;
+  const pv=/^(w|f|r)_/.test(d.id)?'<i class="dsw'+(d.slot==="rug"?' rug':'')+'" style="background:'+esc(d.v)+'"></i>':'<i class="dem">'+d.v+'</i>';
+  return '<div class="trybar"><span class="tb-dec" aria-hidden="true">'+pv+'</span><span class="tb-tx"><b>'+esc(d.name)+'</b><small>'+(lk?'🔒 <span>Unlocks at Lv '+lk+'</span>':can?treatIc()+' '+d.cost:'<span>Need</span> '+(d.cost-b.treats)+' <span>more treats</span>')+'</small></span><button class="btn soft" data-dtrycancel="1">Cancel</button><button class="btn primary" data-dtrybuy="1"'+(can?'':' disabled')+'>Buy</button></div>' }
+function buyTryW(){ const [slot,id]=Object.entries(BPV.try||{})[0]||[]; const it=ITEMS.find(i=>i.id===id); const b=bud(); if(!it||lockLv(id)) return; if(b.treats<it.cost){ toast("You need "+(it.cost-b.treats)+" more treats"); return }
+  b.treats-=it.cost; b.owned.push(id); b.outfit[it.slot]=id; BPV.try=null; persistSettings(); say("Ooh, a new "+it.name+"! How do I look? ✨","happy",4000); checkBadges(); renderBuddyShell(); refreshBubble(); drawProfile(); toast("New "+it.name+"!") }
+function buyTryD(){ const [slot,id]=Object.entries(DS.try||{})[0]||[]; const d=decor(id); const h=home(), b=bud(); if(!d||lockLv(id)) return; if(b.treats<d.cost){ toast("You need "+(d.cost-b.treats)+" more treats"); return }
+  b.treats-=d.cost; h.own.push(id); h.put[d.slot]=id; DS.try=null; persistSettings(); refreshBubble(); drawDecor(); if(S.page==="buddy") renderBuddyPage(); toast("New "+d.name+"!") }
+function tryExtClick(t,ds){
+  if(BPV&&topSheet()==="BP"){ if(ds.trybuy){ buyTryW(); return true } if(ds.trycancel){ BPV.try=null; drawProfile(); return true } if(ds.bptab&&BPV.try){ BPV.try=null } }
+  if(DS&&topSheet()==="DS"){ if(ds.dtrybuy){ buyTryD(); return true } if(ds.dtrycancel){ DS.try=null; drawDecor(); return true } }
+  return false }
+Object.assign(ZH,{"Trying on":"试穿中","Previewing":"预览中","Need":"还差","more treats":"个零食","Buy":"购买","Cancel":"取消"});
+
+/* tap the speech bubble for a money tip */
+const GEN_TIPS=["Try a no-spend day this week. Every ringgit saved stays in the jar 🌿","Small drinks add up: RM8 a day is about RM240 a month ☕","Paying for a subscription you rarely use? Check the Plan tab 🔁","Set a limit for your top category in Budgets 🎯","Save first, spend later: move money to savings on payday 💰","Wait 24 hours before buying something big. It helps avoid regret 🛍️","Log every day to keep your streak going and earn treats 🦴","Paid for friends? Turn on Split when adding, and I'll remember who owes you 👥","Cooking at home twice a week can save a lot on food 🍳","Check your Monthly Wrapped on the Stats page to see how the month went 🎁"];
+let TIPI=0;
+function bubbleTips(){ const out=[]; tipsList().forEach(t=>out.push(t));
+  const cm=ymOf(new Date()); const b=+S.settings.budget||0; const sp=totals(cm).e;
+  if(b>0&&sp<b){ const nd=new Date(); const dl=new Date(nd.getFullYear(),nd.getMonth()+1,0).getDate()-nd.getDate()+1; out.push("You can spend "+cur()+" "+money((b-sp)/dl)+" a day for the rest of the month 📅") }
+  const cat={}; (S.months[cm]||[]).forEach(x=>{ if(x.t==="e") cat[x.c]=(cat[x.c]||0)+x.a }); const top=Object.keys(cat).sort((a,c)=>cat[c]-cat[a])[0];
+  if(top) out.push("Your biggest spend this month is "+top+" ("+cur()+" "+money(cat[top])+")");
+  return out.concat(GEN_TIPS) }
+function showTip(){ const L=bubbleTips(); if(!L.length) return; const t=L[TIPI%L.length]; TIPI++; say("💡 "+t,"happy",8000) }
+Object.assign(ZH,{"Try a no-spend day this week. Every ringgit saved stays in the jar 🌿":"这周试试零支出日吧，省下的每一块钱都留在储蓄罐里 🌿","Small drinks add up: RM8 a day is about RM240 a month ☕":"小饮料也会累积：每天 RM8，一个月大约 RM240 ☕","Paying for a subscription you rarely use? Check the Plan tab 🔁":"有很少用的订阅吗？去计划页看看 🔁","Set a limit for your top category in Budgets 🎯":"给花最多的类别设个预算吧 🎯","Save first, spend later: move money to savings on payday 💰":"先存后花：发薪日先把钱转去储蓄 💰","Wait 24 hours before buying something big. It helps avoid regret 🛍️":"买贵东西前先等 24 小时，可以少后悔 🛍️","Log every day to keep your streak going and earn treats 🦴":"每天记账可以保持连续，还能赚零食 🦴","Paid for friends? Turn on Split when adding, and I'll remember who owes you 👥":"帮朋友付钱了？记账时打开分账，我帮你记住谁欠你 👥","Cooking at home twice a week can save a lot on food 🍳":"每周在家煮两次饭，可以省不少饭钱 🍳","Check your Monthly Wrapped on the Stats page to see how the month went 🎁":"去统计页看看月度回顾，了解这个月花得怎样 🎁"});
+RX.push([/^💡 (.+)$/,(m,a)=>{ const r=trPart(a); return r==null?null:"💡 "+r }],[/^You can spend (\S+ [\d,.]+) a day for the rest of the month 📅$/,(m,a)=>"这个月剩下的日子，每天可以花 "+a+" 📅"],[/^Your biggest spend this month is (.+) \((\S+ [\d,.]+)\)$/,(m,a,b)=>"这个月花最多的是"+(ZH[a]||a)+"（"+b+"）"]);
+
+/* level-locked specials */
+const ITEM_LV={starglass:3,wizard:3,headphones:4,tiara:4,pearls:4,crown:5,medal:5,halo:6,moneybag:6,cape:7,grad:8};
+const DECOR_LV={p_tree:3,p_fish:3,w_night:4,p_palm:4,b_tv:5,f_marble:5,r_gold:6,c_lanterns:6,b_piano:8};
+function lockLv(id){ const need=ITEM_LV[id]||DECOR_LV[id]||0; return need>level()?need:0 }
+function lvName(id){ const it=ITEMS.find(i=>i.id===id); if(it) return it.name; const d=decor(id); return d?d.name:id }
+function unlocksAt(L,from){ return Object.entries(Object.assign({},ITEM_LV,DECOR_LV)).filter(([id,l])=>l>from&&l<=L).map(([id])=>lvName(id)) }
+function nextUnlockHTML(){ const L=level(); const all=Object.entries(Object.assign({},ITEM_LV,DECOR_LV)).filter(([id,l])=>l>L); if(!all.length) return '<p class="hint nxu">🏆 <span>Everything is unlocked!</span></p>';
+  const nl=Math.min(...all.map(([,l])=>l)); const names=all.filter(([,l])=>l===nl).map(([id])=>lvName(id));
+  return '<div class="nxu"><span class="nxl">🔒 Lv '+nl+'</span><span class="nxn">'+names.map(n=>'<span>'+esc(n)+'</span>').join(", ")+'</span><span class="hint">Feed '+esc(dogName())+' to level up</span></div>' }
+/* happiness shows on the face */
+function moodName(){ const h=happiness(); return h>=70?"happy":h<35?"sad":"normal" }
+function refreshMood(){ const m="mood-"+moodName(); document.querySelectorAll('svg.dog[class*="mood-"]').forEach(el=>{ if(!el.classList.contains(m)){ el.classList.remove("mood-happy","mood-normal","mood-sad"); el.classList.add(m) } }) }
+Object.assign(ZH,{"Everything is unlocked!":"全部都解锁啦！"});
+RX.push([/^Unlocks at Lv (\d+)$/,(m,a)=>"等级 "+a+" 解锁"],[/^Unlocked: (.+)$/,(m,a)=>"已解锁："+a.split(", ").map(n=>ZH[n]||n).join("、")],[/^Feed (.+) to level up$/,(m,a)=>"喂 "+a+" 吃零食来升级"],[/^🔒 Lv (\d+)$/,(m,a)=>"🔒 等级 "+a],[/^Level up! I'm level (\d+) now! ⭐$/,(m,a)=>"升级啦！我现在 "+a+" 级了！⭐"]);
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
