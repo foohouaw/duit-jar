@@ -814,6 +814,90 @@ button:active{transform:scale(.97)}
 :root:not([data-theme="dark"]) .hero .jar .glass{fill:color-mix(in srgb,var(--glow) 8%,rgba(255,255,255,.7));stroke:color-mix(in srgb,var(--ink) 22%,transparent)}
 :root:not([data-theme="dark"]) .hero .jar .shine{stroke:rgba(255,255,255,.9)}
 }
+.emojump{display:flex;flex-wrap:wrap;gap:6px}
+.emojump button{display:inline-flex;align-items:center;gap:5px;padding:6px 10px 6px 8px;border-radius:999px;background:var(--chip);font-weight:800;font-size:12.5px}
+.emojump button span{font-size:15px;line-height:1}
+.emoji-group{scroll-margin-top:12px;padding-top:6px}
+/* v17 buddy home */
+.bphead h1{margin:0}
+.room{position:relative;width:100%;height:300px;border-radius:26px;overflow:hidden;isolation:isolate;box-shadow:var(--shadow);border:1px solid var(--line)}
+.room.big{height:min(92vw,360px)}
+.rm-wall{position:absolute;inset:0 0 34% 0;background:var(--wallbg,#FBF3E6)}
+.rm-floor{position:absolute;left:0;right:0;bottom:0;height:34%;background:var(--floorbg,#D9A66B);box-shadow:inset 0 6px 0 rgba(0,0,0,.08)}
+.rm-floor::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.08),transparent 40%)}
+.rm-win{position:absolute;top:13%;left:50%;transform:translateX(-50%);width:26%;aspect-ratio:1/1;border-radius:14px;border:5px solid #fff;background:linear-gradient(#9FD4FF,#DDF1FF);box-shadow:0 4px 0 rgba(0,0,0,.06);display:grid;place-items:center;overflow:hidden}
+.rm-win.night{background:linear-gradient(#1F2350,#3B3A78)}
+.rm-win span{font-size:clamp(20px,6vw,28px);transform:translate(28%,-22%)}
+.rm-win i{position:absolute;inset:0;background:linear-gradient(90deg,transparent calc(50% - 2px),#fff calc(50% - 2px) calc(50% + 2px),transparent calc(50% + 2px)),linear-gradient(transparent calc(50% - 2px),#fff calc(50% - 2px) calc(50% + 2px),transparent calc(50% + 2px))}
+.rm-ceil{position:absolute;top:2%;left:0;right:0;display:flex;justify-content:space-around;font-size:clamp(14px,4.4vw,20px);pointer-events:none}
+.rm-ceil span:nth-child(odd){transform:translateY(6px)}
+.rm-ceil::before{content:"";position:absolute;left:0;right:0;top:9px;height:12px;border-bottom:1.5px solid rgba(0,0,0,.18);border-radius:0 0 50% 50%}
+.rm-it{position:absolute;line-height:1;pointer-events:none;filter:drop-shadow(0 4px 4px rgba(0,0,0,.12))}
+.rm-wallL{left:9%;top:17%;font-size:clamp(30px,10vw,44px)}
+.rm-wallR{right:9%;top:17%;font-size:clamp(30px,10vw,44px)}
+.rm-floorL{left:3%;bottom:7%;font-size:clamp(50px,17vw,74px)}
+.rm-floorR{right:3%;bottom:9%;font-size:clamp(44px,15vw,64px)}
+.rm-toy{left:31%;bottom:5%;font-size:clamp(22px,7vw,30px)}
+.rm-rug{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);width:58%;height:15%;border-radius:50%;box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}
+.rm-pet{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);width:34%;max-width:140px;z-index:2}
+.rm-pet .dog{width:100%;animation:bob 3.2s ease-in-out infinite}
+.room:not(.big) .rm-pet{width:30%}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -3px}}
+.rm-say{position:absolute;left:50%;bottom:calc(8% + min(34%,140px) + 6px);transform:translateX(-50%);max-width:80%;background:var(--card);color:var(--ink);border-radius:14px;padding:7px 12px;font-weight:700;font-size:13px;box-shadow:0 6px 18px -6px rgba(0,0,0,.3);z-index:3;text-align:center;animation:popin2 .2s ease-out}
+.rm-say[hidden]{display:none}
+@keyframes popin2{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
+.bpm2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bactions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bact{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);border:1px solid var(--line);font-weight:800;font-size:13px}
+.bact span{font-size:24px;line-height:1}
+.bact:disabled{opacity:.45}
+.gsec{display:flex;flex-direction:column;gap:8px}
+.gsec-h{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px}
+.gsec-h h3{margin:0;font-family:var(--display);font-size:18px}
+.gcard{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);border-radius:20px;padding:12px 14px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.gcard .gic{width:48px;height:48px;border-radius:15px;background:var(--chip);display:grid;place-items:center;font-size:26px}
+.gcard .gtx{display:flex;flex-direction:column;min-width:0}
+.gcard .gtx b{font-size:15px}
+.gcard .gtx small{color:var(--muted);font-size:12.5px;font-weight:600;line-height:1.3}
+.gcard .gplay{background:var(--ink);color:var(--card);border-radius:999px;padding:7px 14px;font-weight:800;font-size:13px}
+.dec-prev .room{height:220px}
+.dec-tr{display:flex;justify-content:flex-end;font-weight:800;margin-top:-4px}
+.decgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.decit{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:16px;background:var(--chip);border:2px solid transparent;font-weight:800;font-size:12.5px;min-width:0}
+.decit span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.decit small{color:var(--muted);font-weight:700;font-size:11.5px}
+.decit.on{border-color:var(--ink);background:var(--card)}
+.decit .dem{font-style:normal;font-size:32px;line-height:1.1}
+.decit .dsw{width:44px;height:36px;border-radius:10px;border:1px solid rgba(0,0,0,.08)}
+.decit .dsw.rug{border-radius:50%;height:24px;margin:6px 0}
+.ghud{display:flex;justify-content:space-between;font-weight:800;padding:0 4px}
+.garea{position:relative;height:340px;border-radius:22px;overflow:hidden;background:linear-gradient(#DDEEFF,#F7FBFF 70%,#E9F5DF 70%);touch-action:none;user-select:none;-webkit-user-select:none}
+.garea.pop{background:linear-gradient(#FFF3DA,#FDE7DC)}
+.gpet{position:absolute;bottom:6px;left:0;width:60px;transition:transform .05s linear}
+.gpet .dog{width:60px}
+.fall{position:absolute;left:0;top:0;font-size:28px;line-height:1;will-change:transform;pointer-events:none}
+.fall.got{animation:got .3s ease-out forwards}.fall.bad{animation:bad .3s ease-out forwards}
+@keyframes got{to{opacity:0;scale:1.8}}@keyframes bad{to{opacity:0;rotate:30deg;scale:.4}}
+.gready{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;background:color-mix(in srgb,var(--card) 70%,transparent);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);font-weight:700;color:#2A2B3A}
+.gready .btn{min-width:140px}
+.popgrid{position:absolute;inset:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:10px}
+.hole{position:relative;border-radius:20px;background:rgba(255,255,255,.65);display:grid;place-items:center;overflow:hidden}
+.hole .jar{font-size:34px;opacity:.5}
+.hole .pc{position:absolute;inset:0;display:grid;place-items:center;font-size:40px;transform:translateY(110%);transition:transform .12s ease-out}
+.hole .pc.up{transform:translateY(0)}
+.hole .pc.hit{transform:translateY(0) scale(1.4);opacity:0;transition:transform .2s,opacity .2s}
+.memgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.memc{position:relative;aspect-ratio:3/4;border-radius:14px;perspective:600px}
+.memc span{position:absolute;inset:0;display:grid;place-items:center;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .3s}
+.memc .mf{background:linear-gradient(145deg,var(--exp),color-mix(in srgb,var(--exp),#000 18%));font-size:22px}
+.memc .mb{background:var(--card);border:2px solid var(--line);font-size:32px;transform:rotateY(180deg)}
+.memc.open .mf{transform:rotateY(-180deg)}.memc.open .mb{transform:rotateY(0)}
+.memc.done .mb{border-color:var(--inc);background:var(--inc-soft)}
+.gdone{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:16px 0}
+.gdone .gbig{font-size:56px}
+.gdone h2{margin:0;font-family:var(--display)}
+.gwin{margin:0 0 6px;font-weight:700;color:var(--muted)}
+.gwin b{color:var(--inc);font-size:18px}
 </style>
 
 </head>
@@ -829,6 +913,7 @@ button:active{transform:scale(.97)}
     <div class="top-r">
       <button class="icon-btn" id="privBtn" aria-label="Hide amounts" aria-pressed="false"></button>
       <button class="icon-btn" id="openSearch" aria-label="Search entries"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
+      <button class="icon-btn" id="openSettings" aria-label="Settings"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
     </div>
   </header>
 
@@ -851,6 +936,7 @@ button:active{transform:scale(.97)}
 
   <div class="page" id="statsPage" hidden></div>
   <div class="page" id="goalsPage" hidden></div>
+  <div class="page" id="buddyPage" hidden></div>
 </div>
 
 <nav class="nav" aria-label="Pages">
@@ -858,7 +944,7 @@ button:active{transform:scale(.97)}
   <button class="navb" id="navStats" aria-current="false"><svg class="i" viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>Stats</button>
   <button class="fab" id="addBtn"><span aria-hidden="true">+</span><b id="addLabel">Add</b></button>
   <button class="navb" id="navGoals" aria-current="false"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r=".8"/></svg>Plan</button>
-  <button class="navb" id="openSettings"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg>Settings</button>
+  <button class="navb" id="navBuddy" aria-current="false"><svg class="i" viewBox="0 0 24 24"><ellipse cx="12" cy="15.5" rx="4.6" ry="3.8"/><circle cx="6" cy="10.5" r="1.9"/><circle cx="9.5" cy="6.6" r="1.9"/><circle cx="14.5" cy="6.6" r="1.9"/><circle cx="18" cy="10.5" r="1.9"/></svg>Buddy</button>
 </nav>
 <div id="sheetRoot"></div>
 <div id="toastRoot"></div>
@@ -996,16 +1082,8 @@ const DEF = {
   e:[["Food","🍜"],["Drinks","🧋"],["Groceries","🥬"],["Transport","🚗"],["Shopping","🛍️"],["Bills","💡"],["Health","💊"],["Fun","🎮"],["Home","🏠"],["Gifts","🎁"],["Travel","✈️"],["Subscriptions","🔁"],["Other","✨"]],
   i:[["Salary","💼"],["Bonus","🎉"],["Side income","💻"],["Gift","🧧"],["Refund","↩️"],["Other","✨"]]
 };
-const EMOJI = [
-  ["Food & drink","🍜 🍚 🍛 🍔 🍕 🍣 🍱 🥟 🍢 🥗 🍞 🍳 🍰 🍩 🍦 🍓 🧋 ☕ 🥤 🍺 🧃 🥬 🛒 🧺"],
-  ["Getting around","🚗 ⛽ 🚕 🚌 🚇 🏍️ 🚲 🅿️ 🛣️ ✈️ 🚢 🧳"],
-  ["Home & bills","🏠 💡 💧 📶 📱 🔌 🧾 🛋️ 🧹 🔧 🪴 📦"],
-  ["Shopping & care","🛍️ 👗 👟 💄 🧴 💅 💇 🎒 💍 ⌚ 🕶️ 🧸"],
-  ["Health & growth","💊 🏥 🦷 💪 🧘 🏸 ⚽ 📚 🎓 ✏️ 🧠 🩺"],
-  ["Fun","🎮 🎬 🎤 🎵 🎨 🎳 🎟️ 🏖️ ⛺ 🎂 🎉 🎲"],
-  ["People & pets","👶 🐶 🐱 🐰 🎁 💐 💝 🙏 🤝 👨‍👩‍👧 💒 🧧"],
-  ["Money","💼 💰 💵 💳 🏦 📈 🪙 ↩️ 💻 🏷️ ✨ 🧮"]
-];
+const EMOJI = [["Food", "🍜 🍚 🍛 🍝 🍲 🥘 🫕 🍔 🍟 🍕 🌭 🥪 🌮 🌯 🥙 🧆 🍣 🍱 🍙 🍘 🥟 🍤 🍢 🍡 🥠 🥗 🥩 🍗 🍖 🥓 🍳 🥚 🧇 🥞 🍞 🥐 🥖 🥯 🥨 🧀 🥫 🍿 🥡 🦞 🦀 🦐 🦑 🐟"], ["Desserts & snacks", "🍰 🎂 🧁 🍮 🍩 🍪 🍫 🍬 🍭 🍦 🍧 🍨 🥧 🥮 🍯 🥜 🌰 🍿 🧂"], ["Drinks", "🧋 ☕ 🍵 🫖 🥤 🧃 🥛 🍼 🧉 🍺 🍻 🍷 🥂 🍸 🍹 🥃 🍶 🍾 🧊 💧"], ["Fruit & groceries", "🍓 🍎 🍏 🍐 🍊 🍋 🍌 🍉 🍇 🍍 🥭 🥥 🥝 🍑 🍒 🫐 🍈 🥑 🍅 🍆 🥕 🌽 🥦 🥬 🥒 🌶️ 🫑 🧄 🧅 🥔 🍠 🍄 🫘 🥜 🛒 🧺 🛍️"], ["Getting around", "🚗 🚙 🚘 🚕 🚖 🛺 🚌 🚍 🚐 🚎 🚇 🚆 🚄 🚈 🚊 🚝 🏍️ 🛵 🚲 🛴 ⛽ 🔋 🅿️ 🛣️ 🚦 🚧 🧭 🛞 🔧 ✈️ 🛫 🚁 🚢 ⛴️ 🚤 🛶 🚀"], ["Home", "🏠 🏡 🏢 🏬 🏘️ 🔑 🗝️ 🛋️ 🛏️ 🚪 🪑 🪞 🪟 🛁 🚿 🚽 🧹 🧺 🧼 🧽 🪣 🧻 🧸 🪴 🕯️ 🖼️ 🧯 🗑️ 📦 📮 🔨 🪛 🔧 🪚 🧰 🪜"], ["Bills & utilities", "💡 💧 🔥 ⚡ 📶 📱 ☎️ 📞 📺 🌐 🔌 🧾 📄 📃 📨 ❄️ 🌡️ 🚰 🛢️ 🏛️ 📬"], ["Clothes & style", "👗 👕 👖 👔 👚 👘 🥻 🩱 👙 🩳 🧥 🥼 🦺 👟 🥾 👠 👡 👢 🥿 🩴 🧢 👒 🎩 🧣 🧤 🧦 👜 👛 👝 🎒 💼 👓 🕶️ ⌚ 💍 💎 📿 🎀"], ["Beauty & care", "💄 💋 💅 💇 💆 🧴 🧼 🪒 🪥 🧖 🛀 🌸 🌺 🪷 ✂️ 🫧 👁️ 💈"], ["Health", "💊 💉 🩹 🩺 🩻 🏥 🚑 🦷 🦴 👓 🧪 🧫 🩸 😷 🤒 🤕 🧠 🫀 🫁 ❤️‍🩹 ♿ 🧬"], ["Sport & fitness", "💪 🏋️ 🤸 🧘 🏃 🚶 🚴 🏊 🏸 🎾 ⚽ 🏀 🏐 🏈 ⚾ 🏓 ⛳ 🥊 🥋 🛹 🏄 🧗 🤿 🎿 ⛸️ 🎣 🏹 🏆 🥇 🎽"], ["Learning", "📚 📖 📝 ✏️ 🖊️ 🖍️ 📒 📓 📔 📕 📗 📘 🎓 🏫 🧑‍🎓 🧑‍🏫 🔬 🔭 🧮 📐 📏 🗂️ 📎 🖇️ 🌍 🗣️"], ["Work & tech", "💼 🧑‍💻 💻 🖥️ ⌨️ 🖱️ 🖨️ 📷 📸 📹 🎥 🎧 🎙️ 📡 🔋 🔌 💾 💿 📀 ☁️ 🔐 🤖 📲 ⌚ 🕹️ 🗄️ 📊 📋 📅 🗓️ ⏰"], ["Fun & hobbies", "🎮 🕹️ 🎲 🧩 ♟️ 🎯 🎳 🎱 🃏 🀄 🎬 🎤 🎵 🎶 🎸 🎹 🥁 🎷 🎺 🎻 🪕 🎨 🖌️ 🧶 🧵 🪡 📷 🎟️ 🎫 🎭 🎪 🎡 🎢 🎠 🎆 🎉 🎊 🎈 🪅 🪁 🛝 🎰"], ["Travel", "✈️ 🏨 🗺️ 🧳 🛂 🎫 🗼 🗽 🏯 🏰 🕌 ⛩️ 🌏 🏔️ ⛰️ 🗻 🏖️ 🏝️ 🏜️ ⛺ 🏕️ 🌄 🌅 🌃 🎑 🚞 🛳️ 🚠 📸 🌐"], ["Family & kids", "👶 🧒 👧 👦 👩 👨 🧓 👵 👴 👪 👨‍👩‍👧 👨‍👩‍👧‍👦 💑 👫 🤰 🍼 🧸 🚸 🎒 🪀 🧷 🛒"], ["Pets & animals", "🐶 🐕 🦮 🐩 🐱 🐈 🐈‍⬛ 🐰 🐹 🐭 🐦 🦜 🐤 🐠 🐟 🐡 🐢 🦎 🐍 🐴 🐷 🐮 🐔 🦆 🐼 🐻 🐨 🦊 🦁 🐯 🐾 🦴"], ["Love & gifts", "🎁 💐 🌹 💝 💖 💗 💕 💞 💌 💒 💍 💏 💑 🧧 🎀 🎂 🕯️ 🥂 🙏 🤝 🫶 💘"], ["Festivals & faith", "🧧 🏮 🧨 🍊 🐉 🥮 🌙 ☪️ 🕌 🪔 🕉️ 🛕 🎄 🎅 🤶 🎃 👻 ⛪ ✝️ ☸️ 🙏 📿 🎆 🎇"], ["Nature & weather", "🌳 🌲 🌴 🌵 🌱 🌿 ☘️ 🍀 🍁 🍂 🌷 🌻 🌼 🌸 🌺 🌈 ☀️ 🌤️ ⛅ 🌧️ ⛈️ ❄️ 🌊 🔥 ⭐ 🌙 🌍 💦"], ["Money & finance", "💰 💵 💴 💶 💷 💳 🪙 🏦 🏧 💹 📈 📉 📊 🧮 💸 🤑 💼 🏷️ 🧾 ↩️ 🔁 🪪 📜 ⚖️ 🏛️ 🐷 🔒 🗃️ 💲"], ["Shapes & symbols", "⭐ ✨ 🌟 💫 🔥 ❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 ✅ ❗ ❓ 🔔 📌 📍 🚩 🎯 ♻️ 🆕 🆓 💯 🔴 🟠 🟡 🟢 🔵 🟣 ⚫ ⚪ 🟥 🟧 🟨 🟩 🟦 🟪 🔶 🔷 💠 ➕"], ["Faces", "😀 😄 😊 😍 🥰 😘 😎 🤩 😋 🤤 😴 🥳 😇 🤑 🤗 🤔 😬 😭 😤 😡 🤯 🥶 🥵 🤒 🙈 🙉 🙊 👻 💀 👽 🤡 💩"]];
+Object.assign(ZH,{"Food": "饮食", "Desserts & snacks": "甜点零食", "Drinks": "饮料", "Fruit & groceries": "蔬果杂货", "Getting around": "交通", "Home": "居家", "Bills & utilities": "账单水电", "Clothes & style": "服饰", "Beauty & care": "美容护理", "Health": "医疗健康", "Sport & fitness": "运动健身", "Learning": "学习", "Work & tech": "工作科技", "Fun & hobbies": "娱乐爱好", "Travel": "旅行", "Family & kids": "家庭孩子", "Pets & animals": "宠物动物", "Love & gifts": "爱与礼物", "Festivals & faith": "节日信仰", "Nature & weather": "自然天气", "Money & finance": "金钱理财", "Shapes & symbols": "符号", "Faces": "表情"});
 const KINDS = {
   bank:{label:"Bank",svg:'<path d="M3 10l9-5 9 5"/><path d="M5.5 10v7.5M10 10v7.5M14 10v7.5M18.5 10v7.5"/><path d="M3 20h18"/>'},
   ewallet:{label:"E-wallet",svg:'<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/><path d="M9 9.5a4 4 0 0 1 6 0M10.5 11.5a1.8 1.8 0 0 1 3 0"/>'},
@@ -1259,11 +1337,12 @@ function dailyChart(list){
 function render(){
   if((S.settings.lang||"en")!==LANG&&S.settings.lang) applyLang(S.settings.lang);
   const pg=S.page;
-  $("homePage").hidden=pg!=="home"; $("goalsPage").hidden=pg!=="goals"; $("statsPage").hidden=pg!=="stats";
+  $("homePage").hidden=pg!=="home"; $("goalsPage").hidden=pg!=="goals"; $("statsPage").hidden=pg!=="stats"; $("buddyPage").hidden=pg!=="buddy"; $("buddy").hidden=pg==="buddy"; $("navBuddy").setAttribute("aria-current",pg==="buddy"?"page":"false");
   $("navHome").setAttribute("aria-current",pg==="home"?"page":"false"); $("navStats").setAttribute("aria-current",pg==="stats"?"page":"false"); $("navGoals").setAttribute("aria-current",pg==="goals"?"page":"false");
   $("monthNav").style.visibility=pg==="home"?"":"hidden";
   $("monthLabel").textContent=S.tab==="year"?yearOf(S.view):monthName(S.view);
   $("addLabel").textContent=pg==="goals"&&S.plan!=="iou"&&S.plan!=="subs"?"Goal":"Add";
+  if(pg==="buddy"){ renderBuddyPage(); return }
   if(pg==="goals"){ renderGoals(); return }
   if(pg==="stats"){ renderStats(); return }
   renderHero(); countUp(); renderWallets(); renderSubCard(); renderBkCard(); renderXCards();
@@ -1288,7 +1367,7 @@ function shell(title,body,backLabel){
   return '<div class="scrim'+(fresh?' in':'')+'" data-close="1"><div class="sheet'+(fresh?' in':'')+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="grab"></div>'+
     '<div class="sheet-head"><h2>'+esc(title)+'</h2><button class="icon-btn" data-'+(backLabel?'back':'close')+'="1" aria-label="'+(backLabel||'Close')+'"><svg class="i" viewBox="0 0 24 24">'+(backLabel?'<path d="M15 5l-7 7 7 7"/>':'<path d="M6 6l12 12M18 6L6 18"/>')+'</svg></button></div>'+body+'</div></div>';
 }
-function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=EV=BPV=BG=IE=WR=NW=null; LASTTOP=null; SCR={}; const pr=document.getElementById("popRoot"); if(pr) pr.innerHTML=""; $("sheetRoot").innerHTML="" }
+function closeAll(){ ED=ST=CE=WE=SR=CD=GE=GD=MP=CM=SE=EV=BPV=BG=IE=WR=NW=null; if(typeof stopGame==="function") stopGame(); DS=GM=null; LASTTOP=null; SCR={}; const pr=document.getElementById("popRoot"); if(pr) pr.innerHTML=""; $("sheetRoot").innerHTML="" }
 function keepScroll(fn){ const s=document.querySelector(".sheet"); const y=s?s.scrollTop:0; fn(); const n=document.querySelector(".sheet"); if(n) n.scrollTop=y }
 
 /* entry editor */
@@ -1367,8 +1446,8 @@ function drawCat(){
   const body='<div class="preview-cat"><span class="bubble'+(CE.t==="i"?" inc":"")+'" style="width:56px;height:56px;font-size:28px;border-radius:18px;flex:none" aria-hidden="true">'+esc(CE.ic)+'</span>'+
     '<input class="field" id="catName" maxlength="24" placeholder="Category name" value="'+esc(CE.n)+'"></div>'+
     (CE.orig?'':'<div class="seg"><button class="e" aria-pressed="'+(CE.t==="e")+'" data-cet="e">Expense</button><button class="i" aria-pressed="'+(CE.t==="i")+'" data-cet="i">Income</button></div>')+
-    (CE.t==="e"?'<div class="label">Monthly limit (optional)</div><div class="inline"><b>'+esc(cur())+'</b><input class="field num" id="catLim" inputmode="decimal" placeholder="No limit" value="'+esc(CE.lim||"")+'"></div>':'')+'<div class="label">Pick an icon</div>'+
-    EMOJI.map(([g,list])=>'<div class="emoji-group">'+esc(g)+'</div><div class="emoji-grid">'+list.split(" ").map(em=>'<button data-emoji="'+esc(em)+'" aria-pressed="'+(CE.ic===em)+'" aria-label="'+esc(em)+'">'+esc(em)+'</button>').join("")+'</div>').join("")+
+    (CE.t==="e"?'<div class="label">Monthly limit (optional)</div><div class="inline"><b>'+esc(cur())+'</b><input class="field num" id="catLim" inputmode="decimal" placeholder="No limit" value="'+esc(CE.lim||"")+'"></div>':'')+'<div class="label">Pick an icon</div><div class="emojump">'+EMOJI.map(([g,list],gi)=>'<button data-emojump="'+gi+'"><span aria-hidden="true">'+esc(list.split(" ")[0])+'</span>'+esc(g)+'</button>').join("")+'</div>'+
+    EMOJI.map(([g,list],gi)=>'<div class="emoji-group" id="eg'+gi+'">'+esc(g)+'</div><div class="emoji-grid">'+list.split(" ").map(em=>'<button data-emoji="'+esc(em)+'" aria-pressed="'+(CE.ic===em)+'" aria-label="'+esc(em)+'">'+esc(em)+'</button>').join("")+'</div>').join("")+
     '<p class="hint">You can also type any emoji at the start of the name, like “🐱 Cat food”.</p>'+
     '<button class="save" id="catSave">'+(CE.orig?"Save category":"Add category")+'</button>'+
     (CE.orig?(CE.confirm?'<div class="confirm"><span>Remove from the list? Past entries keep their category.</span><span class="row-btns"><button class="btn soft" data-cdelno="1">Keep</button><button class="btn danger" data-cdelyes="1">Remove</button></span></div>':'<button class="btn danger" data-cdel="1">Remove category</button>'):'');
@@ -1608,7 +1687,7 @@ async function wipeAll(){
 /* ---------- buddy (maltese) ---------- */
 let sayT=null, firstLoad=true;
 function dogName(){return (S.settings.dog||petT().def).slice(0,16)}
-function renderBuddyShell(){ $("buddy").innerHTML='<button class="dogbtn" id="dogBtn" aria-label="Pet '+esc(dogName())+'"><span class="dogwrap" id="dogWrap">'+petSVG(petType(),{outfit:effOutfit()})+'</span></button><button class="say" id="say" data-bprof="1" aria-live="polite"></button>' }
+function renderBuddyShell(){ $("buddy").innerHTML='<button class="dogbtn" id="dogBtn" aria-label="Pet '+esc(dogName())+'"><span class="dogwrap" id="dogWrap">'+petSVG(petType(),{outfit:effOutfit()})+'</span></button><button class="say" id="say" data-bprof="1" aria-live="polite"></button>' ; if(S.page==="buddy"&&typeof renderBuddyPage==="function") renderBuddyPage() }
 function dogEl(){return document.querySelector("#dogWrap .dog")}
 function say(text,mood,ms){
   const el=$("say"), d=dogEl(); if(!el||!d) return;
@@ -1838,7 +1917,7 @@ function addToGoal(sign){
   if(before<g.target&&after>=g.target){ confetti(); checkBadges(true); say("We did it! "+g.name+" is fully funded! 🎉","happy",7000) }
   else if(sign>0) say(["Into the goal jar! 🐾","Closer every day!",petT().snd+"! "+Math.floor(after/g.target*100)+"% there!"][Math.floor(Math.random()*3)],"happy",3500);
 }
-function topSheet(){return CE?"CE":WE?"WE":CM?"CM":ED?"ED":EV?"EV":SE?"SE":GE?"GE":GD?"GD":BPV?"BP":BG?"BG":IE?"IE":WR?"WR":NW?"NW":SR?"SR":MP?"MP":CD?"CD":ST?"ST":null}
+function topSheet(){return CE?"CE":WE?"WE":CM?"CM":ED?"ED":EV?"EV":SE?"SE":GE?"GE":GD?"GD":BPV?"BP":BG?"BG":IE?"IE":WR?"WR":NW?"NW":DS?"DS":GM?"GM":SR?"SR":MP?"MP":CD?"CD":ST?"ST":null}
 
 /* ---------- pets ---------- */
 const PETS_T={
@@ -2357,7 +2436,7 @@ async function gdRestoreId(id){ if(GDR.busy) return; GDR.busy=true;
 function gdDisconnect(){ try{ if(GDR.tok&&window.google&&google.accounts&&google.accounts.oauth2) google.accounts.oauth2.revoke(GDR.tok,()=>{}) }catch(e){} GDR.tok=null; GDR.exp=0; GDR.fileId=null; try{localStorage.removeItem("duitjar.gtok")}catch(e){} S.settings.gdrive={on:false}; saveLocal(); drawSettings(); render(); toast("Google Drive disconnected") }
 function gdSection(){ if(!gdReady()) return "";
   let h='<section class="set-block"><h3>Google Drive sync</h3>';
-  if(gdOn()) h+='<p>Connected. Backs up automatically while you use the app.</p><p class="hint">Last synced: '+gdLastLabel()+'</p><div class="row-btns" style="justify-content:flex-start"><button class="btn primary" data-gsync="1">Sync now</button><button class="btn soft" data-grestore="1">Restore from Drive</button></div><button class="link danger-link" data-gdisc="1" style="align-self:flex-start">Disconnect</button>';
+  if(gdOn()) h+='<p>Connected. Backs up automatically while you use the app.</p><div class="label">Google sign-in window</div><div class="seg">'+[["daily","Once a day"],["never","Never"]].map(([k,l])=>'<button data-gpop="'+k+'" aria-pressed="'+(gdPop()===k)+'">'+l+'</button>').join("")+'</div><p class="hint">'+(gdPop()==="never"?"No pop-ups. Tap Sync on the reminder card (or Sync now) to back up.":"Google signs you out of syncing every hour. At most once a day, when you save an entry, a Google window may flash for a second to keep syncing.")+'</p><p class="hint">Last synced: '+gdLastLabel()+'</p><div class="row-btns" style="justify-content:flex-start"><button class="btn primary" data-gsync="1">Sync now</button><button class="btn soft" data-grestore="1">Restore from Drive</button></div><button class="link danger-link" data-gdisc="1" style="align-self:flex-start">Disconnect</button>';
   else h+='<p>Save an automatic backup to your own Google Drive while you use the app. Only you can see it.</p><button class="btn primary" data-gconnect="1">Connect Google Drive</button>';
   if(ST&&ST.gdChoice) h+='<div class="confirmbox"><b>Found a Google Drive backup from '+esc(ST.gdChoice.at)+' · '+ST.gdChoice.n+' entries</b><p class="hint">Use it on this phone, or replace it with what’s on this phone now?</p><div class="row-btns"><button class="btn soft" data-gkeep="1">Keep this phone</button><button class="btn primary" data-guse="1">Use Drive backup</button></div></div>';
   if(ST&&ST.gdList) h+='<div class="confirmbox"><b>Choose a backup to restore</b><div class="wlist">'+ST.gdList.map(f=>{ const dt=new Date(f.modifiedTime); const lbl=(f.name==="duitjar-backup.json"?"Latest":"Daily copy")+" · "+dt.toLocaleDateString(LOC(),{weekday:"short",day:"numeric",month:"short"})+" "+dt.toLocaleTimeString(LOC(),{hour:"2-digit",minute:"2-digit"}); return '<button class="wline" data-grid="'+esc(f.id)+'"><span class="wicon sm" style="--wc:var(--inc)" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg></span><span>'+esc(lbl)+'</span><span></span></button>' }).join("")+'</div><button class="btn soft" data-glistno="1">Cancel</button></div>';
@@ -2487,15 +2566,15 @@ const SEASON_HI={raya:"Selamat Hari Raya! Maaf zahir & batin 🌙",cny:"Gong Xi 
 let BPV=null;
 function openProfile(){ BPV={tab:"head"}; draw() }
 function drawProfile(){ const b=bud(); const li=lvlInfo(b.xp); const hp=happiness(); const of=effOutfit();
-  const vb={head:"30 -4 64 48",face:"36 34 48 26",neck:"30 62 64 40"};
+  const vb={head:"30 -4 64 48",face:"36 34 48 26",neck:"30 62 64 40",prop:"76 52 40 70"};
   let body='<div class="bp-hero">'+petSVG(petType(),{outfit:of})+'</div>'+
    '<div class="bp-name"><b>'+esc(dogName())+'</b> <span class="pill">Lv '+li.L+'</span></div>'+
    '<div class="bp-meters"><div><div class="label">XP '+li.cur+' / '+li.need+'</div><div class="gbar"><i style="width:'+(li.cur/li.need*100).toFixed(1)+'%"></i></div></div><div><div class="label">Happiness '+hp+'%</div><div class="gbar hp"><i style="width:'+hp+'%"></i></div></div></div>'+
    '<div class="bp-treats"><span class="bp-tc">'+treatIc()+' <b class="num">'+b.treats+'</b> treats</span><span class="row-btns" style="flex-wrap:nowrap"><button class="btn soft" data-feed="5"'+(b.treats<2?' disabled':'')+'>×5</button><button class="btn primary" data-feed="1"'+(b.treats<1?' disabled':'')+'>Feed '+treatIc()+'</button></span></div>'+
    '<p class="hint">Earn treats by logging entries (up to 10 a day), your first entry each day, and badges.</p>'+
    '<div class="stats">'+mini("Days together",String(Math.max(1,-daysUntil(b.since)+1)))+mini("Streak",String(streak()))+mini("Best streak",String(bestStreak()))+mini("Entries",String(entryCount()))+'</div>';
-  const s=season(); body+='<div class="label">Wardrobe</div><div class="seg">'+[["head","Head"],["face","Face"],["neck","Neck"]].map(([k,l])=>'<button data-bptab="'+k+'" aria-pressed="'+(BPV.tab===k)+'">'+l+'</button>').join("")+'</div>'+
-   '<div class="wardrobe">'+ITEMS.filter(i=>i.slot===BPV.tab).map(i=>{ const own=b.owned.includes(i.id), on=b.outfit[i.slot]===i.id; return '<button class="witem'+(on?' on':'')+'" data-item="'+i.id+'"><svg viewBox="'+vb[i.slot]+'" aria-hidden="true">'+ACC[i.id]+'</svg><span>'+esc(i.name)+'</span><small>'+(on?"Wearing":own?"Owned":treatIc()+" "+i.cost)+'</small></button>' }).join("")+'</div>'+
+  const s=season(); body+='<div class="label">Wardrobe</div><div class="seg">'+[["head","Head"],["face","Face"],["neck","Neck"],["prop","Hold"]].map(([k,l])=>'<button data-bptab="'+k+'" aria-pressed="'+(BPV.tab===k)+'">'+l+'</button>').join("")+'</div>'+
+   '<div class="wardrobe">'+ITEMS.filter(i=>i.slot===BPV.tab).map(i=>{ const own=b.owned.includes(i.id), on=b.outfit[i.slot]===i.id; return '<button class="witem'+(on?' on':'')+'" data-item="'+i.id+'"><svg viewBox="'+(ITEM_VB[i.id]||vb[i.slot])+'" aria-hidden="true">'+ACC[i.id]+'</svg><span>'+esc(i.name)+'</span><small>'+(on?"Wearing":own?"Owned":treatIc()+" "+i.cost)+'</small></button>' }).join("")+'</div>'+
    '<div class="switchrow"><div>Seasonal outfits<small>'+(s?"Now: "+({raya:"Hari Raya",cny:"Chinese New Year",deepavali:"Deepavali",xmas:"Christmas"}[s.k]):"Raya, Chinese New Year, Deepavali, Christmas")+'</small></div><button class="sw" role="switch" data-bpseason="1" aria-checked="'+(b.seasonal!==false)+'" aria-label="Seasonal outfits"></button></div>';
   body+='<div class="label">Badges</div><div class="badges">'+BADGES.map(([id,ic,name])=>{ const got=b.badges.includes(id); return '<div class="badge'+(got?'':' locked')+'" title="'+esc(BADGE_DESC[id]||name)+'"><span aria-hidden="true">'+(got?ic:"🔒")+'</span><small>'+esc(name)+'</small></div>' }).join("")+'</div>';
   const tips=tipsList(); body+='<div class="label">'+esc(dogName())+'’s tips</div>'+(tips.length?'<div class="highlights">'+tips.map(t=>'<div class="hl"><span aria-hidden="true">💡</span><div>'+esc(t)+'</div></div>').join("")+'</div>':'<p class="hint">Log a few more entries and I’ll start spotting patterns.</p>');
@@ -2786,6 +2865,8 @@ function renderXCards(){ const el=$("xcard"); if(!el) return; if(S.mode==="loadi
 function drawExt(){ if(BG) drawBudgets(); else if(IE) drawIE(); else if(WR) drawWrapped(); else if(NW) drawBalances(); else return false; return true }
 function extClick(t,ds){
   const top=topSheet();
+  if(buddyExtClick(t,ds)) return true;
+  if(ds.emojump){ const g=$("eg"+ds.emojump); if(g) g.scrollIntoView({block:"start",behavior:"smooth"}); return true }
   if(ds.bgopen){ if(ST) closeAll(); openBudgets(); return true }
   if(ds.act==="budget"){ openBudgets(); return true }
   if(ds.nwopen){ if(WE){ WE=null } if(ST) closeAll(); openBalances(); return true }
@@ -2858,7 +2939,7 @@ RX.push(
 
 /* ---------- v13: sheet scroll memory, Drive auto-renew, sortable wallets, calmer add sheet ---------- */
 /* 1. each sheet opens at its own top; going back restores where you were */
-const SHEET_ORDER=["CE","WE","CM","ED","EV","SE","GE","GD","BP","BG","IE","WR","NW","SR","MP","CD","ST"];
+const SHEET_ORDER=["CE","WE","CM","ED","EV","SE","GE","GD","BP","BG","IE","WR","NW","DS","GM","SR","MP","CD","ST"];
 let LASTTOP=null, SCR={};
 function keepScroll(fn){ const s=document.querySelector(".sheet"); const y=s?s.scrollTop:0; const prev=s?LASTTOP:null; const cur=topSheet();
   if(prev&&prev!==cur){ if(SHEET_ORDER.indexOf(cur)>SHEET_ORDER.indexOf(prev)) delete SCR[prev]; else SCR[prev]=y }
@@ -2876,10 +2957,14 @@ function gdAuth(prompt){ return loadGIS().then(()=>new Promise((res,rej)=>{ cons
 async function gdRemember(){ const g=S.settings.gdrive||{}; if(g.email||!gdTokOk()) return; try{ const r=await gfetch("https://www.googleapis.com/drive/v3/about?fields=user(emailAddress)"); const j=await r.json(); const em=j&&j.user&&j.user.emailAddress; if(em){ S.settings.gdrive=Object.assign({},S.settings.gdrive||{},{email:em}); GDR.suppress=true; saveLocal(); GDR.suppress=false } }catch(e){} }
 function gdPreload(){ if(gdOn()) loadGIS().then(()=>gdClient()).catch(()=>{}) }
 /* runs inside a tap, so Google allows the quick sign-in window; it closes by itself */
+function gdPop(){ return ((S.settings.gdrive||{}).pop)==="never"?"never":"daily" }
 function gdQuietRenew(t){ if(!gdOn()||gdTokOk()||GDR.busy||GDR.pend) return; const c=gdClient(); if(!c) { gdPreload(); return }
   if(t&&t.closest&&t.closest("[data-gsync],[data-gconnect],[data-grestore],[data-grid],[data-gdisc]")) return;
-  const saving=t&&t.closest&&t.closest("#saveBtn,.save,[data-recent],[data-iousettle]");
-  if(!saving&&!gdDirty()) return; if(Date.now()-(GDR.lastTry||0)<15*60e3) return; GDR.lastTry=Date.now();
+  if(gdPop()==="never") return;
+  const saving=t&&t.closest&&t.closest("#saveBtn,[data-recent],[data-iousettle]");
+  if(!saving) return;
+  let last=0; try{ last=+localStorage.getItem("duitjar.grenew")||0 }catch(e){} if(Date.now()-last<20*36e5) return;
+  try{ localStorage.setItem("duitjar.grenew",String(Date.now())) }catch(e){} GDR.lastTry=Date.now();
   GDR.pend={res:()=>{ GDR.status=""; setTimeout(()=>{ gdAuto().then(gdRemember) },saving?600:0) },rej:()=>{}};
   const o={prompt:""}; const em=(S.settings.gdrive||{}).email; if(em) o.hint=em; try{ c.requestAccessToken(o) }catch(e){ GDR.pend=null } }
 document.addEventListener("click",e=>gdQuietRenew(e.target),true);
@@ -2989,6 +3074,148 @@ function applyTheme(){ const t=themePref(); const r=document.documentElement; if
 function setTheme(t){ try{ if(t==="auto") localStorage.removeItem("duitjar.theme"); else localStorage.setItem("duitjar.theme",t) }catch(e){} applyTheme(); say(t==="dark"?"Lights off… cosy 🌙":t==="light"?"Good morning, sunshine ☀️":"I'll follow your phone 🌗","happy",3000) }
 applyTheme();
 Object.assign(ZH,{"Appearance":"外观","Auto":"自动","Light":"浅色","Dark":"深色","Auto follows your iPhone's light or dark setting.":"自动会跟随 iPhone 的浅色或深色设置。","Lights off… cosy 🌙":"关灯啦……好舒服 🌙","Good morning, sunshine ☀️":"早安，小太阳 ☀️","I'll follow your phone 🌗":"我会跟着手机设置 🌗"});
+Object.assign(ZH,{"Google sign-in window":"Google 登录窗口","Once a day":"每天一次","Never":"从不","No pop-ups. Tap Sync on the reminder card (or Sync now) to back up.":"不再弹窗。点提醒卡片上的“同步”（或“立即同步”）来备份。","Google signs you out of syncing every hour. At most once a day, when you save an entry, a Google window may flash for a second to keep syncing.":"Google 每小时会让同步登录失效。每天最多一次，在你保存记录时，Google 窗口可能会闪一下以继续同步。","No more Google pop-ups":"不再弹出 Google 窗口","Google pop-up at most once a day":"Google 窗口每天最多弹一次"});
+Object.assign(ACC,{"bunny": "<ellipse cx=\"50\" cy=\"8\" rx=\"6\" ry=\"16\" fill=\"#fff\" stroke=\"#E7D9CB\" stroke-width=\"1.5\" transform=\"rotate(-12 50 8)\"/><ellipse cx=\"50\" cy=\"9\" rx=\"3\" ry=\"11\" fill=\"#F7B6C8\" transform=\"rotate(-12 50 9)\"/><ellipse cx=\"70\" cy=\"8\" rx=\"6\" ry=\"16\" fill=\"#fff\" stroke=\"#E7D9CB\" stroke-width=\"1.5\" transform=\"rotate(12 70 8)\"/><ellipse cx=\"70\" cy=\"9\" rx=\"3\" ry=\"11\" fill=\"#F7B6C8\" transform=\"rotate(12 70 9)\"/><rect x=\"42\" y=\"21\" width=\"36\" height=\"6\" rx=\"3\" fill=\"#F7B6C8\"/>", "catears": "<path d=\"M42 26 L46 6 L58 20 Z\" fill=\"#2f2a33\"/><path d=\"M78 26 L74 6 L62 20 Z\" fill=\"#2f2a33\"/><path d=\"M46.5 21 L48 11.5 L54 18 Z\" fill=\"#F7B6C8\"/><path d=\"M73.5 21 L72 11.5 L66 18 Z\" fill=\"#F7B6C8\"/><rect x=\"40\" y=\"22\" width=\"40\" height=\"5\" rx=\"2.5\" fill=\"#2f2a33\"/>", "tiara": "<path d=\"M44 26 Q60 18 76 26\" stroke=\"#C9C9D6\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M50 22 L53 13 L56 21 M57 20 L60 8 L63 20 M64 21 L67 13 L70 22\" stroke=\"#D8D8E6\" stroke-width=\"2.4\" fill=\"none\" stroke-linejoin=\"round\"/><circle cx=\"60\" cy=\"9\" r=\"2.8\" fill=\"#F06A93\"/><circle cx=\"53\" cy=\"14\" r=\"1.9\" fill=\"#7FC6E8\"/><circle cx=\"67\" cy=\"14\" r=\"1.9\" fill=\"#7FC6E8\"/>", "chef": "<path d=\"M44 28 L46 18 C36 16 38 2 48 5 C50 -2 70 -2 72 5 C82 2 84 16 74 18 L76 28 Z\" fill=\"#fff\" stroke=\"#DDD8D0\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/><path d=\"M45 23 h30\" stroke=\"#DDD8D0\" stroke-width=\"1.4\"/>", "wizard": "<path d=\"M40 28 Q60 34 80 28 L64 -6 Q60 -10 58 -4 Z\" fill=\"#7B5CC9\"/><path d=\"M37 27 Q60 35 83 27 L85 31 Q60 40 35 31 Z\" fill=\"#5E43A8\"/><polygon points=\"61.0,7.5 62.2,10.4 65.3,10.6 62.9,12.6 63.6,15.6 61.0,14.0 58.4,15.6 59.1,12.6 56.7,10.6 59.8,10.4\" fill=\"#F2C14E\"/><circle cx=\"68\" cy=\"21\" r=\"1.6\" fill=\"#F2C14E\"/><circle cx=\"53\" cy=\"23\" r=\"1.3\" fill=\"#F2C14E\"/>", "cowboy": "<path d=\"M48 24 C48 8 72 8 72 24 Z\" fill=\"#9A6A3E\"/><path d=\"M60 11 v7\" stroke=\"#7A4F2B\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M30 24 Q36 32 60 30 Q84 32 90 24 Q82 22 60 25 Q38 22 30 24 Z\" fill=\"#A9774A\" stroke=\"#7A4F2B\" stroke-width=\"1.2\"/><rect x=\"48\" y=\"20\" width=\"24\" height=\"4\" fill=\"#5A3A20\"/>", "halo": "<ellipse cx=\"60\" cy=\"4\" rx=\"16\" ry=\"4.5\" fill=\"none\" stroke=\"#F2C14E\" stroke-width=\"3.4\"/><ellipse cx=\"60\" cy=\"4\" rx=\"16\" ry=\"4.5\" fill=\"none\" stroke=\"#FFF4B8\" stroke-width=\"1\" opacity=\".9\"/>", "headphones": "<path d=\"M35 46 C33 9 87 9 85 46\" stroke=\"#3a3340\" stroke-width=\"4.5\" fill=\"none\" stroke-linecap=\"round\"/><rect x=\"29\" y=\"39\" width=\"12\" height=\"18\" rx=\"5.5\" fill=\"#F06A93\"/><rect x=\"79\" y=\"39\" width=\"12\" height=\"18\" rx=\"5.5\" fill=\"#F06A93\"/><rect x=\"31.5\" y=\"42\" width=\"4\" height=\"12\" rx=\"2\" fill=\"#fff\" opacity=\".35\"/>", "strawberry": "<path d=\"M41 28 C38 8 82 8 79 28 Z\" fill=\"#E8505B\"/><g fill=\"#FFE08A\"><circle cx=\"50\" cy=\"20\" r=\"1.3\"/><circle cx=\"58\" cy=\"15\" r=\"1.3\"/><circle cx=\"66\" cy=\"19\" r=\"1.3\"/><circle cx=\"72\" cy=\"24\" r=\"1.3\"/><circle cx=\"46\" cy=\"25\" r=\"1.3\"/><circle cx=\"60\" cy=\"24\" r=\"1.3\"/></g><path d=\"M49 11 Q60 1 71 11 Q64 8.5 60 12.5 Q56 8.5 49 11 Z\" fill=\"#5FA14A\"/><path d=\"M60 7 v-6\" stroke=\"#4A8A38\" stroke-width=\"2\" stroke-linecap=\"round\"/>", "frog": "<path d=\"M40 30 C38 12 82 12 80 30 Z\" fill=\"#7CC36A\"/><circle cx=\"48\" cy=\"12\" r=\"7\" fill=\"#7CC36A\"/><circle cx=\"72\" cy=\"12\" r=\"7\" fill=\"#7CC36A\"/><circle cx=\"48\" cy=\"12\" r=\"4\" fill=\"#fff\"/><circle cx=\"72\" cy=\"12\" r=\"4\" fill=\"#fff\"/><circle cx=\"48\" cy=\"12.5\" r=\"2\" fill=\"#2B2522\"/><circle cx=\"72\" cy=\"12.5\" r=\"2\" fill=\"#2B2522\"/><path d=\"M52 24 Q60 28 68 24\" stroke=\"#4E8F3E\" stroke-width=\"1.6\" fill=\"none\" stroke-linecap=\"round\"/>", "grad": "<path d=\"M60 4 L90 14 L60 24 L30 14 Z\" fill=\"#26242c\"/><path d=\"M44 19 L44 28 Q60 34 76 28 L76 19 L60 24 Z\" fill=\"#33313a\"/><path d=\"M84 16 L86 30\" stroke=\"#F2C14E\" stroke-width=\"1.6\"/><circle cx=\"86\" cy=\"31\" r=\"2.4\" fill=\"#F2C14E\"/>", "bigbow": "<path d=\"M60 18 L42 8 Q38 18 42 28 Z M60 18 L78 8 Q82 18 78 28 Z\" fill=\"#E0635A\"/><path d=\"M44 12 Q47 18 44 24 M76 12 Q73 18 76 24\" stroke=\"#fff\" stroke-width=\"1.2\" opacity=\".5\" fill=\"none\"/><circle cx=\"60\" cy=\"18\" r=\"5\" fill=\"#C24A42\"/>", "sunhat": "<ellipse cx=\"60\" cy=\"25\" rx=\"30\" ry=\"7\" fill=\"#F3D89B\" stroke=\"#D6B66C\" stroke-width=\"1.2\"/><path d=\"M46 25 C46 9 74 9 74 25 Z\" fill=\"#F3D89B\" stroke=\"#D6B66C\" stroke-width=\"1.2\"/><path d=\"M46.5 21 Q60 24 73.5 21 L73.8 24 Q60 27 46.2 24 Z\" fill=\"#F06A93\"/><circle cx=\"72\" cy=\"20\" r=\"3\" fill=\"#fff\"/><circle cx=\"72\" cy=\"20\" r=\"1.4\" fill=\"#F2C14E\"/>", "nerd": "<rect x=\"40.5\" y=\"41\" width=\"18\" height=\"13\" rx=\"2.5\" fill=\"rgba(255,255,255,.15)\" stroke=\"#1d1d24\" stroke-width=\"3\"/><rect x=\"61.5\" y=\"41\" width=\"18\" height=\"13\" rx=\"2.5\" fill=\"rgba(255,255,255,.15)\" stroke=\"#1d1d24\" stroke-width=\"3\"/><path d=\"M58.5 46 h3\" stroke=\"#1d1d24\" stroke-width=\"3\"/>", "starglass": "<polygon points=\"50.0,38.5 52.7,44.3 59.0,45.1 54.4,49.4 55.6,55.7 50.0,52.6 44.4,55.7 45.6,49.4 41.0,45.1 47.3,44.3\" fill=\"#F2C14E\" stroke=\"#C99A2E\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/><polygon points=\"70.0,38.5 72.7,44.3 79.0,45.1 74.4,49.4 75.6,55.7 70.0,52.6 64.4,55.7 65.6,49.4 61.0,45.1 67.3,44.3\" fill=\"#F2C14E\" stroke=\"#C99A2E\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/><path d=\"M57 46 h6\" stroke=\"#C99A2E\" stroke-width=\"2\"/>", "monocle": "<circle cx=\"69\" cy=\"48\" r=\"8\" fill=\"rgba(255,255,255,.25)\" stroke=\"#C99A2E\" stroke-width=\"2.2\"/><path d=\"M76.5 51 Q81 62 77 72\" stroke=\"#C99A2E\" stroke-width=\"1.2\" fill=\"none\"/>", "mustache": "<path d=\"M60 58 C55 54 48 55 45 59 C49 58 52 61 56 61 C58 61 59 60 60 59 C61 60 62 61 64 61 C68 61 71 58 75 59 C72 55 65 54 60 58 Z\" fill=\"#3a2a22\"/>", "cheeks": "<path d=\"M44 58.5 C38.5 54.65 39.6 50.25 44 53 C48.4 50.25 49.5 54.65 44 58.5 Z\" fill=\"#FF7FA8\"/><path d=\"M76 58.5 C70.5 54.65 71.6 50.25 76 53 C80.4 50.25 81.5 54.65 76 58.5 Z\" fill=\"#FF7FA8\"/>", "skimask": "<rect x=\"38\" y=\"40\" width=\"44\" height=\"15\" rx=\"7.5\" fill=\"#7FC6E8\" stroke=\"#4C8BD6\" stroke-width=\"1.6\"/><rect x=\"41\" y=\"42.5\" width=\"38\" height=\"10\" rx=\"5\" fill=\"#BDE7FA\" opacity=\".85\"/><path d=\"M45 44 h8\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" opacity=\".8\"/>", "pearls": "<circle cx=\"41.0\" cy=\"69.0\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"44.8\" cy=\"72.2\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"48.6\" cy=\"74.8\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"52.4\" cy=\"76.6\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"56.2\" cy=\"77.6\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"60.0\" cy=\"78.0\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"63.8\" cy=\"77.6\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"67.6\" cy=\"76.6\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"71.4\" cy=\"74.8\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"75.2\" cy=\"72.2\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/><circle cx=\"79.0\" cy=\"69.0\" r=\"2.7\" fill=\"#FBF7F0\" stroke=\"#D9CFC0\" stroke-width=\".8\"/>", "tie": "<path d=\"M40 69 Q60 76 80 69\" stroke=\"#fff\" stroke-width=\"3\" fill=\"none\" opacity=\".95\" stroke-linecap=\"round\"/><path d=\"M56 71 L64 71 L62 76 L58 76 Z\" fill=\"#3D5A9E\"/><path d=\"M58 76 L62 76 L65 94 L60 99 L55 94 Z\" fill=\"#4C6FC0\"/>", "medal": "<path d=\"M50 68 L58 85 M70 68 L62 85\" stroke=\"#4C8BD6\" stroke-width=\"4\"/><circle cx=\"60\" cy=\"90\" r=\"7\" fill=\"#F2C14E\" stroke=\"#C99A2E\" stroke-width=\"1.5\"/><polygon points=\"60.0,86.4 60.9,88.7 63.4,88.9 61.5,90.5 62.1,92.9 60.0,91.6 57.9,92.9 58.5,90.5 56.6,88.9 59.1,88.7\" fill=\"#FFF6C8\"/>", "lei": "<circle cx=\"41.0\" cy=\"69.0\" r=\"3.8\" fill=\"#F7A9C4\"/><circle cx=\"41.0\" cy=\"69.0\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"45.8\" cy=\"72.9\" r=\"3.8\" fill=\"#F2C14E\"/><circle cx=\"45.8\" cy=\"72.9\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"50.5\" cy=\"75.8\" r=\"3.8\" fill=\"#F59A6B\"/><circle cx=\"50.5\" cy=\"75.8\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"55.2\" cy=\"77.4\" r=\"3.8\" fill=\"#B5E3C4\"/><circle cx=\"55.2\" cy=\"77.4\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"60.0\" cy=\"78.0\" r=\"3.8\" fill=\"#C8B3F0\"/><circle cx=\"60.0\" cy=\"78.0\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"64.8\" cy=\"77.4\" r=\"3.8\" fill=\"#F7A9C4\"/><circle cx=\"64.8\" cy=\"77.4\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"69.5\" cy=\"75.8\" r=\"3.8\" fill=\"#F2C14E\"/><circle cx=\"69.5\" cy=\"75.8\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"74.2\" cy=\"72.9\" r=\"3.8\" fill=\"#F59A6B\"/><circle cx=\"74.2\" cy=\"72.9\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/><circle cx=\"79.0\" cy=\"69.0\" r=\"3.8\" fill=\"#B5E3C4\"/><circle cx=\"79.0\" cy=\"69.0\" r=\"1.2\" fill=\"#fff\" opacity=\".8\"/>", "cape": "<path d=\"M40 69 Q30 92 23 112 L38 106 L44 74 Z\" fill=\"#D9383A\"/><path d=\"M80 69 Q90 92 97 112 L82 106 L76 74 Z\" fill=\"#D9383A\"/><path d=\"M40 69 Q60 77 80 69\" stroke=\"#B8282B\" stroke-width=\"3.5\" fill=\"none\" stroke-linecap=\"round\"/><circle cx=\"60\" cy=\"74\" r=\"3.6\" fill=\"#F2C14E\"/>", "heartcollar": "<path d=\"M40 70 Q60 80 80 70\" stroke=\"#F06A93\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M60 83.25 C53.75 78.875 55.0 73.875 60 77 C65.0 73.875 66.25 78.875 60 83.25 Z\" fill=\"#F2C14E\"/>", "balloon": "<path d=\"M97 106 Q92 92 98 74\" stroke=\"#9a9a9a\" stroke-width=\"1\" fill=\"none\"/><ellipse cx=\"98\" cy=\"62\" rx=\"10\" ry=\"12\" fill=\"#F06A93\"/><path d=\"M96 73.5 l2 3 2-3z\" fill=\"#D94F7A\"/><ellipse cx=\"94\" cy=\"57\" rx=\"2.5\" ry=\"4\" fill=\"#fff\" opacity=\".5\"/>", "boba": "<path d=\"M86 96 L104 96 L101 118 L89 118 Z\" fill=\"#F3E3CF\" stroke=\"#C9A98A\" stroke-width=\"1.2\"/><rect x=\"85\" y=\"92\" width=\"20\" height=\"5\" rx=\"2\" fill=\"#E9A8B8\"/><path d=\"M98 92 L102 80\" stroke=\"#E0635A\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><g fill=\"#3B2A22\"><circle cx=\"91\" cy=\"114\" r=\"1.8\"/><circle cx=\"95\" cy=\"115\" r=\"1.8\"/><circle cx=\"99\" cy=\"114\" r=\"1.8\"/><circle cx=\"93\" cy=\"111\" r=\"1.8\"/><circle cx=\"97\" cy=\"111\" r=\"1.8\"/></g>", "icecream": "<path d=\"M88 98 L100 98 L94 118 Z\" fill=\"#E1A85F\"/><path d=\"M89 101.5 L99 101.5 M90 105.5 L98 105.5\" stroke=\"#B9823E\" stroke-width=\"1\"/><circle cx=\"94\" cy=\"92\" r=\"7\" fill=\"#F7B6C8\"/><circle cx=\"94\" cy=\"84\" r=\"5.5\" fill=\"#B5E3C4\"/><circle cx=\"96\" cy=\"80.5\" r=\"1.5\" fill=\"#E0635A\"/>", "moneybag": "<path d=\"M86 101 Q84 118 96 118 Q108 118 106 101 Q102 93 96 93 Q90 93 86 101 Z\" fill=\"#E8C66B\" stroke=\"#B8943E\" stroke-width=\"1.3\"/><path d=\"M90 93 L93 87 L99 87 L102 93\" fill=\"#E8C66B\" stroke=\"#B8943E\" stroke-width=\"1.3\" stroke-linejoin=\"round\"/><text x=\"96\" y=\"112\" font-size=\"11\" text-anchor=\"middle\" font-weight=\"800\" fill=\"#7A5A1E\">$</text>", "lollipop": "<path d=\"M96 118 L96 93\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M96 118 L96 93\" stroke=\"#DDD\" stroke-width=\".6\"/><circle cx=\"96\" cy=\"84\" r=\"10\" fill=\"#F7A9C4\"/><path d=\"M96 84 m-6 0 a6 6 0 1 1 6 6 a3.5 3.5 0 1 1 -3.5 -3.5\" stroke=\"#fff\" stroke-width=\"2\" fill=\"none\"/>", "umbrella": "<path d=\"M80 86 Q96 64 112 86 Q108 82 104 86 Q100 82 96 86 Q92 82 88 86 Q84 82 80 86 Z\" fill=\"#7FA7E8\"/><path d=\"M96 70 V72\" stroke=\"#5E86C8\" stroke-width=\"2\"/><path d=\"M96 86 V112 Q96 117 91 115\" stroke=\"#555\" stroke-width=\"1.8\" fill=\"none\" stroke-linecap=\"round\"/>", "bouquet": "<path d=\"M90 100 L102 100 L98 118 L94 118 Z\" fill=\"#B5E3C4\" stroke=\"#7FB894\" stroke-width=\"1\"/><circle cx=\"90\" cy=\"94\" r=\"4.2\" fill=\"#F7A9C4\"/><circle cx=\"90\" cy=\"94\" r=\"1.4\" fill=\"#F2C14E\"/><circle cx=\"96\" cy=\"90\" r=\"4.2\" fill=\"#E0635A\"/><circle cx=\"96\" cy=\"90\" r=\"1.4\" fill=\"#F2C14E\"/><circle cx=\"102\" cy=\"94\" r=\"4.2\" fill=\"#C8B3F0\"/><circle cx=\"102\" cy=\"94\" r=\"1.4\" fill=\"#F2C14E\"/><circle cx=\"96\" cy=\"97\" r=\"4.2\" fill=\"#F7D26A\"/><circle cx=\"96\" cy=\"97\" r=\"1.4\" fill=\"#F2C14E\"/>"});
+const ITEM_VB={"headphones": "26 6 68 56", "wizard": "30 -12 64 50", "cowboy": "26 -4 68 40", "halo": "38 -6 44 20", "mustache": "38 44 44 22", "cheeks": "34 44 52 20", "skimask": "34 34 52 26", "medal": "36 62 48 40", "cape": "18 62 84 54", "balloon": "78 46 34 74", "sunhat": "26 2 68 36", "grad": "26 0 68 36"};
+ITEMS.push(...[["bunny", "head", "Bunny ears", 14], ["catears", "head", "Cat ears", 14], ["tiara", "head", "Tiara", 30], ["chef", "head", "Chef hat", 18], ["wizard", "head", "Wizard hat", 25], ["cowboy", "head", "Cowboy hat", 20], ["halo", "head", "Halo", 28], ["headphones", "head", "Headphones", 22], ["strawberry", "head", "Strawberry hat", 16], ["frog", "head", "Frog hat", 18], ["grad", "head", "Graduation cap", 24], ["bigbow", "head", "Big red bow", 10], ["sunhat", "head", "Sun hat", 15], ["nerd", "face", "Nerd glasses", 10], ["starglass", "face", "Star glasses", 16], ["monocle", "face", "Monocle", 20], ["mustache", "face", "Moustache", 12], ["cheeks", "face", "Cheek hearts", 8], ["skimask", "face", "Ski goggles", 18], ["pearls", "neck", "Pearl necklace", 22], ["tie", "neck", "Necktie", 12], ["medal", "neck", "Gold medal", 30], ["lei", "neck", "Flower lei", 14], ["cape", "neck", "Hero cape", 25], ["heartcollar", "neck", "Heart collar", 12], ["balloon", "prop", "Balloon", 8], ["boba", "prop", "Boba tea", 10], ["icecream", "prop", "Ice cream", 10], ["moneybag", "prop", "Money bag", 20], ["lollipop", "prop", "Lollipop", 8], ["umbrella", "prop", "Umbrella", 14], ["bouquet", "prop", "Flowers", 12]].map(([id,slot,name,cost])=>({id,slot,name,cost})));
+Object.assign(ZH,{"Bunny ears": "兔耳朵", "Cat ears": "猫耳朵", "Tiara": "小皇冠", "Chef hat": "厨师帽", "Wizard hat": "巫师帽", "Cowboy hat": "牛仔帽", "Halo": "光环", "Headphones": "耳机", "Strawberry hat": "草莓帽", "Frog hat": "青蛙帽", "Graduation cap": "毕业帽", "Big red bow": "大红蝴蝶结", "Sun hat": "草帽", "Nerd glasses": "书呆子眼镜", "Star glasses": "星星眼镜", "Monocle": "单片眼镜", "Moustache": "小胡子", "Cheek hearts": "脸颊爱心", "Ski goggles": "滑雪镜", "Pearl necklace": "珍珠项链", "Necktie": "领带", "Gold medal": "金牌", "Flower lei": "花环", "Hero cape": "英雄披风", "Heart collar": "爱心项圈", "Balloon": "气球", "Boba tea": "珍珠奶茶", "Ice cream": "冰淇淋", "Money bag": "钱袋", "Lollipop": "棒棒糖", "Umbrella": "雨伞", "Flowers": "花束"});
+/* ---------- v17: Buddy tab, room decorating, mini games ---------- */
+let DS=null, GM=null;
+const DECOR=[
+ ["w_cream","wall","Cream","#FBF3E6",0],["w_mint","wall","Mint","#DFF3EA",6],["w_lav","wall","Lavender","#ECE4FA",6],["w_peach","wall","Peach","#FDE7DC",6],["w_sky","wall","Sky blue","#DDEEFF",6],
+ ["w_stripe","wall","Candy stripes","repeating-linear-gradient(90deg,#FDEFF4 0 18px,#FADDE7 18px 36px)",12],["w_polka","wall","Polka dots","radial-gradient(#F5C2D3 2.6px,transparent 3.2px) 0 0/22px 22px,#FFF5F8",12],
+ ["w_check","wall","Gingham","repeating-linear-gradient(0deg,rgba(127,167,232,.18) 0 12px,transparent 12px 24px),repeating-linear-gradient(90deg,rgba(127,167,232,.18) 0 12px,transparent 12px 24px),#F7FAFF",14],
+ ["w_night","wall","Starry night","radial-gradient(#fff 1px,transparent 1.6px) 0 0/34px 30px,radial-gradient(#fff .8px,transparent 1.3px) 17px 15px/34px 30px,linear-gradient(#2B2D5A,#4A437E)",22],
+ ["f_wood","floor","Wood","repeating-linear-gradient(90deg,#D9A66B 0 46px,#C98F55 46px 48px)",0],["f_tile","floor","Tiles","conic-gradient(#F4F1EC 25%,#E2DCD2 0 50%,#F4F1EC 0 75%,#E2DCD2 0) 0 0/36px 36px",8],
+ ["f_carpet","floor","Soft carpet","#CDBDEB",8],["f_grass","floor","Grass","repeating-linear-gradient(100deg,#9AD07E 0 6px,#8CC56F 6px 12px)",15],["f_marble","floor","Marble","linear-gradient(135deg,#F5F3F0,#E4E0DA 60%,#F1EEEA)",20],
+ ["r_pink","rug","Pink rug","#F7B6C8",8],["r_blue","rug","Blue rug","#9CC7F0",8],["r_green","rug","Green rug","#A8DDB5",8],["r_rainbow","rug","Rainbow rug","linear-gradient(90deg,#F7A9A8,#F9D58A,#A8DDB5,#9CC7F0,#C8B3F0)",20],["r_gold","rug","Royal rug","radial-gradient(#F7DD8B 55%,#D9A93C 56% 62%,#F2D27A 63%)",30],
+ ["l_paint","wallL","Painting","🖼️",10],["l_clock","wallL","Clock","🕰️",12],["l_cal","wallL","Calendar","📅",6],["l_mirror","wallL","Mirror","🪞",14],["l_carp","wallL","Carp kite","🎏",12],["l_dart","wallL","Dartboard","🎯",14],
+ ["r_shelf","wallR","Books","📚",16],["r_guitar","wallR","Guitar","🎸",20],["r_lantern","wallR","Lantern","🏮",12],["r_star","wallR","Gold star","🌟",10],["r_rainbow2","wallR","Rainbow","🌈",14],["r_moon","wallR","Moon","🌙",10],
+ ["b_bed","floorL","Bed","🛏️",25],["b_sofa","floorL","Sofa","🛋️",30],["b_tv","floorL","TV","📺",35],["b_teddy","floorL","Big teddy","🧸",15],["b_chair","floorL","Chair","🪑",10],["b_piano","floorL","Piano","🎹",40],
+ ["p_plant","floorR","Plant","🪴",8],["p_cactus","floorR","Cactus","🌵",8],["p_sunflower","floorR","Sunflower","🌻",10],["p_lamp","floorR","Lamp","💡",12],["p_tree","floorR","Christmas tree","🎄",25],["p_fish","floorR","Fish friend","🐠",20],["p_palm","floorR","Palm tree","🌴",22],
+ ["t_ball","toy","Ball","🎾",5],["t_bone","toy","Bone toy","🦴",5],["t_yarn","toy","Yarn","🧶",6],["t_duck","toy","Rubber duck","🐥",6],["t_balloon","toy","Balloon","🎈",4],["t_gift","toy","Present","🎁",8],["t_donut","toy","Donut","🍩",6],
+ ["c_lights","ceil","Fairy lights","✨",12],["c_lanterns","ceil","Lanterns","🏮",16],["c_stars","ceil","Stars","⭐",12],["c_flowers","ceil","Flowers","🌸",14],["c_balloons","ceil","Balloons","🎈",14],["c_hearts","ceil","Hearts","💕",14]
+].map(([id,slot,name,v,cost])=>({id,slot,name,v,cost}));
+const DSLOTS=[["wall","🎨","Wallpaper"],["floor","🪵","Floor"],["rug","🟣","Rug"],["wallL","🖼️","Wall left"],["wallR","📚","Wall right"],["floorL","🛋️","Furniture"],["floorR","🪴","Plants & lamps"],["toy","🎾","Toys"],["ceil","✨","Ceiling"]];
+function home(){ const b=bud(); const h=b.home=b.home||{}; h.own=h.own||["w_cream","f_wood"]; h.put=h.put||{}; if(!h.put.wall) h.put.wall="w_cream"; if(!h.put.floor) h.put.floor="f_wood"; return h }
+function decor(id){ return DECOR.find(d=>d.id===id) }
+function roomHTML(big){ const h=home(); const g=s=>{ const d=h.put[s]&&decor(h.put[s]); return d?d.v:null };
+  const night=isNight()||new Date().getHours()>=19||new Date().getHours()<7;
+  const ce=g("ceil"); const ceil=ce?'<div class="rm-ceil" aria-hidden="true">'+Array(7).fill('<span>'+ce+'</span>').join("")+'</div>':'';
+  const rug=g("rug");
+  return '<div class="room'+(big?' big':'')+'" style="--wallbg:'+esc(g("wall"))+';--floorbg:'+esc(g("floor"))+'"><div class="rm-wall"></div><div class="rm-floor"></div>'+
+   '<div class="rm-win'+(night?' night':'')+'" aria-hidden="true"><span>'+(night?'🌙':'☀️')+'</span><i></i></div>'+ceil+
+   (g("wallL")?'<span class="rm-it rm-wallL">'+g("wallL")+'</span>':'')+(g("wallR")?'<span class="rm-it rm-wallR">'+g("wallR")+'</span>':'')+
+   (g("floorL")?'<span class="rm-it rm-floorL">'+g("floorL")+'</span>':'')+(g("floorR")?'<span class="rm-it rm-floorR">'+g("floorR")+'</span>':'')+
+   (rug?'<div class="rm-rug" style="background:'+esc(rug)+'"></div>':'')+(g("toy")?'<span class="rm-it rm-toy">'+g("toy")+'</span>':'')+
+   '<button class="rm-pet" data-roompet="1" aria-label="Pet '+esc(dogName())+'">'+petSVG(petType(),{outfit:effOutfit()})+'</button><div class="rm-say" id="rmSay" hidden></div></div>' }
+function gameDay(){ const b=bud(); if(b.gday!==today()){ b.gday=today(); b.gearn=0 } return b }
+const GAME_CAP=20;
+function renderBuddyPage(){ const el=$("buddyPage"); if(!el) return; if(S.mode==="loading"){ el.innerHTML=""; return }
+  const b=bud(), li=lvlInfo(b.xp), hp=happiness(), gd=gameDay();
+  el.innerHTML='<div class="page-head bphead"><div><h1>'+esc(dogName())+'’s home</h1><p><span>Lv '+li.L+'</span> · <span class="num">'+treatIc()+' '+b.treats+'</span> <span>treats</span></p></div></div>'+
+   roomHTML(true)+
+   '<div class="bp-meters bpm2"><div><div class="label">XP '+li.cur+' / '+li.need+'</div><div class="gbar"><i style="width:'+(li.cur/li.need*100).toFixed(1)+'%"></i></div></div><div><div class="label">Happiness '+hp+'%</div><div class="gbar hp"><i style="width:'+hp+'%"></i></div></div></div>'+
+   '<div class="bactions"><button class="bact" data-bfeed="1"'+(b.treats<1?' disabled':'')+'><span aria-hidden="true">'+treatIc()+'</span>Feed</button><button class="bact" data-bwardrobe="1"><span aria-hidden="true">🎀</span>Wardrobe</button><button class="bact" data-bdecor="1"><span aria-hidden="true">🛋️</span>Decorate</button></div>'+
+   '<div class="gsec"><div class="gsec-h"><h3>Mini games</h3><span class="hint"><span>Treats today</span> <b class="num">'+gd.gearn+' / '+GAME_CAP+'</b></span></div>'+
+   [["catch","🧺","Catch the treats","Drag to catch falling treats. Dodge the bills!"],["memory","🃏","Memory match","Find all the pairs in as few moves as you can."],["pop","🪙","Coin pop","Tap the coins before they hide. Not the bills!"]].map(([k,ic,n,d])=>'<button class="gcard" data-game="'+k+'"><span class="gic" aria-hidden="true">'+ic+'</span><span class="gtx"><b>'+n+'</b><small>'+d+'</small></span><span class="gplay">Play</span></button>').join("")+
+   (gd.gearn>=GAME_CAP?'<p class="hint">You’ve earned all of today’s game treats. Games are still fun to play!</p>':'')+'</div>'+
+   '<p class="hint" style="text-align:center">You also earn treats by logging entries every day.</p>';
+}
+function roomSay(text){ const s=$("rmSay"); if(!s) return; s.textContent=text; s.hidden=false; if(LANG==="zh") trTree(s); clearTimeout(roomSay.t); roomSay.t=setTimeout(()=>{ s.hidden=true },2600);
+  const p=document.querySelector(".rm-pet .dog"); if(p){ p.classList.remove("hop"); void p.getBoundingClientRect(); p.classList.add("hop","happy"); setTimeout(()=>p.classList.remove("happy"),1500) } }
+/* decorate sheet */
+function openDecor(){ DS={tab:"wall"}; draw() }
+function drawDecor(){ const h=home(), b=bud();
+  const items=DECOR.filter(d=>d.slot===DS.tab);
+  const body='<div class="dec-prev">'+roomHTML(false)+'</div><div class="dec-tr"><span>'+treatIc()+' <b class="num">'+b.treats+'</b> <span>treats</span></span></div>'+
+   '<div class="emojump">'+DSLOTS.map(([k,ic,l])=>'<button data-dtab="'+k+'" aria-pressed="'+(DS.tab===k)+'"><span aria-hidden="true">'+ic+'</span>'+l+'</button>').join("")+'</div>'+
+   '<div class="decgrid">'+items.map(d=>{ const own=h.own.includes(d.id), on=h.put[d.slot]===d.id; const pv=/^(w|f|r)_/.test(d.id)?'<i class="dsw'+(d.slot==="rug"?' rug':'')+'" style="background:'+esc(d.v)+'"></i>':'<i class="dem">'+d.v+'</i>';
+     return '<button class="decit'+(on?' on':'')+'" data-decor="'+d.id+'">'+pv+'<span>'+esc(d.name)+'</span><small>'+(on?"Placed":own?"Owned":d.cost?treatIc()+" "+d.cost:"Free")+'</small></button>' }).join("")+'</div>'+
+   (["wall","floor"].includes(DS.tab)?'':'<p class="hint">Tap a placed item again to put it away.</p>');
+  keepScroll(()=>{ $("sheetRoot").innerHTML=shell("Decorate",body) }) }
+function tapDecor(id){ const d=decor(id); if(!d) return; const h=home(), b=bud();
+  if(h.own.includes(id)){ if(h.put[d.slot]===id){ if(d.slot==="wall"||d.slot==="floor") return; delete h.put[d.slot] } else h.put[d.slot]=id }
+  else { if(b.treats<d.cost){ toast("You need "+(d.cost-b.treats)+" more treats"); return } b.treats-=d.cost; h.own.push(id); h.put[d.slot]=id; toast("New "+d.name+"!"); }
+  persistSettings(); refreshBubble(); drawDecor(); if(S.page==="buddy") renderBuddyPage() }
+/* mini games */
+function gameReward(n){ const b=gameDay(); const give=Math.max(0,Math.min(n,GAME_CAP-b.gearn)); b.gearn+=give; b.treats+=give; persistSettings(); refreshBubble(); return give }
+function openGame(k){ stopGame(); GM={g:k,phase:"ready",score:0}; if(k==="memory") memSetup(); draw() }
+function stopGame(){ if(GM){ GM.stop=true; cancelAnimationFrame(GM.raf); clearInterval(GM.iv); clearTimeout(GM.to) } }
+function gameTitle(){ return {catch:"Catch the treats",memory:"Memory match",pop:"Coin pop"}[GM.g] }
+function drawGame(){ let body="";
+  if(GM.phase==="done"){
+    body='<div class="gdone"><div class="gbig" aria-hidden="true">'+(GM.give>0?"🎉":"🐾")+'</div><h2>'+(GM.g==="memory"?'<span>Solved in</span> <span class="num">'+GM.moves+'</span> <span>moves</span>':'<span>Score</span> <span class="num">'+GM.score+'</span>')+'</h2>'+
+      '<p class="gwin">'+(GM.give>0?'<b class="num">+'+GM.give+' '+treatIc()+'</b> <span>treats earned!</span>':GM.earned>0?'<span>Daily game treats used up</span>':'<span>No treats this time. Try again!</span>')+'</p>'+
+      '<div class="row-btns"><button class="btn soft" data-gclose="1">Done</button><button class="btn primary" data-game="'+GM.g+'">Play again</button></div></div>';
+  } else if(GM.g==="memory"){
+    body='<div class="ghud"><span><span>Moves</span> <b class="num" id="gM">'+GM.moves+'</b></span><span><span>Pairs</span> <b class="num">'+GM.cards.filter(c=>c.done).length/2+' / 6</b></span></div><div class="memgrid">'+GM.cards.map((c,i)=>'<button class="memc'+(c.open||c.done?' open':'')+(c.done?' done':'')+'" data-mc="'+i+'" aria-label="Card"><span class="mb">'+c.e+'</span><span class="mf" aria-hidden="true">'+treatIc()+'</span></button>').join("")+'</div>';
+  } else {
+    const isC=GM.g==="catch";
+    body='<div class="ghud"><span>⏱ <b class="num" id="gT">'+(isC?25:20)+'</b></span><span><span>Score</span> <b class="num" id="gS">0</b></span></div>'+
+     '<div class="garea '+GM.g+'" id="gArea">'+(isC?'<div class="gpet" id="gPet">'+petSVG(petType(),{outfit:effOutfit()})+'</div>':'<div class="popgrid">'+Array(9).fill(0).map((_,i)=>'<button class="hole" data-ph="'+i+'"><span class="jar" aria-hidden="true">🫙</span><span class="pc" id="ph'+i+'"></span></button>').join("")+'</div>')+
+     (GM.phase==="ready"?'<div class="gready"><p>'+(isC?'Drag left and right to catch '+treatIc()+' and 🌟. Avoid 🧾 bills!':'Tap 🪙 coins as they pop up. Don’t tap 🧾 bills!')+'</p><button class="btn primary" data-gstart="1">Start</button></div>':'')+'</div>';
+  }
+  body+='<p class="hint" style="text-align:center"><span>Treats today</span> <span class="num">'+gameDay().gearn+' / '+GAME_CAP+'</span></p>';
+  keepScroll(()=>{ $("sheetRoot").innerHTML=shell(gameTitle(),body) }) }
+function endGame(raw){ stopGame(); GM.earned=raw; GM.give=gameReward(raw); GM.phase="done"; drawGame(); if(GM.give>0){ confetti(); say("Yum, "+GM.give+" treats from playing! 🎮","happy",4000) } if(S.page==="buddy") renderBuddyPage() }
+/* catch */
+function startCatch(){ GM.phase="play"; GM.stop=false; drawGame(); const area=$("gArea"), pet=$("gPet"); if(!area) return;
+  const W=area.clientWidth, H=area.clientHeight; let px=W/2, t0=performance.now(), last=t0, spawnAt=t0, items=[]; GM.score=0;
+  const move=x=>{ const r=area.getBoundingClientRect(); px=Math.max(30,Math.min(W-30,x-r.left)); pet.style.transform="translateX("+(px-30)+"px)" };
+  area.addEventListener("pointermove",e=>move(e.clientX)); area.addEventListener("pointerdown",e=>move(e.clientX));
+  area.addEventListener("touchmove",e=>{ e.preventDefault(); move(e.touches[0].clientX) },{passive:false});
+  move(W/2+area.getBoundingClientRect().left);
+  const loop=now=>{ if(GM.stop||!$("gArea")) return; const dt=Math.min(50,now-last)/1000; last=now; const el=(now-t0)/1000; const left=Math.max(0,25-el);
+    const tEl=$("gT"); if(tEl) tEl.textContent=Math.ceil(left);
+    if(now>spawnAt){ const r=Math.random(); const kind=r<.18?"bill":r<.28?"star":"treat"; const d=document.createElement("span"); d.className="fall"; d.textContent=kind==="bill"?"🧾":kind==="star"?"🌟":treatIc(); area.appendChild(d);
+      items.push({d,kind,x:20+Math.random()*(W-40),y:-30,vy:120+el*9+Math.random()*60}); spawnAt=now+Math.max(330,720-el*16) }
+    items=items.filter(it=>{ it.y+=it.vy*dt; it.d.style.transform="translate("+(it.x-14)+"px,"+it.y+"px)";
+      if(it.y>H-78&&it.y<H-30&&Math.abs(it.x-px)<38){ GM.score=Math.max(0,GM.score+(it.kind==="bill"?-2:it.kind==="star"?3:1)); const sEl=$("gS"); if(sEl) sEl.textContent=GM.score; pop(it); return false }
+      if(it.y>H){ it.d.remove(); return false } return true });
+    if(left<=0){ endGame(Math.min(8,Math.floor(GM.score/4))); return } GM.raf=requestAnimationFrame(loop) };
+  const pop=it=>{ it.d.classList.add(it.kind==="bill"?"bad":"got"); setTimeout(()=>it.d.remove(),300); const p=pet.querySelector(".dog"); if(p&&it.kind!=="bill"){ p.classList.remove("hop"); void p.getBoundingClientRect(); p.classList.add("hop") } };
+  GM.raf=requestAnimationFrame(loop) }
+/* memory */
+function memSetup(){ const set=["💰","🪙","🐷","💳","🧋","🍜"]; const deck=set.concat(set).map(e=>({e,open:false,done:false})); for(let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]] } GM.cards=deck; GM.moves=0; GM.first=null; GM.lock=false; GM.phase="play" }
+function memTap(i){ const c=GM.cards[i]; if(GM.lock||c.open||c.done) return; c.open=true;
+  if(GM.first==null){ GM.first=i; drawGame(); return }
+  GM.moves++; const a=GM.cards[GM.first]; GM.first=null; drawGame();
+  if(a.e===c.e){ a.done=c.done=true; setTimeout(()=>{ if(!GM||GM.g!=="memory") return; drawGame(); if(GM.cards.every(x=>x.done)) endGame(GM.moves<=8?7:GM.moves<=11?5:GM.moves<=15?3:2) },250) }
+  else { GM.lock=true; GM.to=setTimeout(()=>{ if(!GM||GM.g!=="memory") return; a.open=c.open=false; GM.lock=false; drawGame() },750) } }
+/* coin pop */
+function startPop(){ GM.phase="play"; GM.stop=false; GM.score=0; GM.holes=Array(9).fill(null); drawGame(); const t0=Date.now();
+  const tick=()=>{ if(GM.stop||!$("gArea")) return; const el=(Date.now()-t0)/1000; const left=Math.max(0,20-el); const tEl=$("gT"); if(tEl) tEl.textContent=Math.ceil(left);
+    if(left<=0){ endGame(Math.min(8,Math.floor(GM.score/3))); return }
+    const free=GM.holes.map((h,i)=>h?null:i).filter(i=>i!=null); if(free.length){ const i=free[Math.floor(Math.random()*free.length)]; const kind=Math.random()<.22?"bill":Math.random()<.12?"gold":"coin"; GM.holes[i]={kind,until:Date.now()+Math.max(560,950-el*18)}; const s=$("ph"+i); if(s){ s.textContent=kind==="bill"?"🧾":kind==="gold"?"💰":"🪙"; s.className="pc up" } }
+    GM.holes.forEach((h,i)=>{ if(h&&Date.now()>h.until){ GM.holes[i]=null; const s=$("ph"+i); if(s){ s.className="pc" } } });
+    GM.to=setTimeout(tick,Math.max(260,520-el*12)) };
+  tick() }
+function popTap(i){ if(!GM||GM.phase!=="play") return; const h=GM.holes[i]; const s=$("ph"+i); if(!h) return; GM.holes[i]=null;
+  GM.score=Math.max(0,GM.score+(h.kind==="bill"?-1:h.kind==="gold"?3:1)); const sEl=$("gS"); if(sEl) sEl.textContent=GM.score; if(s){ s.className="pc hit"+(h.kind==="bill"?" bad":""); setTimeout(()=>{ if(s.className.includes("hit")) s.className="pc" },220) } }
+/* plumbing */
+function drawExt(){ if(BG) drawBudgets(); else if(IE) drawIE(); else if(WR) drawWrapped(); else if(NW) drawBalances(); else if(DS) drawDecor(); else if(GM) drawGame(); else return false; return true }
+function buddyExtClick(t,ds){
+  if(t.id==="navBuddy"){ S.page="buddy"; window.scrollTo(0,0); render(); return true }
+  if(ds.bfeed){ feedPet(1); renderBuddyPage(); roomSay(FEEDL[Math.floor(Math.random()*FEEDL.length)]); return true }
+  if(ds.bwardrobe){ openProfile(); return true }
+  if(ds.bdecor){ openDecor(); return true }
+  if(ds.roompet&&!t.closest(".sheet")){ const L=petLines(); roomSay(L[Math.floor(Math.random()*L.length)]); return true }
+  if(ds.game){ openGame(ds.game); return true }
+  if(DS&&topSheet()==="DS"){ if(ds.dtab){ DS.tab=ds.dtab; drawDecor(); return true } if(ds.decor){ tapDecor(ds.decor); return true } if(ds.roompet) return true }
+  if(GM&&topSheet()==="GM"){
+    if(ds.gstart){ if(GM.g==="catch") startCatch(); else startPop(); return true }
+    if(ds.mc!=null&&GM.g==="memory"&&GM.phase==="play"){ memTap(+ds.mc); return true }
+    if(ds.ph!=null){ popTap(+ds.ph); return true }
+    if(ds.gclose){ stopGame(); closeAll(); return true } }
+  return false }
+Object.assign(ZH,{"Buddy":"宠物","Decorate":"装饰","Mini games":"小游戏","Treats today":"今日零食","Catch the treats":"接零食","Drag to catch falling treats. Dodge the bills!":"拖动接住掉下来的零食，躲开账单！","Memory match":"记忆配对","Find all the pairs in as few moves as you can.":"用最少步数找出所有配对。","Coin pop":"打硬币","Tap the coins before they hide. Not the bills!":"在硬币躲起来之前点它，别点账单！","Play":"玩","You've earned all of today's game treats. Games are still fun to play!":"今天的游戏零食已经赚满啦，游戏还是可以继续玩！","You also earn treats by logging entries every day.":"每天记账也能赚零食。",
+ "Wallpaper":"墙纸","Floor":"地板","Rug":"地毯","Wall left":"左墙","Wall right":"右墙","Furniture":"家具","Plants & lamps":"植物与灯","Toys":"玩具","Ceiling":"天花板","Placed":"已摆放","Free":"免费","Tap a placed item again to put it away.":"再点一下已摆放的物品可以收起来。",
+ "Cream":"奶油色","Mint":"薄荷绿","Lavender":"薰衣草紫","Peach":"蜜桃色","Sky blue":"天蓝","Candy stripes":"糖果条纹","Polka dots":"波点","Gingham":"格子","Starry night":"星空","Wood":"木地板","Tiles":"瓷砖","Soft carpet":"软地毯","Grass":"草地","Marble":"大理石","Pink rug":"粉色地毯","Blue rug":"蓝色地毯","Green rug":"绿色地毯","Rainbow rug":"彩虹地毯","Royal rug":"皇家地毯",
+ "Painting":"画","Clock":"时钟","Calendar":"日历","Mirror":"镜子","Carp kite":"鲤鱼旗","Dartboard":"飞镖靶","Books":"书","Guitar":"吉他","Lantern":"灯笼","Gold star":"金星","Rainbow":"彩虹","Moon":"月亮","Bed":"床","Sofa":"沙发","TV":"电视","Big teddy":"大泰迪熊","Chair":"椅子","Piano":"钢琴","Plant":"盆栽","Cactus":"仙人掌","Sunflower":"向日葵","Lamp":"灯","Christmas tree":"圣诞树","Fish friend":"小鱼朋友","Palm tree":"椰子树","Ball":"球","Bone toy":"骨头玩具","Yarn":"毛线球","Rubber duck":"小黄鸭","Present":"礼物","Donut":"甜甜圈","Fairy lights":"星星灯","Lanterns":"灯笼串","Stars":"星星","Hearts":"爱心",
+ "Moves":"步数","Pairs":"配对","Score":"分数","Start":"开始","Play again":"再玩一次","Solved in":"完成用了","moves":"步","treats earned!":"零食到手！","Daily game treats used up":"今天的游戏零食已用完","No treats this time. Try again!":"这次没有零食，再试一次！","Hold":"手持"});
+RX.push([/^(.+)'s home$/,(m,a)=>a+" 的家"],[/^Lv (\d+)$/,(m,a)=>"等级 "+a],[/^New (.+)!$/,(m,a)=>{ const z=ZH[a]; return z?"新的"+z+"！":null }],[/^Yum, (\d+) treats from playing! 🎮$/,(m,a)=>"好吃！玩游戏赚了 "+a+" 个零食！🎮"],[/^Drag left and right to catch (.+) and 🌟\. Avoid 🧾 bills!$/,(m,a)=>"左右拖动接住 "+a+" 和 🌟，躲开 🧾 账单！"],[/^Tap 🪙 coins as they pop up\. Don't tap 🧾 bills!$/,()=>"硬币 🪙 冒出来就点它，别点 🧾 账单！"]);
+
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close],label"); if(!t) return;
@@ -3155,6 +3382,7 @@ document.addEventListener("click",e=>{
     if(ds.rsyes){applyRestore();return}
     if(ds.lang){ S.settings.lang=ds.lang; persistSettings(); applyLang(ds.lang); render(); drawSettings(); renderBuddyShell(); buddyIdle(); return }
     if(ds.pet){ const n=$("dogName"); const nm=n?n.value.trim():""; const isDef=!nm||Object.values(PETS_T).some(p=>p.def===nm); S.settings.pet=ds.pet; if(isDef) delete S.settings.dog; else S.settings.dog=nm; persistSettings(); renderBuddyShell(); say("Hi! I'm "+dogName()+" "+petT().emo,"happy",4000); drawSettings(); return }
+    if(ds.gpop){ S.settings.gdrive=Object.assign({},S.settings.gdrive||{},{pop:ds.gpop}); persistSettings(); drawSettings(); toast(ds.gpop==="never"?"No more Google pop-ups":"Google pop-up at most once a day"); return }
     if(ds.themeset){ setTheme(ds.themeset); drawSettings(); return }
     if(ds.pal){S.settings.palette=ds.pal;applyPalette();persistSettings();drawSettings();return}
     if(ds.ct){ST.ct=ds.ct;drawSettings();return}
